@@ -84,7 +84,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="border-y border-border bg-cream/80 px-4 py-16 dark:bg-card/40 sm:px-8">
+      <section className="border-y border-border bg-cream px-4 py-16 dark:bg-card sm:px-8">
         <div className="mx-auto max-w-[1100px]">
           <h2 className="font-display text-3xl font-bold">What a chapter is supposed to feel like</h2>
           <div className="mt-8 grid gap-px border border-border bg-border sm:grid-cols-2">

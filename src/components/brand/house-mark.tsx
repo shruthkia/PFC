@@ -14,7 +14,7 @@ export function HouseMark({ className, decorative = false, priority = false }: H
       alt={decorative ? "" : "PawsForCause"}
       width={256}
       height={224}
-      className={cn("shrink-0 object-contain", className)}
+      className={cn("shrink-0 bg-transparent object-contain", className)}
       aria-hidden={decorative || undefined}
       priority={priority}
     />

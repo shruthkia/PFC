@@ -18,9 +18,6 @@ export function LineArtScene() {
         >
           <HouseMark className="h-auto w-full max-w-sm" decorative />
         </motion.div>
-        <p className="mt-4 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-muted">
-          A house with a paw on the door
-        </p>
       </div>
 
       <motion.div

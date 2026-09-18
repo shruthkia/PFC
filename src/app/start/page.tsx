@@ -45,7 +45,7 @@ export default function StartPage() {
         </div>
       </section>
 
-      <section className="border-y border-border bg-cream/80 px-4 py-16 dark:bg-card/40 sm:px-8">
+      <section className="border-y border-border bg-cream px-4 py-16 dark:bg-card sm:px-8">
         <div className="mx-auto max-w-[1100px]">
           <h2 className="font-display text-3xl font-bold">Status words HQ actually uses</h2>
           <p className="mt-3 max-w-2xl text-sm text-muted">
@@ -146,7 +146,7 @@ export default function StartPage() {
         </div>
       </section>
 
-      <section className="border-t border-border bg-cream/70 px-4 py-16 dark:bg-card/40 sm:px-8">
+      <section className="border-t border-border bg-cream px-4 py-16 dark:bg-card sm:px-8">
         <div className="mx-auto grid max-w-[1100px] gap-10 lg:grid-cols-2">
           <div>
             <h2 className="font-display text-2xl font-bold">How we talk</h2>

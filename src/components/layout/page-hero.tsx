@@ -17,10 +17,10 @@ export function PageHero({
     <header
       className={cn(
         "relative overflow-hidden border-b border-border px-4 pb-16 pt-28 sm:px-8 sm:pb-20 sm:pt-32",
-        dark ? "bg-brown-dark text-cream" : "bg-cream/70 dark:bg-card/40"
+        dark ? "bg-brown-dark text-cream" : "bg-cream dark:bg-card"
       )}
     >
-      <div className="pointer-events-none absolute -right-8 top-10 w-40 text-pink-hot/30 sm:w-56" aria-hidden>
+      <div className="pointer-events-none absolute -right-8 top-24 w-40 sm:top-28 sm:w-56" aria-hidden>
         <HouseMark className="h-full w-full" decorative />
       </div>
       <div className="relative mx-auto max-w-[1100px]">
