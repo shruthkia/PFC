@@ -1,6 +1,14 @@
 # PawsForCause
 
-Public website for **PFC (PawsForCause)**, the student-led animal welfare organization mobilizing high school students to improve animal welfare through practical service, shelter support, education, and responsible adoption advocacy.
+Public site for **PFC (PawsForCause)**, a student-led animal-welfare network. High school chapters run shelter support, adoption education, and community projects, then report the work.
+
+## Pages
+
+- `/` Home
+- `/about` Mission, HQ, Adopurr, public claim rules
+- `/start` Chapter path, 30-day launch, roles, Active standard
+- `/work` Projects, volunteer hours, fundraising, member value
+- `/faq` The questions founders ask before they apply
 
 ## Run locally
 
@@ -18,21 +26,4 @@ npm run build
 npm start
 ```
 
-## Stack
-
-- Next.js (App Router)
-- TypeScript
-- Tailwind CSS v4
-- Framer Motion
-- next-themes (light / dark mode)
-
-## Features
-
-- Pastel pink, orange, and brown palette with accessible dark mode
-- Animated SVG hero illustration and motion throughout
-- FAQ covering chapter standards, reporting, fundraising, and member value
-- Primary CTA links to the live chapter interest form
-
-## Chapter interest form
-
-https://docs.google.com/forms/d/e/1FAIpQLScT8S5ygsbBoEzovYqMu-b30oQmUyzNE3LvwL8IB0PsSu5KzA/viewform
+Primary CTA: the live [chapter interest form](https://docs.google.com/forms/d/e/1FAIpQLScT8S5ygsbBoEzovYqMu-b30oQmUyzNE3LvwL8IB0PsSu5KzA/viewform).

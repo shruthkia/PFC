@@ -2,60 +2,57 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
+import { HouseMark } from "@/components/brand/house-mark";
 import { CHAPTER_FORM_URL } from "@/lib/utils";
-import { siteConfig } from "@/lib/content";
+import { navLinks, siteConfig } from "@/lib/content";
 import { cn } from "@/lib/utils";
-
-const navLinks = [
-  { href: "#mission", label: "Mission" },
-  { href: "#path", label: "Path" },
-  { href: "#work", label: "Work" },
-  { href: "#faq", label: "FAQ" },
-];
 
 export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
   return (
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-500",
-        scrolled
+        scrolled || open
           ? "border-b border-border bg-background/90 backdrop-blur-md"
           : "bg-transparent"
       )}
     >
       <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-4 sm:px-8">
-        <Link
-          href="/"
-          className="group flex items-center gap-3"
-          aria-label={`${siteConfig.name} home`}
-        >
-          <span className="flex h-8 w-8 items-center justify-center border-2 border-foreground bg-pink-hot font-mono text-xs font-medium text-white transition-transform group-hover:-rotate-6">
-            P
-          </span>
-          <span className="hidden font-mono text-[0.65rem] uppercase tracking-[0.2em] sm:block">
+        <Link href="/" className="group flex items-center gap-2.5" aria-label={`${siteConfig.name} home`}>
+          <HouseMark className="h-9 w-9 text-foreground transition-transform group-hover:-rotate-3" />
+          <span className="font-display text-base font-bold tracking-tight">
             {siteConfig.shortName}
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Main">
+        <nav className="hidden items-center gap-7 lg:flex" aria-label="Main">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="font-mono text-[0.65rem] uppercase tracking-[0.15em] text-muted transition-colors hover:text-pink-hot"
+              className={cn(
+                "font-mono text-[0.65rem] uppercase tracking-[0.15em] transition-colors hover:text-pink-hot",
+                pathname === link.href ? "text-pink-hot" : "text-muted"
+              )}
             >
               {link.label}
             </Link>
@@ -66,13 +63,13 @@ export function Header() {
           <ThemeToggle />
           <Button asChild size="sm" className="hidden sm:inline-flex">
             <a href={CHAPTER_FORM_URL} target="_blank" rel="noopener noreferrer">
-              Start chapter
+              Apply
             </a>
           </Button>
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden"
+            className="lg:hidden"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-controls="mobile-nav"
@@ -86,17 +83,13 @@ export function Header() {
       {open && (
         <nav
           id="mobile-nav"
-          className="border-t border-border bg-background px-4 py-6 md:hidden"
+          className="border-t border-border bg-background px-4 py-6 lg:hidden"
           aria-label="Mobile"
         >
           <ul className="space-y-4">
             {navLinks.map((link) => (
               <li key={link.href}>
-                <Link
-                  href={link.href}
-                  onClick={() => setOpen(false)}
-                  className="font-mono text-sm uppercase tracking-widest"
-                >
+                <Link href={link.href} className="font-mono text-sm uppercase tracking-widest">
                   {link.label}
                 </Link>
               </li>
@@ -104,7 +97,7 @@ export function Header() {
             <li>
               <Button asChild className="w-full">
                 <a href={CHAPTER_FORM_URL} target="_blank" rel="noopener noreferrer">
-                  Start chapter
+                  Chapter interest form
                 </a>
               </Button>
             </li>

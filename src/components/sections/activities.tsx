@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { SectionLabel } from "@/components/effects/section-label";
 import { activityLanes } from "@/lib/content";
@@ -20,19 +21,22 @@ const bentoBg = [
 
 export function Activities() {
   return (
-    <section id="work" className="px-4 py-24 sm:px-8 sm:py-32">
+    <section className="px-4 py-24 sm:px-8 sm:py-32">
       <div className="mx-auto max-w-[1400px]">
-        <SectionLabel number="03" label="The work" />
+        <SectionLabel number="03" label="Kennel work" />
 
         <div className="mt-10 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <h2 className="max-w-xl font-display text-4xl font-bold leading-[1.05] sm:text-5xl">
-            Projects students
-            <span className="text-pink-hot"> actually </span>
-            want to run
+            If a shelter would not miss it,
+            <span className="text-pink-hot"> pick a different project.</span>
           </h2>
           <p className="max-w-sm text-sm leading-relaxed text-muted">
-            Responsible adoption and sterilization awareness stay at the center. Every project
-            should help animals and look good enough to post about.
+            Dog toys from old shirts. A Saturday with 20 students walking through a kennel.
+            A hallway that finally tells the truth about sterilization.{" "}
+            <Link href="/work" className="text-pink-hot underline-offset-4 hover:underline">
+              See hours, ideas, and fundraising rules
+            </Link>
+            .
           </p>
         </div>
 
@@ -50,7 +54,7 @@ export function Activities() {
                 0{i + 1}
               </span>
               <h3 className="mt-4 font-display text-2xl font-bold sm:text-3xl">{lane.title}</h3>
-              <p className="mt-3 max-w-md text-sm leading-relaxed text-muted">{lane.description}</p>
+              <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted">{lane.description}</p>
             </motion.article>
           ))}
         </div>

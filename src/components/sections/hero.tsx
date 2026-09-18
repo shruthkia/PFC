@@ -2,11 +2,13 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import Link from "next/link";
 import { ArrowDownRight } from "lucide-react";
 import { LineArtScene } from "@/components/animated/line-art-scene";
 import { Marquee } from "@/components/effects/marquee";
 import { Button } from "@/components/ui/button";
 import { CHAPTER_FORM_URL } from "@/lib/utils";
+import { marqueeItems } from "@/lib/content";
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -16,17 +18,13 @@ export function Hero() {
 
   return (
     <>
-      <section
-        ref={ref}
-        className="relative min-h-[100svh] overflow-hidden pt-16"
-      >
+      <section ref={ref} className="relative min-h-[100svh] overflow-hidden pt-16">
         <motion.div style={{ y, opacity }} className="relative mx-auto max-w-[1400px] px-4 sm:px-8">
           <div className="grid min-h-[calc(100svh-4rem)] items-center gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-4">
             <div className="relative z-10 py-12 lg:py-0">
               <motion.p
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6 }}
                 className="font-mono text-[0.65rem] uppercase tracking-[0.3em] text-muted"
               >
                 High school chapters · 5 countries
@@ -65,8 +63,9 @@ export function Hero() {
                 transition={{ delay: 0.5, duration: 0.7 }}
                 className="mt-8 max-w-md text-lg leading-relaxed text-muted sm:text-xl"
               >
-                The student network turning shelter runs, adoption advocacy, and community
-                action into real impact. Not meetings for the sake of meetings.
+                Student chapters that help the animals still waiting. Shelter days, toy nights,
+                hallway talks about getting pets fixed. If you wanted a club that only posts
+                infographics, this is the wrong house.
               </motion.p>
 
               <motion.div
@@ -82,7 +81,7 @@ export function Hero() {
                   </a>
                 </Button>
                 <Button asChild variant="secondary" size="lg">
-                  <a href="#path">How it works</a>
+                  <Link href="/start">See the 30-day path</Link>
                 </Button>
               </motion.div>
 
@@ -92,7 +91,7 @@ export function Hero() {
                 transition={{ delay: 0.8 }}
                 className="mt-8 font-mono text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground"
               >
-                Target · 50+ active chapters by Jan 2027
+                Goal · 50+ Active high school chapters by 31 Jan 2027
               </motion.p>
             </div>
 
@@ -106,34 +105,9 @@ export function Hero() {
             </motion.div>
           </div>
         </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-          className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 lg:block"
-          aria-hidden
-        >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="font-mono text-[0.6rem] uppercase tracking-[0.3em] text-muted-foreground"
-          >
-            Scroll
-          </motion.div>
-        </motion.div>
       </section>
 
-      <Marquee
-        items={[
-          "Shelter support",
-          "Responsible adoption",
-          "Sterilization awareness",
-          "Student leadership",
-          "Real service hours",
-          "Community action",
-        ]}
-      />
+      <Marquee items={marqueeItems} />
     </>
   );
 }

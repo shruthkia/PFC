@@ -2,7 +2,7 @@ import { Hero } from "@/components/sections/hero";
 import { Mission } from "@/components/sections/mission";
 import { Chapters } from "@/components/sections/chapters";
 import { Activities } from "@/components/sections/activities";
-import { Faq } from "@/components/sections/faq";
+import { FaqTeaser } from "@/components/sections/faq-teaser";
 import { Leadership } from "@/components/sections/leadership";
 import { Cta } from "@/components/sections/cta";
 
@@ -13,7 +13,7 @@ export default function Home() {
       <Mission />
       <Chapters />
       <Activities />
-      <Faq />
+      <FaqTeaser />
       <Leadership />
       <Cta />
     </>

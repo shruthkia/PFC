@@ -21,7 +21,10 @@ const ibmPlex = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: `${siteConfig.name} | Student-led animal welfare chapters`,
+  title: {
+    default: `${siteConfig.name} · student animal-welfare chapters`,
+    template: `%s · ${siteConfig.name}`,
+  },
   description: siteConfig.description,
   icons: {
     icon: "/favicon.svg",
