@@ -1,5 +1,4 @@
 import { Hero } from "@/components/sections/hero";
-import { StatsBar } from "@/components/sections/stats-bar";
 import { Mission } from "@/components/sections/mission";
 import { Chapters } from "@/components/sections/chapters";
 import { Activities } from "@/components/sections/activities";
@@ -11,7 +10,6 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <StatsBar />
       <Mission />
       <Chapters />
       <Activities />

@@ -2,98 +2,79 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { SectionLabel } from "@/components/effects/section-label";
 import { faqItems } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
-function FaqItem({
-  question,
-  answer,
-  isOpen,
-  onToggle,
-}: {
-  question: string;
-  answer: string;
-  isOpen: boolean;
-  onToggle: () => void;
-}) {
-  return (
-    <div className="border-b border-border last:border-b-0">
-      <h3>
-        <button
-          type="button"
-          onClick={onToggle}
-          aria-expanded={isOpen}
-          className="flex w-full items-center justify-between gap-4 py-5 text-left text-base font-semibold transition-colors hover:text-pink-deep"
-        >
-          <span>{question}</span>
-          <ChevronDown
-            className={cn(
-              "h-5 w-5 shrink-0 text-muted transition-transform duration-200",
-              isOpen && "rotate-180"
-            )}
-            aria-hidden
-          />
-        </button>
-      </h3>
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="overflow-hidden"
-          >
-            <p className="pb-5 text-sm leading-relaxed text-muted">{answer}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
 export function Faq() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [active, setActive] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="bg-cream/70 px-4 py-20 dark:bg-card/30 sm:px-6 sm:py-24">
-      <div className="mx-auto max-w-3xl">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center"
-        >
-          <p className="text-sm font-semibold uppercase tracking-wider text-pink-deep">
-            Quick answers
-          </p>
-          <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-            Everything you need before you apply
-          </h2>
-          <p className="mt-4 text-muted">
-            Straightforward answers without the overload. Still curious after this? The
-            interest form is the best place to start.
-          </p>
-        </motion.div>
+    <section id="faq" className="border-t border-border bg-cream px-4 py-24 dark:bg-card/50 sm:px-8 sm:py-32">
+      <div className="mx-auto max-w-[1400px]">
+        <SectionLabel number="04" label="FAQ" />
 
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
-          className="card-glow mt-10 rounded-3xl border border-border bg-card px-5 sm:px-6"
-        >
-          {faqItems.map((item, index) => (
-            <FaqItem
-              key={item.question}
-              question={item.question}
-              answer={item.answer}
-              isOpen={openIndex === index}
-              onToggle={() => setOpenIndex(openIndex === index ? null : index)}
-            />
-          ))}
-        </motion.div>
+        <div className="mt-10 grid gap-12 lg:grid-cols-[0.4fr_0.6fr]">
+          <div>
+            <h2 className="font-display text-4xl font-bold leading-[1.05] sm:text-5xl">
+              Straight
+              <br />
+              answers
+            </h2>
+            <p className="mt-4 text-muted leading-relaxed">
+              Everything you need before applying. No fluff, no inflated claims.
+            </p>
+          </div>
+
+          <div className="divide-y divide-border border-y border-border">
+            {faqItems.map((item, i) => {
+              const isOpen = active === i;
+              return (
+                <div key={item.question}>
+                  <button
+                    type="button"
+                    onClick={() => setActive(isOpen ? null : i)}
+                    aria-expanded={isOpen}
+                    className="group flex w-full items-start gap-6 py-6 text-left transition-colors hover:text-pink-hot"
+                  >
+                    <span className="font-mono text-xs text-muted-foreground pt-1">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="flex-1">
+                      <span className="block font-display text-lg font-semibold leading-snug sm:text-xl">
+                        {item.question}
+                      </span>
+                    </span>
+                    <span
+                      className={cn(
+                        "mt-1 font-mono text-xl transition-transform duration-300",
+                        isOpen && "rotate-45 text-pink-hot"
+                      )}
+                      aria-hidden
+                    >
+                      +
+                    </span>
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                        className="overflow-hidden"
+                      >
+                        <p className="pb-6 pl-10 pr-4 text-sm leading-relaxed text-muted sm:pl-12">
+                          {item.answer}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </section>
   );

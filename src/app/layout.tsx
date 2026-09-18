@@ -1,20 +1,22 @@
 import type { Metadata } from "next";
-import { Fraunces, DM_Sans } from "next/font/google";
+import { Bricolage_Grotesque, IBM_Plex_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { CursorGlow } from "@/components/effects/cursor-glow";
 import { siteConfig } from "@/lib/content";
 import "./globals.css";
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
   subsets: ["latin"],
   display: "swap",
 });
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+const ibmPlex = IBM_Plex_Mono({
+  variable: "--font-ibm-plex",
   subsets: ["latin"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
@@ -33,14 +35,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${fraunces.variable} ${dmSans.variable} h-full`}>
-      <body className="min-h-full flex flex-col antialiased">
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${bricolage.variable} ${ibmPlex.variable} h-full`}
+    >
+      <body className="grain min-h-full flex flex-col antialiased">
         <ThemeProvider>
+          <CursorGlow />
           <a href="#main-content" className="skip-link">
-            Skip to main content
+            Skip to content
           </a>
           <Header />
-          <main id="main-content" className="flex-1">
+          <main id="main-content" className="relative flex-1">
             {children}
           </main>
           <Footer />

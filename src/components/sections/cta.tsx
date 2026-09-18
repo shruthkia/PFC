@@ -2,45 +2,86 @@
 
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import { Marquee } from "@/components/effects/marquee";
 import { Button } from "@/components/ui/button";
 import { CHAPTER_FORM_URL } from "@/lib/utils";
 
 export function Cta() {
   return (
-    <section className="px-4 pb-20 pt-4 sm:px-6 sm:pb-24">
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] border border-border bg-gradient-to-br from-pink-soft via-orange-soft to-cream px-6 py-14 text-center dark:from-pink-soft/30 dark:via-orange-soft/20 dark:to-card sm:px-12 sm:py-16"
-      >
-        <div className="pointer-events-none absolute -left-10 -top-10 h-40 w-40 rounded-full bg-pink/30 blur-3xl" aria-hidden />
-        <div className="pointer-events-none absolute -bottom-10 -right-10 h-48 w-48 rounded-full bg-orange/25 blur-3xl" aria-hidden />
-
-        <p className="relative text-sm font-semibold uppercase tracking-wider text-brown-deep dark:text-orange">
-          Ready when you are
-        </p>
-        <h2 className="relative mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl">
-          Bring PFC to your high school
-        </h2>
-        <p className="relative mx-auto mt-4 max-w-xl text-muted leading-relaxed">
-          Fill out the chapter interest form. If you are a fit, HQ sends resources,
-          registration steps, and support to help you launch within your first 30 days.
-        </p>
-
-        <div className="relative mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Button asChild size="lg">
-            <a href={CHAPTER_FORM_URL} target="_blank" rel="noopener noreferrer">
-              Open chapter interest form
-              <ArrowUpRight className="h-4 w-4" aria-hidden />
-            </a>
-          </Button>
-          <Button asChild variant="secondary" size="lg">
-            <a href="#faq">Read the FAQ first</a>
-          </Button>
+    <>
+      <section className="relative overflow-hidden bg-pink-hot px-4 py-24 text-white sm:px-8 sm:py-32">
+        <div className="absolute inset-0 opacity-10" aria-hidden>
+          <div className="absolute -left-20 top-0 h-96 w-96 rounded-full bg-orange blur-3xl" />
+          <div className="absolute -right-20 bottom-0 h-96 w-96 rounded-full bg-brown blur-3xl" />
         </div>
-      </motion.div>
-    </section>
+
+        <div className="relative mx-auto max-w-[1400px] text-center">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="font-mono text-[0.65rem] uppercase tracking-[0.3em] text-white/70"
+          >
+            Ready when you are
+          </motion.p>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="mt-6 font-display text-[clamp(2.5rem,8vw,5.5rem)] font-extrabold leading-[0.95] tracking-tight"
+          >
+            BRING PFC
+            <br />
+            TO YOUR SCHOOL
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="mx-auto mt-6 max-w-lg text-white/80 leading-relaxed"
+          >
+            Fill out the interest form. If you are a fit, HQ sends resources and support to
+            help you launch within 30 days.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
+          >
+            <Button
+              asChild
+              size="lg"
+              className="border-white bg-white text-pink-hot shadow-none hover:bg-cream"
+            >
+              <a href={CHAPTER_FORM_URL} target="_blank" rel="noopener noreferrer">
+                Open interest form
+                <ArrowUpRight className="h-4 w-4" aria-hidden />
+              </a>
+            </Button>
+            <Button
+              asChild
+              variant="secondary"
+              size="lg"
+              className="border-white/40 text-white hover:bg-white/10 hover:text-white"
+            >
+              <a href="#faq">Read FAQ</a>
+            </Button>
+          </motion.div>
+        </div>
+      </section>
+
+      <Marquee
+        reverse
+        items={["Start a chapter", "Shelter runs", "Make impact", "Lead locally", "Report honestly"]}
+        className="border-pink-hot/30 bg-brown-dark [&_span]:text-brown-soft"
+      />
+    </>
   );
 }
