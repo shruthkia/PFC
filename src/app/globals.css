@@ -157,12 +157,9 @@ body {
 
 /* Outline display text */
 .text-outline {
+  color: color-mix(in srgb, var(--foreground) 18%, transparent);
   -webkit-text-stroke: 1.5px var(--foreground);
-  color: transparent;
-}
-
-.dark .text-outline {
-  -webkit-text-stroke: 1.5px var(--foreground);
+  paint-order: stroke fill;
 }
 
 /* Section giant number */
