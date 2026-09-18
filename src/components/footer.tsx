@@ -9,7 +9,7 @@ export function Footer() {
       <div className="mx-auto flex max-w-[1400px] flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
         <div className="max-w-sm">
           <div className="flex items-center gap-3">
-            <HouseMark className="h-10 w-10 text-foreground" />
+            <HouseMark className="h-11 w-12" />
             <div>
               <p className="font-display text-xl font-bold">{siteConfig.name}</p>
               <p className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-muted-foreground">
@@ -18,8 +18,7 @@ export function Footer() {
             </div>
           </div>
           <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
-            Student animal-welfare chapters. High school first. Fiscal sponsorship pending.
-            Adopurr is the for-profit sibling, not the same org.
+            Student animal-welfare chapters. High school first. Adopurr is a sister project, not the same org.
           </p>
         </div>
 

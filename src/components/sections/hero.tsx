@@ -51,7 +51,7 @@ export function Hero() {
               </div>
 
               <p className="mt-8 font-mono text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
-                Goal · 50+ Active high school chapters by 31 Jan 2027
+                Goal · first project in your first month
               </p>
             </div>
 

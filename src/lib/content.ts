@@ -15,8 +15,8 @@ export const navLinks = [
 
 export const stats = [
   { value: "15+", label: "chapters launching", detail: "across 5 countries" },
-  { value: "50+", label: "active chapters", detail: "the goal by 31 Jan 2027" },
-  { value: "21", label: "days if you hustle", detail: "first real activity target" },
+  { value: "5", label: "countries", detail: "and growing" },
+  { value: "30", label: "days to launch", detail: "from form to first project" },
 ];
 
 export const homeBeats = [
@@ -29,8 +29,8 @@ export const homeBeats = [
   {
     href: "/start",
     kicker: "How a chapter becomes real",
-    title: "You are not Active because you filled out a form",
-    body: "Interest, approval, registration, first meeting, first activity, then you stay in touch. A registration sitting in a spreadsheet is not a chapter we will count.",
+    title: "A chapter starts with a form, then a first project",
+    body: "Interest, school approval, a small team, a first meeting, and something that actually helps animals. We will walk you through it.",
   },
   {
     href: "/work",
@@ -45,13 +45,13 @@ export const missionLong = {
   what: "Chapters, campaigns, events, and education. Local teams pick the project. HQ sends playbooks, shared campaigns, and a reporting habit so the work does not disappear into group chats.",
   who: "High school students who want school-level ownership. Presidents, a small officer team, and members who can lead a project without inventing a fake staff title.",
   how: "A chapter system, a 30-day launch, monthly check-ins, and hours you can log. HQ sets the floor. Your school and your local animals set the rest.",
-  money: "Fundraisers with a real beneficiary, plus grants when we can actually apply. We do not collect money in PFC's name until HQ says the path is clear.",
-  growth: "High school chapters across states and countries. Target: 50+ Active chapters by 31 January 2027. College comes later.",
+  money: "Fundraisers tied to a real shelter, rescue, or supply list, plus grants when they make sense. HQ helps chapters plan the money side so it stays clean.",
+  growth: "High school chapters across states and countries. College chapters are coming later, once the high school network is solid.",
 };
 
 export const vision = {
-  near: "By the 2026–27 school year, PFC should feel like a working network: chapters that launch, stay in touch, and can point to animals, shelters, or classrooms that are better because they showed up.",
-  far: "Long term we want a durable nonprofit home for this work. Fiscal sponsorship through Hack Club Bank is in process. Until it is approved, we will not call ourselves a 501(c)(3) or say we are already sponsored.",
+  near: "This year PFC should feel like a working network: chapters that launch, stay in touch, and can point to animals, shelters, or classrooms that are better because they showed up.",
+  far: "Long term we want PFC to be a lasting home for student animal-welfare work, with chapters that keep going after the founding class graduates.",
 };
 
 export const whoItsFor = [
@@ -170,7 +170,7 @@ export const volunteerHours = [
 
 export const hourLogging = {
   title: "How hours get written down",
-  body: "Where your school accepts service documentation, we will help you keep a clean record. Many students log hours through InnerView. If you hit their threshold (often around 40 to 50 hours) they may issue their own certificate. That certificate comes from InnerView, not from the UN, and we will not dress it up as a UN credential.",
+  body: "Where your school accepts service documentation, we help you keep a clean record of events, making, outreach, and shelter time.",
 };
 
 export const projectIdeas = [
@@ -196,20 +196,19 @@ export const presidentGets = [
   "A seat in the national Discord for HQ, presidents, and officers. That chat is for leadership, not every member in the school.",
   "Shared campaign kits when a network-wide push is running.",
   "A launch mentor for the first 30 days when we can pair you with someone who just did this.",
-  "Help documenting hours and reporting, including InnerView where it fits.",
+  "Help documenting hours and reporting the work your chapter actually did.",
 ];
 
 export const memberValue = [
   { title: "Project Lead, then you give it back", body: "Temporary ownership of a real project. We do not invent permanent titles to make a resume sparkle." },
   { title: "Work you can point to", body: "Service, design, outreach, research. If you did it, we want it written down." },
-  { title: "Cross-chapter work when it is real", body: "Shared campaigns, the occasional expert session, or an outside opportunity we can actually name. If it is not a PFC partnership, we will say so." },
-  { title: "A network that does not inflate itself", body: "We will not count you as Active for existing. That is the whole point." },
+  { title: "Cross-chapter work", body: "Shared campaigns, the occasional workshop, and projects that more than one school can run together." },
+  { title: "A chapter that actually runs", body: "You get a team, a first project, and people at HQ who answer when you need a playbook." },
 ];
 
 export const fundraisingNotes = [
-  "Every fundraiser needs a real beneficiary: a shelter, a rescue medical fund, a specific supply list.",
-  "Fiscal sponsorship (Hack Club Bank / HCB) is pending. Do not collect money as if PFC is already a 501(c)(3).",
-  "Talk to HQ before GoFundMe, grant applications in PFC's name, or anything that looks official.",
+  "Every fundraiser should help a real shelter, rescue medical fund, or supply list.",
+  "Talk to HQ before a GoFundMe, a grant in PFC's name, or anything that looks official.",
   "Local bake sales and wishlist drives are usually the cleanest first move.",
 ];
 
@@ -248,28 +247,20 @@ export const leadership = [
     name: "Aidan",
     role: "Co-founder",
     focus:
-      "The inside of the house: chapter ops, onboarding, the systems, the numbers, and whether a chapter is actually Active.",
+      "The inside of the house: chapter ops, onboarding, systems, and helping new presidents get moving.",
   },
 ];
 
 export const adopurrNote = {
   title: "PFC and Adopurr",
-  body: "Adopurr is a for-profit product about matching the right pets with the right adopters. PFC is the student advocacy and awareness network. We share a house-and-paw mark and a lot of the same stubbornness about responsible adoption. We are not the same legal entity, and PFC is not 'Adopurr but nonprofit' until the paperwork says so.",
+  body: "Adopurr is a for-profit product about matching the right pets with the right adopters. PFC is the student advocacy and awareness network. We share a house-and-paw mark and the same stubbornness about responsible adoption. We are sister projects, not the same org.",
 };
-
-export const publicGuardrails = [
-  "We say 15+ high school chapters launching across 5 countries. We do not pad that with dormant signups.",
-  "Active means first meaningful activity reported, plus we can still reach you.",
-  "Fiscal sponsorship is pending. Full stop.",
-  "A shelter that replied to an email is not a partner.",
-  "InnerView hours and certificates are InnerView's. We will not hang UN language on them.",
-];
 
 export const faqItems = [
   {
     question: "What makes a chapter official?",
     answer:
-      "You submit the interest form, HQ approves you as a founder, you finish registration, and you move through Launching into Launched. Official and Active are different. Active is later: first meaningful activity completed, reported, and you still answer messages. A form in a Drive folder is not an official working chapter.",
+      "You submit the interest form, HQ approves you as a founder, you finish registration, get school approval moving, hold a first meeting, and run a first project. Then you stay in touch and keep a couple of real activities each semester.",
   },
   {
     question: "What does the chapter president get?",
@@ -284,7 +275,7 @@ export const faqItems = [
   {
     question: "What counts as a volunteer activity or hour?",
     answer:
-      "Shelter time, chapter events, flyers and graphics the chapter used, outreach, representing PFC at a school or local event, skill work (design, research, photos), and educational pet content that the chapter actually publishes. Logging a nap with your cat does not count. Hours can be written down for school service and through InnerView where that fits.",
+      "Shelter time, chapter events, flyers and graphics the chapter used, outreach, representing PFC at a school or local event, skill work (design, research, photos), and educational pet content that the chapter actually publishes. Hours can be written down for school service where your school accepts them.",
   },
   {
     question: "What is the first PFC-wide campaign?",
@@ -297,24 +288,24 @@ export const faqItems = [
       "Activity & Impact Report after the work is done. Honest metrics, evidence, permission-respecting photos. Discord messages are not the archive.",
   },
   {
-    question: "How does fundraising work while sponsorship is pending?",
+    question: "How does fundraising work?",
     answer:
-      "Keep it local and tied to a named beneficiary. Wishlist drives and on-campus sales are the default. Anything that looks like PFC collecting tax-deductible donations, running a big GoFundMe, or filing a grant needs HQ first. We are pursuing Hack Club Bank fiscal sponsorship. We will say so when it is approved, not before.",
+      "Keep it local and tied to a named shelter, rescue, or supply list. Wishlist drives and on-campus sales are the usual first move. Talk to HQ before a GoFundMe, a grant in PFC's name, or anything that looks official.",
   },
   {
     question: "What do members get that makes joining worth it?",
     answer:
-      "A Project Lead role when there is a project, service hours that can be documented, skills you can show (a flyer a shelter used hits harder than a club officer title), and the occasional cross-chapter campaign or outside opportunity we can name without lying. We will not invent internships we do not have.",
+      "A Project Lead role when there is a project, service hours that can be documented, skills you can show, and the occasional campaign more than one school can run together.",
   },
   {
     question: "Can an existing animal club join without becoming PFC?",
     answer:
-      "Yes. Affiliate clubs keep their name and dip into selected projects. Program partners join one campaign. Neither gets folded into chapter counts.",
+      "Yes. Affiliate clubs keep their name and join selected projects. Program partners jump into one campaign.",
   },
   {
     question: "Do you have college chapters or regional reps?",
     answer:
-      "Not yet. College is deferred on purpose. Regional representatives show up when there are enough Active chapters that HQ cannot reasonably stay close to each president. We would rather be late on titles than early on fluff.",
+      "Not yet. We are focused on high school chapters first. Regional representatives can come later, when there are enough chapters that it would actually help.",
   },
 ];
 
@@ -325,6 +316,5 @@ export const marqueeItems = [
   "Dog-toy nights",
   "Wishlist runs",
   "Hours you can log",
-  "No ghost chapters",
   "High school first",
 ];

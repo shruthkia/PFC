@@ -91,7 +91,7 @@ export default function WorkPage() {
       <section className="border-t border-border px-4 py-16 sm:px-8">
         <div className="mx-auto grid max-w-[1100px] gap-12 lg:grid-cols-2">
           <div>
-            <h2 className="font-display text-2xl font-bold">Fundraising while the bank paperwork is still in the crate</h2>
+            <h2 className="font-display text-2xl font-bold">How fundraising works</h2>
             <ul className="mt-6 space-y-3">
               {fundraisingNotes.map((line) => (
                 <li key={line} className="border-l-2 border-orange-hot pl-4 text-sm leading-relaxed text-muted">

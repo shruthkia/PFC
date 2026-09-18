@@ -16,7 +16,7 @@ export function LineArtScene() {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
-          <HouseMark className="h-auto w-full" decorative />
+          <HouseMark className="h-auto w-full max-w-sm" decorative />
         </motion.div>
         <p className="mt-4 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-muted">
           A house with a paw on the door

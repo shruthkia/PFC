@@ -7,7 +7,6 @@ import {
   chapterOffers,
   leadership,
   missionLong,
-  publicGuardrails,
   vision,
   whoItsFor,
 } from "@/lib/content";
@@ -15,7 +14,7 @@ import {
 export const metadata: Metadata = {
   title: "About PFC",
   description:
-    "Who PawsForCause is, what we will and will not claim, and how the student network is run.",
+    "Who PawsForCause is, how student chapters work, and how we relate to Adopurr.",
 };
 
 export default function AboutPage() {
@@ -24,7 +23,7 @@ export default function AboutPage() {
       <PageHero
         kicker="About"
         title="A student house for animals who still need one"
-        lede="PFC exists so high schoolers can do useful work for shelters and rescues, teach responsible adoption, and keep a record of it. We are not a poster club, and we are not a 501(c)(3) yet."
+        lede="PFC exists so high schoolers can do useful work for shelters and rescues, teach responsible adoption, and keep a record of it. Not a poster club. A chapter you can actually run."
       />
 
       <section className="px-4 py-16 sm:px-8 sm:py-24">
@@ -60,7 +59,7 @@ export default function AboutPage() {
           </div>
           <div className="space-y-8">
             <div className="border-2 border-foreground bg-cream p-8 dark:bg-card">
-              <h2 className="font-display text-2xl font-bold">2026–27</h2>
+              <h2 className="font-display text-2xl font-bold">Where this is going</h2>
               <p className="mt-3 text-sm leading-relaxed text-muted">{vision.near}</p>
               <p className="mt-3 text-sm leading-relaxed text-muted">{vision.far}</p>
             </div>
@@ -103,8 +102,7 @@ export default function AboutPage() {
         <div className="mx-auto max-w-[1100px]">
           <h2 className="font-display text-3xl font-bold">HQ</h2>
           <p className="mt-3 max-w-2xl text-muted">
-            Other titles have to match work someone already did. We will not staff a region with one
-            chapter in it just to make the org chart look grown-up.
+            Other titles have to match work someone already did. Regional help can come later, when there are enough chapters that it would actually help.
           </p>
           <div className="mt-8 grid gap-4 md:grid-cols-2">
             {leadership.map((person) => (
@@ -119,21 +117,9 @@ export default function AboutPage() {
       </section>
 
       <section className="border-t border-border px-4 py-16 sm:px-8">
-        <div className="mx-auto grid max-w-[1100px] gap-10 lg:grid-cols-2">
-          <div>
-            <h2 className="font-display text-3xl font-bold">{adopurrNote.title}</h2>
-            <p className="mt-4 leading-relaxed text-muted">{adopurrNote.body}</p>
-          </div>
-          <div>
-            <h2 className="font-display text-3xl font-bold">Claims we will not stretch</h2>
-            <ul className="mt-4 space-y-3 text-sm leading-relaxed text-muted">
-              {publicGuardrails.map((line) => (
-                <li key={line} className="border-l-2 border-pink-hot pl-4">
-                  {line}
-                </li>
-              ))}
-            </ul>
-          </div>
+        <div className="mx-auto max-w-[1100px]">
+          <h2 className="font-display text-3xl font-bold">{adopurrNote.title}</h2>
+          <p className="mt-4 max-w-3xl leading-relaxed text-muted">{adopurrNote.body}</p>
         </div>
       </section>
 

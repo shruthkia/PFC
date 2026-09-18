@@ -6,7 +6,7 @@ import { FaqList } from "@/components/sections/faq-list";
 export const metadata: Metadata = {
   title: "FAQ",
   description:
-    "What makes a PFC chapter official, how hours work, how to report, and how fundraising works while fiscal sponsorship is pending.",
+    "What makes a PFC chapter official, how hours work, how to report, and how fundraising works.",
 };
 
 export default function FaqPage() {

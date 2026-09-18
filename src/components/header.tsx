@@ -38,7 +38,7 @@ export function Header() {
     >
       <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-4 sm:px-8">
         <Link href="/" className="group flex items-center gap-2.5" aria-label={`${siteConfig.name} home`}>
-          <HouseMark className="h-9 w-9 text-foreground transition-transform group-hover:-rotate-3" />
+          <HouseMark className="h-9 w-10" priority />
           <span className="font-display text-base font-bold tracking-tight">
             {siteConfig.shortName}
           </span>
