@@ -1,0 +1,232 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fff8f5;
+  --foreground: #3d2e2a;
+  --muted: #6b5349;
+  --muted-foreground: #8a7268;
+  --card: #ffffff;
+  --card-foreground: #3d2e2a;
+  --border: #f0ddd4;
+  --pink: #ffb5c5;
+  --pink-soft: #ffd4de;
+  --pink-deep: #e8899e;
+  --orange: #ffb87a;
+  --orange-soft: #ffe4cc;
+  --orange-deep: #e8924f;
+  --brown: #8b6f5e;
+  --brown-soft: #c4a882;
+  --brown-deep: #5c4638;
+  --cream: #fff0e8;
+  --accent: #ff9f5a;
+  --ring: #e8899e;
+  --hero-glow: rgba(255, 181, 197, 0.45);
+  --shape-opacity: 0.35;
+}
+
+.dark {
+  --background: #1a1412;
+  --foreground: #f5ede8;
+  --muted: #c9b5aa;
+  --muted-foreground: #a89080;
+  --card: #241c19;
+  --card-foreground: #f5ede8;
+  --border: #3d302a;
+  --pink: #e8899e;
+  --pink-soft: #5c3a44;
+  --pink-deep: #ffb5c5;
+  --orange: #e89b5c;
+  --orange-soft: #4a3828;
+  --orange-deep: #ffb87a;
+  --brown: #a89080;
+  --brown-soft: #6b5349;
+  --brown-deep: #d4c4b8;
+  --cream: #2a211d;
+  --accent: #ffb87a;
+  --ring: #ffb5c5;
+  --hero-glow: rgba(232, 137, 158, 0.2);
+  --shape-opacity: 0.15;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-pink: var(--pink);
+  --color-pink-soft: var(--pink-soft);
+  --color-pink-deep: var(--pink-deep);
+  --color-orange: var(--orange);
+  --color-orange-soft: var(--orange-soft);
+  --color-orange-deep: var(--orange-deep);
+  --color-brown: var(--brown);
+  --color-brown-soft: var(--brown-soft);
+  --color-brown-deep: var(--brown-deep);
+  --color-cream: var(--cream);
+  --color-accent: var(--accent);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-dm-sans);
+  --font-display: var(--font-fraunces);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--pink) 55%, transparent);
+  color: var(--foreground);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.font-display {
+  font-family: var(--font-fraunces), Georgia, serif;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--pink-deep), var(--orange-deep), var(--brown));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-mesh {
+  background:
+    radial-gradient(circle at 15% 20%, var(--hero-glow), transparent 42%),
+    radial-gradient(circle at 85% 10%, color-mix(in srgb, var(--orange) 30%, transparent), transparent 38%),
+    radial-gradient(circle at 70% 80%, color-mix(in srgb, var(--brown-soft) 25%, transparent), transparent 40%),
+    var(--background);
+}
+
+.card-glow {
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--brown) 8%, transparent),
+    0 12px 40px color-mix(in srgb, var(--pink) 12%, transparent);
+}
+
+.dark .card-glow {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 12px 40px rgba(0, 0, 0, 0.25);
+}
+
+.paw-float {
+  animation: paw-float 6s ease-in-out infinite;
+}
+
+.paw-float-delayed {
+  animation: paw-float 6s ease-in-out 2s infinite;
+}
+
+.paw-float-slow {
+  animation: paw-float 8s ease-in-out 1s infinite;
+}
+
+@keyframes paw-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(4deg);
+  }
+}
+
+@keyframes tail-wag {
+  0%,
+  100% {
+    transform: rotate(-6deg);
+  }
+  50% {
+    transform: rotate(8deg);
+  }
+}
+
+.tail-wag {
+  transform-origin: 70% 50%;
+  animation: tail-wag 2.5s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  96% {
+    transform: scaleY(0.08);
+  }
+}
+
+.eye-blink {
+  transform-origin: center;
+  animation: blink 4.5s ease-in-out infinite;
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(8px, -10px) scale(1.03);
+  }
+  66% {
+    transform: translate(-6px, 6px) scale(0.98);
+  }
+}
+
+.shape-drift {
+  animation: drift 14s ease-in-out infinite;
+}
+
+.shape-drift-reverse {
+  animation: drift 18s ease-in-out infinite reverse;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  background: var(--foreground);
+  color: var(--background);
+  border-radius: 0.5rem;
+}
+
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+}
