@@ -15,8 +15,10 @@ export function HouseMark({ className, decorative = false, priority = false }: H
       width={256}
       height={224}
       className={cn("shrink-0 bg-transparent object-contain", className)}
+      style={{ backgroundColor: "transparent", color: "transparent" }}
       aria-hidden={decorative || undefined}
       priority={priority}
+      unoptimized
     />
   );
 }

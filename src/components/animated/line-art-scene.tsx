@@ -51,9 +51,9 @@ export function LineArtScene() {
 
       <motion.div
         className="absolute -right-3 top-10 border-2 border-foreground bg-orange px-3 py-1.5 font-mono text-[0.6rem] uppercase tracking-widest text-brown-dark"
-        initial={{ rotate: 8, opacity: 0 }}
-        animate={{ rotate: 3, opacity: 1 }}
-        transition={{ delay: 0.8, type: "spring" }}
+        initial={false}
+        animate={{ rotate: [3, 7, 3] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       >
         High school
       </motion.div>
