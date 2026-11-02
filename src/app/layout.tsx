@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Figtree, Shantell_Sans, Syne } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SiteChrome } from "@/components/site-chrome";
 import { CursorGlow } from "@/components/effects/cursor-glow";
@@ -56,6 +57,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           </a>
           <SiteChrome>{children}</SiteChrome>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
