@@ -6,26 +6,45 @@ import { ArrowLeft, MapPin, Search } from "lucide-react";
 import { Panel, StatusPill } from "@/components/platform/ui";
 import { chapters } from "@/lib/platform-data";
 
+/** Rough layout positions for the stylized network map (not geo-accurate). */
 const pinPositions: Record<string, { left: string; top: string }> = {
-  westview: { left: "42%", top: "68%" },
-  oakridge: { left: "12%", top: "22%" },
-  riverdale: { left: "68%", top: "62%" },
-  sunset: { left: "10%", top: "58%" },
-  midwest: { left: "55%", top: "38%" },
-  harbor: { left: "82%", top: "28%" },
+  shafter: { left: "14%", top: "48%" },
+  eastvale: { left: "16%", top: "58%" },
+  "san-jose": { left: "12%", top: "38%" },
+  "sulphur-springs": { left: "48%", top: "52%" },
+  coppell: { left: "46%", top: "58%" },
+  plano: { left: "49%", top: "56%" },
+  frisco: { left: "47%", top: "54%" },
+  "richmond-hill": { left: "68%", top: "62%" },
+  "spanish-fort": { left: "58%", top: "68%" },
+  doha: { left: "78%", top: "42%" },
+  coimbatore: { left: "86%", top: "55%" },
 };
 
 export function ChapterDirectory() {
   const [query, setQuery] = useState("");
-  const [state, setState] = useState("All");
-  const [selected, setSelected] = useState(chapters[0].id);
+  const [region, setRegion] = useState("All");
+  const [selected, setSelected] = useState(chapters.find((c) => c.id === "coppell")?.id ?? chapters[0].id);
 
-  const states = useMemo(() => ["All", ...Array.from(new Set(chapters.map((c) => c.state))).sort()], []);
+  const regions = useMemo(() => {
+    const set = new Set<string>();
+    chapters.forEach((chapter) => {
+      if (chapter.country !== "USA") set.add(chapter.country);
+      else if (chapter.region) set.add(chapter.region);
+      else set.add(chapter.state);
+    });
+    return ["All", ...Array.from(set).sort()];
+  }, []);
 
   const filtered = chapters.filter((chapter) => {
-    const matchesState = state === "All" || chapter.state === state;
-    const hay = `${chapter.name} ${chapter.school} ${chapter.city} ${chapter.state}`.toLowerCase();
-    return matchesState && hay.includes(query.toLowerCase());
+    const hay = `${chapter.name} ${chapter.school} ${chapter.city} ${chapter.state} ${chapter.country} ${chapter.region ?? ""}`.toLowerCase();
+    const matchesQuery = hay.includes(query.toLowerCase());
+    const matchesRegion =
+      region === "All" ||
+      chapter.country === region ||
+      chapter.region === region ||
+      chapter.state === region;
+    return matchesQuery && matchesRegion;
   });
 
   const active = chapters.find((chapter) => chapter.id === selected) ?? filtered[0] ?? chapters[0];
@@ -37,10 +56,10 @@ export function ChapterDirectory() {
           <ArrowLeft className="h-4 w-4" /> Public site
         </Link>
         <div className="mt-6 max-w-3xl">
-          <p className="eyebrow w-fit">Public network</p>
-          <h1 className="mt-4 font-display text-5xl font-black tracking-tight text-cocoa">Chapter directory & map</h1>
+          <p className="eyebrow w-fit">PawsForCause branches</p>
+          <h1 className="mt-4 font-display text-5xl font-extrabold tracking-tight text-cocoa">Chapter directory & map</h1>
           <p className="mt-3 text-lg text-ink/65">
-            Browse every active chapter. Filter by state or school, then open a pin for hours, funds, and status.
+            Eleven chapter branches across California, DFW, the Southeast, Qatar, and India. Filter by region, then open a pin.
           </p>
         </div>
 
@@ -55,12 +74,12 @@ export function ChapterDirectory() {
               onChange={(event) => setQuery(event.target.value)}
             />
           </label>
-          <label className="sm:w-48">
-            <span className="sr-only">Filter by state</span>
-            <select className="form-control" value={state} onChange={(event) => setState(event.target.value)}>
-              {states.map((item) => (
+          <label className="sm:w-52">
+            <span className="sr-only">Filter by region</span>
+            <select className="form-control" value={region} onChange={(event) => setRegion(event.target.value)}>
+              {regions.map((item) => (
                 <option key={item} value={item}>
-                  {item === "All" ? "All states" : item}
+                  {item === "All" ? "All regions" : item}
                 </option>
               ))}
             </select>
@@ -70,13 +89,13 @@ export function ChapterDirectory() {
         <div className="mt-8 grid gap-6 lg:grid-cols-[1.15fr_.85fr]">
           <Panel tone="mint" className="overflow-hidden">
             <div className="flex items-center justify-between gap-3">
-              <h2 className="font-display text-2xl font-black text-cocoa">Interactive map</h2>
+              <h2 className="font-display text-2xl font-extrabold text-cocoa">Branch map</h2>
               <StatusPill tone="info">{filtered.length} shown</StatusPill>
             </div>
-            <div className="relative mt-5 h-[380px] overflow-hidden rounded-[1.8rem] border-2 border-cocoa bg-[#f8f3df]">
-              <svg viewBox="0 0 600 380" className="absolute inset-0 h-full w-full opacity-55" aria-hidden>
+            <div className="relative mt-5 h-[400px] overflow-hidden rounded-[1.8rem] border-2 border-cocoa bg-[#f8f3df]">
+              <svg viewBox="0 0 600 400" className="absolute inset-0 h-full w-full opacity-50" aria-hidden>
                 <path
-                  d="M65 106L123 65l66 9 51-29 71 24 86-1 48 38 90 21-18 57-58 27-31 58-70-11-59 36-65-35-81 16-35-44-57-17 20-61-16-67Z"
+                  d="M40 120c40-50 90-70 140-60 55 12 70 40 120 35 60-6 95-45 150-30 40 12 70 40 110 55v160c-55 25-100 10-150 20-55 12-80 45-140 40-50-4-90-35-130-30-35 4-70 25-100 10V120Z"
                   fill="#f1c9d6"
                   stroke="#6e493b"
                   strokeWidth="3"
@@ -93,10 +112,12 @@ export function ChapterDirectory() {
                     style={{ left: pos.left, top: pos.top }}
                     onClick={() => setSelected(chapter.id)}
                     aria-pressed={selected === chapter.id}
-                    aria-label={`${chapter.name} in ${chapter.city}, ${chapter.state}`}
+                    aria-label={`${chapter.name} in ${chapter.city}`}
                   >
                     <MapPin className={`h-9 w-9 ${selected === chapter.id ? "fill-rose text-cocoa" : "fill-white text-cocoa"}`} />
-                    <span className="rounded-full border border-cocoa bg-white px-2 py-0.5 text-[.65rem] font-black">{chapter.state}</span>
+                    <span className="rounded-full border border-cocoa bg-white px-2 py-0.5 text-[.65rem] font-black">
+                      {chapter.city}
+                    </span>
                   </button>
                 );
               })}
@@ -105,9 +126,10 @@ export function ChapterDirectory() {
               <div className="mt-5 rounded-2xl border-2 border-cocoa bg-white p-5">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
-                    <p className="font-display text-2xl font-black text-cocoa">{active.name}</p>
+                    <p className="font-display text-2xl font-extrabold text-cocoa">{active.name}</p>
                     <p className="mt-1 text-sm text-cocoa/65">
-                      {active.school} · {active.city}, {active.state}
+                      {active.school} · {active.city}
+                      {active.region ? ` (${active.region})` : ""} · {active.country}
                     </p>
                   </div>
                   <StatusPill tone={active.status === "At risk" ? "bad" : active.status === "Launching" ? "warn" : "good"}>
@@ -115,8 +137,8 @@ export function ChapterDirectory() {
                   </StatusPill>
                 </div>
                 <dl className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-                  <MiniStat label="Hours" value={String(active.hours)} />
-                  <MiniStat label="Funds" value={`$${active.funds.toLocaleString()}`} />
+                  <MiniStat label="Toys" value={String(active.toys)} />
+                  <MiniStat label="Funds" value={`$${active.funds}`} />
                   <MiniStat label="Projects" value={String(active.projects)} />
                   <MiniStat label="Members" value={String(active.members)} />
                 </dl>
@@ -125,7 +147,7 @@ export function ChapterDirectory() {
           </Panel>
 
           <Panel>
-            <h2 className="font-display text-2xl font-black text-cocoa">Directory list</h2>
+            <h2 className="font-display text-2xl font-extrabold text-cocoa">All branches</h2>
             <ul className="mt-5 space-y-3">
               {filtered.map((chapter) => (
                 <li key={chapter.id}>
@@ -138,14 +160,13 @@ export function ChapterDirectory() {
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <p className="font-display text-lg font-black text-cocoa">{chapter.name}</p>
+                        <p className="font-display text-lg font-extrabold text-cocoa">{chapter.city}</p>
                         <p className="mt-1 text-xs font-bold text-cocoa/55">
-                          {chapter.school} · {chapter.city}, {chapter.state}
+                          {chapter.name}
+                          {chapter.region ? ` · ${chapter.region}` : ` · ${chapter.country}`}
                         </p>
                       </div>
-                      <StatusPill tone={chapter.status === "At risk" ? "bad" : chapter.status === "Launching" ? "warn" : "good"}>
-                        {chapter.status}
-                      </StatusPill>
+                      <StatusPill tone="good">{chapter.status}</StatusPill>
                     </div>
                   </button>
                 </li>
@@ -162,7 +183,7 @@ export function ChapterDirectory() {
 function MiniStat({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl border border-cocoa/20 bg-cream px-3 py-2">
-      <p className="font-display text-lg font-black text-cocoa">{value}</p>
+      <p className="font-display text-lg font-extrabold text-cocoa">{value}</p>
       <p className="text-[.6rem] font-black uppercase tracking-[.12em] text-cocoa/50">{label}</p>
     </div>
   );

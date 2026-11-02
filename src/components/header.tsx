@@ -19,8 +19,8 @@ const primaryLinks = [
 
 const moreLinks = [
   { href: "/leaderboard", label: "Leaderboards" },
-  { href: "/adopt", label: "Adoption feed" },
-  { href: "/shelter", label: "Shelter portal" },
+  { href: "/adopt", label: "Shelter mini-tasks" },
+  { href: "/shelter", label: "Post a shelter task" },
   { href: "/alumni", label: "Alumni mentors" },
   { href: "/portal", label: "Chapter hub" },
   { href: "/advisor", label: "Advisor desk" },

@@ -16,7 +16,7 @@ const footerLinks = {
     { href: "/login", label: "Chapter login" },
     { href: "/portal", label: "Chapter hub" },
     { href: "/shelter", label: "Shelter requests" },
-    { href: "/adopt", label: "Adoption feed" },
+    { href: "/adopt", label: "Shelter mini-tasks" },
     { href: "/alumni", label: "Alumni mentors" },
   ],
   "Ops & trust": [

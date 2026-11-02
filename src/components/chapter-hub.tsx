@@ -84,7 +84,10 @@ export function ChapterHub() {
   ]);
 
   const progress = Math.round((checked.filter(Boolean).length / checked.length) * 100);
-  const localRequests = useMemo(() => shelterRequests.filter((item) => item.city.includes("Austin")), []);
+  const localRequests = useMemo(
+    () => shelterRequests.filter((item) => /Coppell|Plano|Frisco|DFW/i.test(item.city)),
+    [],
+  );
 
   function flash(message: string) {
     setToast(message);
@@ -162,8 +165,8 @@ export function ChapterHub() {
         </div>
         <div className="mt-7 rounded-2xl border-2 border-cocoa bg-cream p-4 shadow-[3px_3px_0_#6e493b]">
           <p className="text-[.65rem] font-black uppercase tracking-[.15em] text-rose">Demo chapter login</p>
-          <p className="mt-1 font-display text-lg font-black text-cocoa">Westview Paws</p>
-          <p className="mt-1 text-xs font-semibold text-cocoa/60">Maya Chen · Chapter President</p>
+          <p className="mt-1 font-display text-lg font-black text-cocoa">Coppell Paws</p>
+          <p className="mt-1 text-xs font-semibold text-cocoa/60">Maya Chen · Chapter President · DFW</p>
         </div>
         <nav className="mt-7" aria-label="Chapter hub">
           <ul className="space-y-1">
@@ -223,9 +226,9 @@ export function ChapterHub() {
             <div className="space-y-6">
               <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                  <p className="font-hand text-2xl font-bold text-rose">Sunday, November 1</p>
-                  <h1 className="mt-1 font-display text-4xl font-black tracking-tight text-cocoa sm:text-5xl">Hi Maya, ready to help?</h1>
-                  <p className="mt-2 text-ink/60">Everything your chapter logs, raises, documents, and verifies lives here.</p>
+                  <p className="font-hand text-2xl font-semibold text-rose">Coppell · DFW branch</p>
+                  <h1 className="mt-1 font-display text-4xl font-extrabold tracking-tight text-cocoa sm:text-5xl">Hi Maya, ready to help?</h1>
+                  <p className="mt-2 text-ink/60">Log scrap-to-toy nights, funds, and finished shelter mini-tasks here.</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <button type="button" onClick={() => setHourOpen(true)} className="button-primary"><Plus aria-hidden className="h-4 w-4" /> Log hours</button>
@@ -234,9 +237,9 @@ export function ChapterHub() {
                 </div>
               </div>
               <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                <Metric value="186" label="verified hours" note="+24 this month" color="bg-[#f6d8e1]" />
-                <Metric value="$1,840" label="funds raised" note="74% of chapter goal" color="bg-[#f4e3a6]" />
-                <Metric value="8" label="projects finished" note="2 pending review" color="bg-[#cfe1d2]" />
+                <Metric value="14" label="toys donated" note="fashion scrap workshop" color="bg-[#f6d8e1]" />
+                <Metric value="$55" label="funds raised" note="chapter share of $400 network" color="bg-[#f4e3a6]" />
+                <Metric value="6" label="projects finished" note="2 pending review" color="bg-[#cfe1d2]" />
                 <Metric value="24" label="active members" note="3 consent packets open" color="bg-[#ddd5ed]" />
               </div>
               <div className="grid gap-6 xl:grid-cols-[1.15fr_.85fr]">
@@ -253,8 +256,8 @@ export function ChapterHub() {
                 <section className="sticker-card bg-[#f4e3a6] p-5 sm:p-7">
                   <div className="flex items-start justify-between">
                     <div>
-                      <p className="text-xs font-black uppercase tracking-[.15em] text-cocoa/55">Near your chapter</p>
-                      <h2 className="mt-2 font-display text-2xl font-black text-cocoa">Shelter requests</h2>
+                      <p className="text-xs font-black uppercase tracking-[.15em] text-cocoa/55">Near Coppell / DFW</p>
+                      <h2 className="mt-2 font-display text-2xl font-black text-cocoa">Shelter mini-tasks</h2>
                     </div>
                     <PawPrint aria-hidden className="h-9 w-9 fill-rose text-rose" />
                   </div>
@@ -267,8 +270,8 @@ export function ChapterHub() {
                       </article>
                     ))}
                   </div>
-                  <Link href="/shelter" className="mt-5 inline-flex items-center gap-2 text-sm font-black text-cocoa hover:text-rose">
-                    Open shelter portal <ChevronRight aria-hidden className="h-4 w-4" />
+                  <Link href="/adopt" className="mt-5 inline-flex items-center gap-2 text-sm font-black text-cocoa hover:text-rose">
+                    Open task board <ChevronRight aria-hidden className="h-4 w-4" />
                   </Link>
                 </section>
               </div>
@@ -323,7 +326,7 @@ export function ChapterHub() {
 
           {tab === "Fundraising" && (
             <Section title="Fundraising tracker" copy="Report dollars raised by event type. Totals stay private until HQ approves the claim." action={<button type="button" className="button-primary" onClick={() => setFundOpen(true)}><Plus className="h-4 w-4" /> Add funds</button>}>
-              <div className="mb-6 max-w-xl"><ProgressBar value={74} label="Chapter semester goal · $1,840 / $2,500" /></div>
+              <div className="mb-6 max-w-xl"><ProgressBar value={37} label="Chapter semester goal · $55 / $150" /></div>
               <ul className="space-y-3">
                 {funds.map((row) => (
                   <li key={row.id} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border-2 border-cocoa bg-white p-4">
@@ -424,7 +427,7 @@ export function ChapterHub() {
                     <p className="mt-4 font-display text-2xl font-black text-cocoa">Community Service Certificate</p>
                     <p className="mt-6 text-sm text-cocoa/70">This certifies that</p>
                     <p className="mt-2 font-display text-3xl font-black text-cocoa">Maya Chen</p>
-                    <p className="mt-4 text-sm leading-6 text-cocoa/70">completed <strong>42 verified hours</strong> of animal-welfare service with Westview Paws during Fall 2026.</p>
+                    <p className="mt-4 text-sm leading-6 text-cocoa/70">completed <strong>42 verified hours</strong> of animal-welfare service with Coppell Paws during Fall 2026.</p>
                   </div>
                 </div>
               </div>

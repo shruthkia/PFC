@@ -70,7 +70,7 @@ export function AlumniPortal() {
                   <input name="year" required type="number" min="2020" max="2035" className="form-control" defaultValue={2026} />
                 </Field>
                 <Field label="High school chapter">
-                  <input name="school" required className="form-control" placeholder="Westview High" />
+                  <input name="school" required className="form-control" placeholder="Coppell HS" />
                 </Field>
               </div>
               <Field label="Mentoring focus">

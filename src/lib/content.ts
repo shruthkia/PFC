@@ -3,7 +3,7 @@ export const siteConfig = {
   shortName: "PFC",
   tagline: "A student house for animals who still need one.",
   description:
-    "PFC is a student-led animal-welfare network. High school chapters run shelter support, adoption education, and community projects, then report the work so it actually counts.",
+    "PawsForCause is a student-led animal-welfare network with chapter branches across the US, Qatar, and India. Students sew scrap-to-toy enrichment, raise funds, and finish shelter mini-tasks.",
 };
 
 export const navLinks = [
@@ -14,9 +14,9 @@ export const navLinks = [
 ];
 
 export const stats = [
-  { value: "15+", label: "chapters launching", detail: "across 5 countries" },
-  { value: "5", label: "countries", detail: "and growing" },
-  { value: "30", label: "days to launch", detail: "from form to first project" },
+  { value: "11", label: "chapter branches", detail: "USA · Qatar · India" },
+  { value: "85+", label: "toys donated", detail: "worth about $1,550" },
+  { value: "$400", label: "funds raised", detail: "so far" },
 ];
 
 export const homeBeats = [

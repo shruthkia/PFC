@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { SectionLabel } from "@/components/effects/section-label";
-import { CatDoodle, DogDoodle } from "@/components/brand/animal-doodles";
 import { homeBeats, stats } from "@/lib/content";
+import { branchRegions } from "@/lib/platform-data";
 
 export function Mission() {
   return (
@@ -30,9 +30,15 @@ export function Mission() {
               start chapters that can survive past the first meeting: shelter support, education,
               responsible adoption, and the unglamorous work of reporting it.
             </p>
-            <div className="mt-8 grid grid-cols-2 gap-4 text-foreground/80">
-              <CatDoodle className="max-w-[220px]" />
-              <DogDoodle className="max-w-[220px]" />
+            <div className="mt-8 border-2 border-foreground bg-blush p-5">
+              <p className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-rose">Chapter branches</p>
+              <ul className="mt-3 space-y-2 text-sm font-bold text-cocoa">
+                {branchRegions.map((region) => (
+                  <li key={region.label}>
+                    <span className="text-cocoa/55">{region.label}:</span> {region.chapters.join(", ")}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>

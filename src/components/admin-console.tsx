@@ -199,7 +199,7 @@ export function AdminConsole() {
                   </Field>
                   <Field label="Semester"><select className="form-control"><option>Fall 2026</option><option>Spring 2026</option></select></Field>
                   <Field label="Include chapters">
-                    <select className="form-control"><option>All active chapters</option><option>Texas only</option><option>Westview Paws only</option></select>
+                    <select className="form-control"><option>All active chapters</option><option>DFW only</option><option>Coppell Paws only</option></select>
                   </Field>
                   <ProgressBar value={100} label="Stats ready to package" />
                   <button type="submit" className="button-primary">Generate impact PDF</button>
@@ -207,10 +207,10 @@ export function AdminConsole() {
                 <div className="rounded-2xl border-2 border-dashed border-cocoa bg-white/70 p-6">
                   <p className="font-hand text-2xl font-bold text-rose">Fall 2026 snapshot</p>
                   <ul className="mt-4 space-y-2 text-sm font-bold text-cocoa">
-                    <li>2,480 hours logged</li>
-                    <li>$18,640 raised</li>
-                    <li>47 shelters helped</li>
-                    <li>15 active chapters across 5 countries</li>
+                    <li>85+ enrichment toys donated (~$1,550 value)</li>
+                    <li>$400 raised so far</li>
+                    <li>Fashion scrap-to-toy workshops active</li>
+                    <li>11 chapter branches across 3 countries</li>
                   </ul>
                 </div>
               </div>
