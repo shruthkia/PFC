@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ChapterRecord } from "@/lib/platform-store";
 
 type Props = {
@@ -14,6 +14,7 @@ export function ChapterMap({ chapters, selectedId, onSelect }: Props) {
   const mapRef = useRef<import("leaflet").Map | null>(null);
   const markersRef = useRef<import("leaflet").LayerGroup | null>(null);
   const onSelectRef = useRef(onSelect);
+  const [mapReady, setMapReady] = useState(false);
   onSelectRef.current = onSelect;
 
   useEffect(() => {
@@ -36,13 +37,17 @@ export function ChapterMap({ chapters, selectedId, onSelect }: Props) {
 
       markersRef.current = L.layerGroup().addTo(map);
       mapRef.current = map;
-      requestAnimationFrame(() => map.invalidateSize());
+      requestAnimationFrame(() => {
+        map.invalidateSize();
+        if (!cancelled) setMapReady(true);
+      });
     }
 
     setup();
 
     return () => {
       cancelled = true;
+      setMapReady(false);
       if (mapRef.current) {
         mapRef.current.remove();
         mapRef.current = null;
@@ -52,6 +57,8 @@ export function ChapterMap({ chapters, selectedId, onSelect }: Props) {
   }, []);
 
   useEffect(() => {
+    if (!mapReady) return;
+
     async function syncMarkers() {
       const L = (await import("leaflet")).default;
       const map = mapRef.current;
@@ -104,7 +111,7 @@ export function ChapterMap({ chapters, selectedId, onSelect }: Props) {
     }
 
     syncMarkers();
-  }, [chapters, selectedId]);
+  }, [chapters, selectedId, mapReady]);
 
   return (
     <div className="relative mt-5 h-[400px] overflow-hidden rounded-[1.8rem] border-2 border-cocoa bg-[#e8f0e4]">
