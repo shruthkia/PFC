@@ -33,19 +33,19 @@ export const leaderboardMonth = [
   { rank: 5, chapter: "Frisco Paws", metric: "9 toys", badge: "Rising" },
 ];
 
-/** Mini tasks shelters post for chapters to claim and finish — not animal listings. */
+/** Mini tasks shelters post for chapters to claim and finish, not animal listings. */
 export const shelterTasks = [
-  { id: "t1", shelter: "Austin Animal Center", title: "Sort donation towels by size", detail: "Fold and bin clean towels into small / medium / large for kennel restock.", effort: "45 min · 2–4 students", when: "This week", city: "DFW area", urgent: true, category: "Supplies", status: "Open" as const },
+  { id: "t1", shelter: "Austin Animal Center", title: "Sort donation towels by size", detail: "Fold and bin clean towels into small / medium / large for kennel restock.", effort: "45 min · 2-4 students", when: "This week", city: "DFW area", urgent: true, category: "Supplies", status: "Open" as const },
   { id: "t2", shelter: "Safe Harbor Rescue", title: "Sew 12 scrap enrichment toys", detail: "Use donated fabric scraps (fashion dept leftovers welcome). Stuff with clean fleece.", effort: "2 hrs · craft table", when: "By Nov 15", city: "Coppell / Plano", urgent: false, category: "Enrichment", status: "Open" as const },
   { id: "t3", shelter: "East Bay Humane", title: "Label wishlist bins", detail: "Print labels and mark incoming Amazon wishlist boxes so staff can shelve faster.", effort: "30 min · 2 students", when: "Weekend", city: "San Jose", urgent: true, category: "Ops", status: "Open" as const },
   { id: "t4", shelter: "Coastal Pets AL", title: "Assemble welcome packets", detail: "Stuff folders with adoption tip sheets, local vet list, and sterilization FAQ.", effort: "1 hr · 3 students", when: "Ongoing", city: "Spanish Fort", urgent: false, category: "Education", status: "Open" as const },
   { id: "t5", shelter: "Valley Friends", title: "Cut t-shirt yarn for tug toys", detail: "Prep yarn strands from old tees so volunteers can braid toys next shift.", effort: "1 hr · scissors + bins", when: "Nov 12", city: "Shafter / Eastvale", urgent: false, category: "Enrichment", status: "Open" as const },
-  { id: "t6", shelter: "Community Rescue Hub", title: "Photograph empty kennel enrichment", detail: "Take clear photos of finished toys in empty kennels for social (no animal faces required).", effort: "40 min · 1–2 students", when: "Flexible", city: "Frisco", urgent: false, category: "Outreach", status: "Open" as const },
+  { id: "t6", shelter: "Community Rescue Hub", title: "Photograph empty kennel enrichment", detail: "Take clear photos of finished toys in empty kennels for social (no animal faces required).", effort: "40 min · 1-2 students", when: "Flexible", city: "Frisco", urgent: false, category: "Outreach", status: "Open" as const },
 ];
 
 export const announcements = [
   { id: "n1", title: "Scrap-to-toy with fashion", body: "Chapters partnering with their school fashion department can log scrap fabric nights under Enrichment. Those toys count toward the 85+ network total.", date: "2026-11-01", audience: "All chapters" },
-  { id: "n2", title: "DFW chapters check-in", body: "Coppell, Plano, and Frisco — share one shelter mini-task claim before the 15th so HQ can feature it.", date: "2026-10-28", audience: "DFW" },
+  { id: "n2", title: "DFW chapters check-in", body: "Coppell, Plano, and Frisco: share one shelter mini-task claim before the 15th so HQ can feature it.", date: "2026-10-28", audience: "DFW" },
   { id: "n3", title: "Photo permission reminder", body: "Prefer kennel and craft-table photos. Do not upload student faces without school and family permission.", date: "2026-10-20", audience: "All chapters" },
 ];
 
@@ -92,7 +92,7 @@ export const advisorQueue = [
   { id: "v3", student: "Noah Diaz", activity: "Hallway education table", hours: 1.5, date: "Oct 26", proof: "Photo + flyer" },
 ];
 
-/** @deprecated use shelterTasks — kept as alias for older imports */
+/** @deprecated use shelterTasks, kept as alias for older imports */
 export const shelterRequests = shelterTasks.map((task) => ({
   id: task.id,
   shelter: task.shelter,
@@ -111,7 +111,7 @@ export const alumni = [
 ];
 
 export const socialQueue = [
-  { id: "sm1", project: "Coppell scrap night", caption: "14 enrichment toys from fashion-department scraps — headed to kennels, not a landfill.", status: "Queued" },
+  { id: "sm1", project: "Coppell scrap night", caption: "14 enrichment toys from fashion-department scraps, headed to kennels, not a landfill.", status: "Queued" },
   { id: "sm2", project: "Plano bake sale", caption: "$80 toward shelter supply bins. Receipts attached.", status: "Draft" },
 ];
 

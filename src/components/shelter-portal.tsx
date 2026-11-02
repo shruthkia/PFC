@@ -66,9 +66,9 @@ export function ShelterPortal() {
         <div className="mt-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="eyebrow w-fit">Partner shelters</p>
-            <h1 className="mt-4 font-display text-5xl font-extrabold tracking-tight text-cocoa">Shelter mini-task portal</h1>
+            <h1 className="mt-4 max-w-full font-display text-3xl font-extrabold leading-tight tracking-tight text-cocoa [overflow-wrap:anywhere] sm:text-5xl">Shelter mini-task portal</h1>
             <p className="mt-3 max-w-2xl text-ink/65">
-              Post small, completable jobs for nearby chapters — sort supplies, sew scrap toys, assemble packets. Not animal listings.
+              Post small, completable jobs for nearby chapters: sort supplies, sew scrap toys, assemble packets. Not animal listings.
             </p>
           </div>
           <StatusPill tone="info">Shelter partner preview</StatusPill>
@@ -101,7 +101,7 @@ export function ShelterPortal() {
               </Field>
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field label="Effort">
-                  <input name="effort" required className="form-control" placeholder="45 min · 2–4 students" />
+                  <input name="effort" required className="form-control" placeholder="45 min · 2-4 students" />
                 </Field>
                 <Field label="Category">
                   <select name="category" required className="form-control">

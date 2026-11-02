@@ -57,7 +57,7 @@ export function ChapterDirectory() {
         </Link>
         <div className="mt-6 max-w-3xl">
           <p className="eyebrow w-fit">PawsForCause branches</p>
-          <h1 className="mt-4 font-display text-5xl font-extrabold tracking-tight text-cocoa">Chapter directory & map</h1>
+          <h1 className="mt-4 max-w-full font-display text-3xl font-extrabold leading-tight tracking-tight text-cocoa [overflow-wrap:anywhere] sm:text-5xl">Chapter directory & map</h1>
           <p className="mt-3 text-lg text-ink/65">
             Eleven chapter branches across California, DFW, the Southeast, Qatar, and India. Filter by region, then open a pin.
           </p>

@@ -22,7 +22,7 @@ export function PageShell({
         <p className={cn("eyebrow w-fit", dark && "border-current/40 bg-white/10 text-[var(--background)]")}>{eyebrow}</p>
         <div className="mt-5 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-3xl">
-            <h1 className={cn("font-display text-4xl font-extrabold tracking-tight sm:text-5xl", dark ? "text-[var(--background)]" : "text-cocoa")}>
+            <h1 className={cn("max-w-full font-display text-3xl font-extrabold leading-tight tracking-tight [overflow-wrap:anywhere] sm:text-5xl", dark ? "text-[var(--background)]" : "text-cocoa")}>
               {title}
             </h1>
             {lede ? <p className={cn("mt-4 max-w-2xl text-lg leading-8", dark ? "opacity-80" : "text-muted")}>{lede}</p> : null}

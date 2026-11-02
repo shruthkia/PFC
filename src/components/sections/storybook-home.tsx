@@ -15,19 +15,20 @@ const toyPct = Math.min(100, Math.round((networkMetrics.toysDonated / networkMet
 export function StorybookHome() {
   return (
     <>
-      {/* Hero — gingham scrapbook cover like the café refs */}
+      {/* Hero: gingham scrapbook cover like the cafe refs */}
       <section className="gingham relative overflow-hidden border-b-2 border-border pt-16">
         <div className="mx-auto grid max-w-[1200px] items-center gap-10 px-5 py-16 sm:px-10 lg:grid-cols-[1.05fr_.95fr] lg:py-20">
           <div className="relative z-10 mx-auto w-full max-w-xl lg:mx-0">
-            <div className="menu-frame overflow-visible px-6 py-8 text-center sm:px-10 sm:py-12">
+            <div className="menu-frame px-5 py-8 text-center sm:px-8 sm:py-12">
               <div className="mx-auto mb-5 grid h-16 w-16 place-items-center rounded-full border-2 border-border bg-blush">
                 <HouseMark className="h-12 w-14" priority />
               </div>
               <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-muted">Student animal-welfare network</p>
-              <h1 className="mt-4 break-words font-display text-[clamp(2.4rem,7vw,4.4rem)] font-extrabold leading-[1.02] tracking-[-0.035em] text-cocoa">
-                PawsForCause
+              <h1 className="mx-auto mt-4 max-w-full font-display text-[clamp(2.1rem,6.5vw,3.8rem)] font-extrabold leading-[1.08] tracking-[-0.02em] text-cocoa [overflow-wrap:anywhere]">
+                <span className="block">PawsFor</span>
+                <span className="block">Cause</span>
               </h1>
-              <p className="mt-4 font-hand text-2xl font-semibold text-rose sm:text-3xl">
+              <p className="mt-4 font-hand text-2xl font-semibold leading-snug text-rose sm:text-3xl">
                 chapters · scrap toys · shelter tasks
               </p>
               <p className="mx-auto mt-5 max-w-md text-base leading-7 text-muted">
@@ -93,17 +94,17 @@ export function StorybookHome() {
         <div className="scallop-border" aria-hidden />
       </section>
 
-      {/* Branches — menu-board layout */}
+      {/* Branches: menu-board layout */}
       <section className="bg-background px-5 py-20 sm:px-10 lg:py-24">
         <div className="mx-auto max-w-[1100px]">
           <div className="menu-frame p-6 sm:p-10">
             <div className="text-center">
               <span className="ribbon">Our branches</span>
-              <h2 className="mt-5 font-display text-4xl font-extrabold tracking-tight text-cocoa sm:text-5xl">
+              <h2 className="mx-auto mt-5 max-w-full font-display text-3xl font-extrabold leading-tight tracking-tight text-cocoa [overflow-wrap:anywhere] sm:text-5xl">
                 One org. {networkMetrics.activeChapters} chapter homes.
               </h2>
               <p className="mx-auto mt-3 max-w-2xl text-muted">
-                From DFW to Doha — same standard, local leadership.
+                From DFW to Doha: same standard, local leadership.
               </p>
             </div>
 
@@ -143,7 +144,7 @@ export function StorybookHome() {
         </div>
       </section>
 
-      {/* How it works — three clear steps */}
+      {/* How it works: three clear steps */}
       <section className="border-y-2 border-border bg-blush/40 px-5 py-20 sm:px-10">
         <div className="mx-auto max-w-[1100px]">
           <div className="mx-auto max-w-2xl text-center">
@@ -156,7 +157,7 @@ export function StorybookHome() {
           <ol className="mt-12 grid gap-5 md:grid-cols-3">
             {[
               { n: "01", title: "Join a branch", body: "Apply with a student lead and faculty advisor. Launch in about 30 days." },
-              { n: "02", title: "Pick a shelter task", body: "Sew scrap toys, sort supplies, assemble packets — clear jobs with a finish line." },
+              { n: "02", title: "Pick a shelter task", body: "Sew scrap toys, sort supplies, assemble packets: clear jobs with a finish line." },
               { n: "03", title: "Report the work", body: "Log hours and proof. Advisor sign-off unlocks network totals and certificates." },
             ].map((step) => (
               <li key={step.n} className="sticker-card bg-surface-strong p-6">
@@ -169,14 +170,14 @@ export function StorybookHome() {
         </div>
       </section>
 
-      {/* Open tasks — workable list like a café menu */}
+      {/* Open tasks: workable list like a cafe menu */}
       <section className="bg-background px-5 py-20 sm:px-10 lg:py-24">
         <div className="mx-auto max-w-[1100px]">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <span className="ribbon">Open shelter tasks</span>
-              <h2 className="mt-4 font-display text-4xl font-extrabold text-cocoa">Ready for a chapter to claim</h2>
-              <p className="mt-2 max-w-xl text-muted">Not animal listings — small completable jobs partners need done.</p>
+              <h2 className="mt-4 max-w-full font-display text-3xl font-extrabold leading-tight text-cocoa [overflow-wrap:anywhere] sm:text-4xl">Ready for a chapter to claim</h2>
+              <p className="mt-2 max-w-xl text-muted">Not animal listings: small completable jobs partners need done.</p>
             </div>
             <Link href="/adopt" className="button-paper">
               Full task board <ArrowRight className="h-4 w-4" />
@@ -217,7 +218,7 @@ export function StorybookHome() {
         </div>
       </section>
 
-      {/* Workspaces — clear doors into real tools */}
+      {/* Workspaces: clear doors into real tools */}
       <section className="border-t-2 border-border bg-butter/30 px-5 py-20 sm:px-10">
         <div className="mx-auto max-w-[1100px]">
           <div className="mx-auto max-w-2xl text-center">
@@ -250,11 +251,11 @@ export function StorybookHome() {
           <p className="inline-flex rounded-full border border-current/30 px-4 py-1 text-xs font-extrabold uppercase tracking-[0.16em]">
             There&apos;s room in the network
           </p>
-          <h2 className="mt-6 font-display text-4xl font-extrabold tracking-tight sm:text-6xl">
+          <h2 className="mx-auto mt-6 max-w-full font-display text-3xl font-extrabold leading-tight tracking-tight [overflow-wrap:anywhere] sm:text-5xl">
             Your school can be the next branch.
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-base leading-7 opacity-80">
-            California · Texas · Alabama · Georgia · Qatar · India — and growing.
+            California · Texas · Alabama · Georgia · Qatar · India, and growing.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link href="/apply" className="button-primary border-[var(--background)] bg-rose shadow-[3px_3px_0_rgba(255,246,239,0.35)]">

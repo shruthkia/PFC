@@ -38,7 +38,7 @@ export function AlumniPortal() {
         <div className="mt-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="eyebrow w-fit">Graduating seniors & mentors</p>
-            <h1 className="mt-4 font-display text-5xl font-black tracking-tight text-cocoa">Alumni portal</h1>
+            <h1 className="mt-4 max-w-full font-display text-3xl font-extrabold leading-tight tracking-tight text-cocoa [overflow-wrap:anywhere] sm:text-5xl">Alumni portal</h1>
             <p className="mt-3 max-w-2xl text-ink/65">
               Sign up as a mentor or bridge into university animal-welfare circles so the next class does not start from zero.
             </p>

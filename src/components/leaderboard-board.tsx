@@ -30,9 +30,9 @@ export function LeaderboardBoard() {
         <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="eyebrow w-fit">Friendly competition</p>
-            <h1 className="mt-4 font-display text-5xl font-extrabold tracking-tight text-cocoa">Inter-chapter leaderboards</h1>
+            <h1 className="mt-4 max-w-full font-display text-3xl font-extrabold leading-tight tracking-tight text-cocoa [overflow-wrap:anywhere] sm:text-5xl">Inter-chapter leaderboards</h1>
             <p className="mt-3 max-w-2xl text-ink/65">
-              Rankings across our branches — toys donated, funds raised, and finished projects.
+              Rankings across our branches: toys donated, funds raised, and finished projects.
             </p>
           </div>
           <StatusPill tone="info">Network wide</StatusPill>

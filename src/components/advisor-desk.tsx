@@ -25,7 +25,7 @@ export function AdvisorDesk() {
         <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="eyebrow w-fit">Faculty advisor</p>
-            <h1 className="mt-4 font-display text-5xl font-black tracking-tight text-cocoa">Advisor dashboard</h1>
+            <h1 className="mt-4 max-w-full font-display text-3xl font-extrabold leading-tight tracking-tight text-cocoa [overflow-wrap:anywhere] sm:text-5xl">Advisor dashboard</h1>
             <p className="mt-3 max-w-2xl text-ink/65">Review student hours, verify proof, and electronically sign off before final submission.</p>
           </div>
           <StatusPill tone="info">Ms. Rivera · Coppell HS</StatusPill>

@@ -42,7 +42,7 @@ export function Footer() {
             </div>
           </div>
           <p className="mt-5 text-sm leading-7 text-muted">
-            A student-led network of chapter branches delivering documented shelter support — scrap toys, funds, and completable mini-tasks.
+            A student-led network of chapter branches delivering documented shelter support: scrap toys, funds, and completable mini-tasks.
           </p>
           <p className="mt-4 text-sm font-semibold text-muted">
             Questions?{" "}

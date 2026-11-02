@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Soft scrapbook light mode — cream paper, dusty rose, readable cocoa ink */
+/* Soft scrapbook light mode: cream paper, dusty rose, readable cocoa ink */
 :root {
   --background: #fff6ef;
   --foreground: #3f2f28;
@@ -39,7 +39,7 @@
   --paper-line: rgba(92, 67, 56, 0.05);
 }
 
-/* Warm dark mode — no pure black, muted rose, easy on the eyes */
+/* Warm dark mode: no pure black, muted rose, easy on the eyes */
 .dark {
   --background: #1c1715;
   --foreground: #f0e4da;
@@ -229,11 +229,21 @@ a {
 .section-title {
   color: var(--cocoa);
   font-family: var(--font-syne), ui-sans-serif, sans-serif;
-  font-size: clamp(2.3rem, 5.5vw, 4.2rem);
+  font-size: clamp(2.1rem, 5vw, 3.6rem);
   font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1.05;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
   text-align: center;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3 {
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .section-title span {

@@ -38,7 +38,7 @@ export function Header() {
       <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between gap-3 px-4 sm:px-8">
         <Link href="/" className="group flex min-w-0 items-center gap-2.5" aria-label={`${siteConfig.name} home`}>
           <HouseMark className="h-10 w-11 shrink-0" priority />
-          <span className="truncate font-display text-lg font-extrabold tracking-[-.03em] text-cocoa">
+          <span className="font-display text-base font-extrabold leading-tight tracking-[-.02em] text-cocoa sm:text-lg">
             Paws<span className="text-rose">For</span>Cause
           </span>
         </Link>
