@@ -8,6 +8,7 @@ import { HouseMark } from "@/components/brand/house-mark";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/content";
+import { roleHome, usePlatform } from "@/lib/platform-store";
 
 const primaryLinks = [
   { href: "/directory", label: "Chapters" },
@@ -32,6 +33,9 @@ const moreLinks = [
 export function Header() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const { session } = usePlatform();
+  const accountHref = session ? roleHome[session.role] : "/login";
+  const accountLabel = session ? session.name.split(" ")[0] || "Account" : "Login";
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b-2 border-border bg-surface/95 backdrop-blur-md">
@@ -61,8 +65,8 @@ export function Header() {
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Link href="/login" className="hidden text-sm font-bold text-cocoa hover:text-rose lg:block">
-            Login
+          <Link href={accountHref} className="hidden text-sm font-bold text-cocoa hover:text-rose lg:block">
+            {accountLabel}
           </Link>
           <Link href="/apply" className="button-primary hidden min-h-0 px-3.5 py-2 text-xs sm:inline-flex">
             Apply <ArrowUpRight aria-hidden className="h-3.5 w-3.5" />

@@ -553,3 +553,20 @@ h3 {
     display: none;
   }
 }
+
+/* Leaflet map sits under fixed chrome */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  font: inherit;
+  z-index: 0;
+}
+.leaflet-pane,
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 1;
+}
+.pfc-map-marker {
+  background: transparent;
+  border: 0;
+}

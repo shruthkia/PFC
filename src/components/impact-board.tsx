@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { ArrowLeft, Scissors, Target } from "lucide-react";
 import { Panel, ProgressBar, StatTile, StatusPill } from "@/components/platform/ui";
-import { announcements, networkMetrics } from "@/lib/platform-data";
+import { announcements } from "@/lib/platform-data";
+import { usePlatform } from "@/lib/platform-store";
 
 export function ImpactBoard() {
-  const toyPct = Math.min(100, Math.round((networkMetrics.toysDonated / networkMetrics.toyGoal) * 100));
-  const fundPct = Math.min(100, Math.round((networkMetrics.fundsRaised / networkMetrics.semesterFundGoal) * 100));
+  const { metrics } = usePlatform();
+  const toyPct = Math.min(100, Math.round((metrics.toysDonated / metrics.toyGoal) * 100));
+  const fundPct = Math.min(100, Math.round((metrics.fundsRaised / metrics.semesterFundGoal) * 100));
 
   return (
     <div className="paper-grid min-h-screen px-5 pb-24 pt-28 sm:px-10">
@@ -18,19 +20,21 @@ export function ImpactBoard() {
         <div className="mt-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="eyebrow w-fit">Network impact</p>
-            <h1 className="mt-4 max-w-full font-display text-3xl font-extrabold leading-tight tracking-tight text-cocoa [overflow-wrap:anywhere] sm:text-5xl">Impact & fundraising</h1>
+            <h1 className="mt-4 max-w-full font-display text-3xl font-extrabold leading-tight tracking-tight text-cocoa [overflow-wrap:anywhere] sm:text-5xl">
+              Impact & fundraising
+            </h1>
             <p className="mt-3 max-w-2xl text-ink/65">
-              Real totals from chapter branches: scrap-to-toy donations, funds raised, and public announcements.
+              Live totals from chapter branches: scrap-to-toy donations, funds raised, and chapter count. Log work in the hub and watch these move.
             </p>
           </div>
-          <StatusPill tone="good">{networkMetrics.activeChapters} branches</StatusPill>
+          <StatusPill tone="good">{metrics.activeChapters} branches</StatusPill>
         </div>
 
         <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <StatTile value={`${networkMetrics.toysDonated}+`} label="Toys donated" note="Enrichment for shelters" tone="blush" />
-          <StatTile value={`$${networkMetrics.toyValueUsd.toLocaleString()}`} label="Toy value" note="Estimated donated value" tone="butter" />
-          <StatTile value={`$${networkMetrics.fundsRaised}`} label="Funds raised" note="To date" tone="mint" />
-          <StatTile value={String(networkMetrics.activeChapters)} label="Chapter branches" note={`${networkMetrics.countries} countries`} tone="lilac" />
+          <StatTile value={`${metrics.toysDonated}`} label="Toys donated" note="Enrichment for shelters" tone="blush" />
+          <StatTile value={`$${metrics.toyValueUsd.toLocaleString()}`} label="Toy value" note="Estimated donated value" tone="butter" />
+          <StatTile value={`$${metrics.fundsRaised}`} label="Funds raised" note="To date" tone="mint" />
+          <StatTile value={String(metrics.activeChapters)} label="Chapter branches" note={`${metrics.countries} countries`} tone="lilac" />
         </div>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-2">
@@ -40,8 +44,7 @@ export function ImpactBoard() {
               <div className="flex-1">
                 <h2 className="font-display text-2xl font-extrabold text-cocoa">Scrap-to-toy workshops</h2>
                 <p className="mt-2 text-sm text-ink/65">
-                  {networkMetrics.fashionPartnerNote}. {networkMetrics.toysDonated}+ toys toward a near-term goal of{" "}
-                  {networkMetrics.toyGoal}.
+                  {metrics.fashionPartnerNote}. {metrics.toysDonated} toys toward a near-term goal of {metrics.toyGoal}.
                 </p>
                 <div className="mt-5">
                   <ProgressBar value={toyPct} label="Toy donation progress" />
@@ -55,7 +58,7 @@ export function ImpactBoard() {
               <div className="flex-1">
                 <h2 className="font-display text-2xl font-extrabold text-cocoa">Funds raised so far</h2>
                 <p className="mt-2 text-sm text-ink/65">
-                  ${networkMetrics.fundsRaised} of ${networkMetrics.semesterFundGoal.toLocaleString()} semester goal for shelter supplies & medical support.
+                  ${metrics.fundsRaised} of ${metrics.semesterFundGoal.toLocaleString()} semester goal for shelter supplies & medical support.
                 </p>
                 <div className="mt-5">
                   <ProgressBar value={fundPct} label="Semester fund goal" />
@@ -79,11 +82,10 @@ export function ImpactBoard() {
             {announcements.map((post) => (
               <li key={post.id} className="rounded-2xl border-2 border-cocoa bg-cream p-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <p className="font-display text-xl font-extrabold text-cocoa">{post.title}</p>
-                  <StatusPill tone="neutral">{post.audience}</StatusPill>
+                  <p className="font-display text-lg font-extrabold text-cocoa">{post.title}</p>
+                  <p className="text-xs font-bold text-muted">{post.date}</p>
                 </div>
-                <p className="mt-2 text-sm leading-6 text-cocoa/70">{post.body}</p>
-                <p className="mt-3 text-xs font-black uppercase tracking-[.12em] text-cocoa/45">{post.date}</p>
+                <p className="mt-2 text-sm leading-6 text-ink/70">{post.body}</p>
               </li>
             ))}
           </ul>

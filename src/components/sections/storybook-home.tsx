@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useMemo } from "react";
 import {
   ArrowRight,
   CheckCircle2,
@@ -8,11 +11,32 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { HouseMark } from "@/components/brand/house-mark";
-import { branchRegions, chapters, networkMetrics, shelterTasks } from "@/lib/platform-data";
-
-const toyPct = Math.min(100, Math.round((networkMetrics.toysDonated / networkMetrics.toyGoal) * 100));
+import { shelterTasks } from "@/lib/platform-data";
+import { usePlatform } from "@/lib/platform-store";
 
 export function StorybookHome() {
+  const { chapters, metrics } = usePlatform();
+  const toyPct = Math.min(100, Math.round((metrics.toysDonated / metrics.toyGoal) * 100));
+  const branchRegions = useMemo(() => {
+    const buckets: Record<string, typeof chapters> = {
+      California: [],
+      "DFW / Texas": [],
+      Southeast: [],
+      International: [],
+      Other: [],
+    };
+    chapters.forEach((chapter) => {
+      if (chapter.state === "CA") buckets.California.push(chapter);
+      else if (chapter.region === "DFW" || chapter.state === "TX") buckets["DFW / Texas"].push(chapter);
+      else if (["GA", "AL", "FL"].includes(chapter.state)) buckets.Southeast.push(chapter);
+      else if (chapter.country !== "USA") buckets.International.push(chapter);
+      else buckets.Other.push(chapter);
+    });
+    return Object.entries(buckets)
+      .filter(([, list]) => list.length)
+      .map(([label, list]) => ({ label, chapters: list }));
+  }, [chapters]);
+
   return (
     <>
       {/* Hero: gingham scrapbook cover like the cafe refs */}
@@ -59,10 +83,10 @@ export function StorybookHome() {
                 <span className="rounded-full border border-border bg-mint px-3 py-1 text-xs font-extrabold text-cocoa">live</span>
               </div>
               <dl className="mt-5 grid grid-cols-2 gap-3">
-                <Stat value={`${networkMetrics.toysDonated}+`} label="toys donated" tone="bg-blush" />
-                <Stat value={`$${networkMetrics.toyValueUsd.toLocaleString()}`} label="toy value" tone="bg-butter" />
-                <Stat value={`$${networkMetrics.fundsRaised}`} label="funds raised" tone="bg-mint" />
-                <Stat value={String(networkMetrics.activeChapters)} label="chapter branches" tone="bg-[#e8dff3] dark:bg-[#33283a]" />
+                <Stat value={`${metrics.toysDonated}`} label="toys donated" tone="bg-blush" />
+                <Stat value={`$${metrics.toyValueUsd.toLocaleString()}`} label="toy value" tone="bg-butter" />
+                <Stat value={`$${metrics.fundsRaised}`} label="funds raised" tone="bg-mint" />
+                <Stat value={String(metrics.activeChapters)} label="chapter branches" tone="bg-[#e8dff3] dark:bg-[#33283a]" />
               </dl>
               <div className="mt-5 rounded-2xl border border-border bg-surface-strong p-4">
                 <div className="flex items-start gap-3">
@@ -73,7 +97,7 @@ export function StorybookHome() {
                 </div>
                 <div className="mt-4">
                   <div className="mb-2 flex justify-between text-sm font-bold text-cocoa">
-                    <span>Toward {networkMetrics.toyGoal} toys</span>
+                    <span>Toward {metrics.toyGoal} toys</span>
                     <span className="font-hand text-lg text-rose">{toyPct}%</span>
                   </div>
                   <div
@@ -101,10 +125,10 @@ export function StorybookHome() {
             <div className="text-center">
               <span className="ribbon">Our branches</span>
               <h2 className="mx-auto mt-5 max-w-full font-display text-3xl font-extrabold leading-tight tracking-tight text-cocoa [overflow-wrap:anywhere] sm:text-5xl">
-                One org. {networkMetrics.activeChapters} chapter homes.
+                One org. {metrics.activeChapters} chapter homes.
               </h2>
               <p className="mx-auto mt-3 max-w-2xl text-muted">
-                From DFW to Doha: same standard, local leadership.
+                From DFW to Doha: same standard, local leadership. New applications bump this count live.
               </p>
             </div>
 
@@ -113,23 +137,22 @@ export function StorybookHome() {
                 <div key={region.label}>
                   <p className="ribbon mb-4">{region.label}</p>
                   <ul className="space-y-3">
-                    {region.chapters.map((name) => {
-                      const chapter = chapters.find((c) => c.city === name);
-                      return (
-                        <li key={name} className="flex items-start justify-between gap-3 border-b border-dashed border-border pb-3">
-                          <div className="flex items-start gap-3">
-                            <span className="mt-1 grid h-8 w-8 place-items-center rounded-full border border-border bg-blush text-cocoa">
-                              <MapPin className="h-4 w-4" aria-hidden />
-                            </span>
-                            <div>
-                              <p className="font-extrabold text-cocoa">{name}</p>
-                              <p className="text-sm text-muted">{chapter?.name ?? "PawsForCause chapter"}</p>
-                            </div>
+                    {region.chapters.map((chapter) => (
+                      <li key={chapter.id} className="flex items-start justify-between gap-3 border-b border-dashed border-border pb-3">
+                        <div className="flex items-start gap-3">
+                          <span className="mt-1 grid h-8 w-8 place-items-center rounded-full border border-border bg-blush text-cocoa">
+                            <MapPin className="h-4 w-4" aria-hidden />
+                          </span>
+                          <div>
+                            <p className="font-extrabold text-cocoa">{chapter.city}</p>
+                            <p className="text-sm text-muted">{chapter.name}</p>
                           </div>
-                          <span className="shrink-0 text-xs font-extrabold uppercase tracking-[0.12em] text-sage-dark">Active</span>
-                        </li>
-                      );
-                    })}
+                        </div>
+                        <span className="shrink-0 text-xs font-extrabold uppercase tracking-[0.12em] text-sage-dark">
+                          {chapter.status}
+                        </span>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               ))}

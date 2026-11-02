@@ -3,6 +3,7 @@ import { Figtree, Shantell_Sans, Syne } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SiteChrome } from "@/components/site-chrome";
 import { CursorGlow } from "@/components/effects/cursor-glow";
+import { PlatformProvider } from "@/lib/platform-store";
 import { siteConfig } from "@/lib/content";
 import "./globals.css";
 
@@ -50,11 +51,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="grain min-h-full flex flex-col antialiased">
         <ThemeProvider>
-          <CursorGlow />
-          <a href="#main-content" className="skip-link">
-            Skip to content
-          </a>
-          <SiteChrome>{children}</SiteChrome>
+          <PlatformProvider>
+            <CursorGlow />
+            <a href="#main-content" className="skip-link">
+              Skip to content
+            </a>
+            <SiteChrome>{children}</SiteChrome>
+          </PlatformProvider>
         </ThemeProvider>
       </body>
     </html>
