@@ -2,7 +2,6 @@
 
 import { useTheme } from "next-themes";
 import { useSyncExternalStore } from "react";
-import { Button } from "@/components/ui/button";
 
 function SunIcon() {
   return (
@@ -31,33 +30,32 @@ export function ThemeToggle() {
   const mounted = useSyncExternalStore(
     () => () => undefined,
     () => true,
-    () => false
+    () => false,
   );
 
   if (!mounted) {
     return (
-      <Button
-        variant="ghost"
-        size="icon"
+      <button
+        type="button"
         aria-label="Toggle color theme"
-        className="border-2 border-border text-foreground"
+        className="grid h-11 w-11 place-items-center rounded-full border-2 border-border text-cocoa"
       >
         <SunIcon />
-      </Button>
+      </button>
     );
   }
 
   const isDark = (theme === "system" ? resolvedTheme : theme) === "dark";
 
   return (
-    <Button
-      variant="ghost"
-      size="icon"
+    <button
+      type="button"
       onClick={() => setTheme(isDark ? "light" : "dark")}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-      className="border-2 border-border text-foreground hover:border-pink-hot hover:text-pink-hot"
+      aria-pressed={isDark}
+      className="grid h-11 w-11 place-items-center rounded-full border-2 border-border bg-surface-strong text-cocoa transition hover:border-rose hover:text-rose"
     >
       {isDark ? <SunIcon /> : <MoonIcon />}
-    </Button>
+    </button>
   );
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/layout/page-hero";
 import { ApplyBand } from "@/components/layout/apply-band";
-import { CatDoodle, DogDoodle } from "@/components/brand/animal-doodles";
+import Link from "next/link";
 import {
   adopurrNote,
   chapterOffers,
@@ -10,6 +10,7 @@ import {
   vision,
   whoItsFor,
 } from "@/lib/content";
+import { branchRegions, networkMetrics } from "@/lib/platform-data";
 
 export const metadata: Metadata = {
   title: "About PFC",
@@ -63,9 +64,19 @@ export default function AboutPage() {
               <p className="mt-3 text-sm leading-relaxed text-muted">{vision.near}</p>
               <p className="mt-3 text-sm leading-relaxed text-muted">{vision.far}</p>
             </div>
-            <div className="grid grid-cols-2 gap-4 text-foreground/80">
-              <CatDoodle />
-              <DogDoodle />
+            <div className="border-2 border-foreground bg-blush p-6">
+              <p className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-rose">{networkMetrics.activeChapters} chapter branches</p>
+              <ul className="mt-4 space-y-3">
+                {branchRegions.map((region) => (
+                  <li key={region.label}>
+                    <p className="text-xs font-black uppercase tracking-[.12em] text-cocoa/55">{region.label}</p>
+                    <p className="mt-1 text-sm font-bold text-cocoa">{region.chapters.join(" · ")}</p>
+                  </li>
+                ))}
+              </ul>
+              <Link href="/directory" className="mt-5 inline-block text-sm font-black text-rose underline decoration-2 underline-offset-4">
+                Open the branch map
+              </Link>
             </div>
             <div>
               <h2 className="font-display text-2xl font-bold">Who should start a chapter</h2>

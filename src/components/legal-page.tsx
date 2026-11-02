@@ -11,7 +11,7 @@ export function LegalPage({ eyebrow, title, intro, sections }: { eyebrow: string
     <article className="bg-cream px-5 pb-24 pt-32 sm:px-10">
       <header className="mx-auto max-w-3xl border-b-2 border-cocoa/20 pb-10">
         <p className="eyebrow w-fit">{eyebrow}</p>
-        <h1 className="mt-5 font-display text-5xl font-black tracking-tight text-cocoa sm:text-6xl">{title}</h1>
+        <h1 className="mt-5 max-w-full font-display text-3xl font-extrabold leading-tight tracking-tight text-cocoa [overflow-wrap:anywhere] sm:text-5xl">{title}</h1>
         <p className="mt-5 text-lg leading-8 text-ink/70">{intro}</p>
         <p className="mt-5 text-xs font-black uppercase tracking-[.14em] text-cocoa/50">Effective November 1, 2026</p>
       </header>
