@@ -78,8 +78,8 @@ export function StorybookHome() {
               <Link href="/apply" className="button-primary">
                 Start a chapter <ArrowRight aria-hidden className="h-4 w-4" />
               </Link>
-              <Link href="/portal" className="button-paper">
-                Explore the chapter hub
+              <Link href="/login" className="button-paper">
+                Chapter login
               </Link>
             </div>
             <p className="mt-5 flex items-center gap-2 text-sm font-bold text-cocoa/70">
@@ -182,17 +182,49 @@ export function StorybookHome() {
               </article>
             ))}
           </div>
-          <div className="mt-10 text-center">
+          <div className="mt-10 flex flex-wrap justify-center gap-3">
             <Link href="/portal" className="button-primary">
-              Take a look inside <ArrowRight aria-hidden className="h-4 w-4" />
+              Open chapter hub <ArrowRight aria-hidden className="h-4 w-4" />
             </Link>
+            <Link href="/advisor" className="button-paper">Advisor desk</Link>
+            <Link href="/admin" className="button-paper">National admin</Link>
           </div>
         </div>
       </section>
 
-      <section className="bg-cream px-5 py-24 sm:px-10 lg:py-32">
+      <section className="border-t-2 border-cocoa bg-cream px-5 py-24 sm:px-10 lg:py-32">
+        <div className="mx-auto max-w-[1250px]">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="eyebrow mx-auto w-fit">Every surface, live</p>
+            <h2 className="section-title mt-5">The whole platform.<br /><span>Not a teaser reel.</span></h2>
+            <p className="section-copy mx-auto mt-5">
+              Public maps, leaderboards, adoption feed, shelter broadcasts, alumni mentors, and the admin CMS are all clickable.
+            </p>
+          </div>
+          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              ["/directory", "Chapter directory & map", "Filter by state and open every pin"],
+              ["/leaderboard", "Inter-chapter leaderboards", "Hours, funds, and project rankings"],
+              ["/impact", "Impact & fundraising bars", "Network counters + announcements"],
+              ["/adopt", "Adoption partner feed", "Adoptable animals from partner shelters"],
+              ["/shelter", "Shelter request portal", "Broadcast needs to nearby chapters"],
+              ["/alumni", "Alumni mentor portal", "Sign up and request mentor matches"],
+            ].map(([href, title, copy]) => (
+              <Link key={href} href={href} className="sticker-card block bg-white p-6 transition hover:-translate-y-1 hover:bg-blush/40">
+                <p className="font-display text-2xl font-black text-cocoa">{title}</p>
+                <p className="mt-2 text-sm leading-6 text-ink/65">{copy}</p>
+                <span className="mt-4 inline-flex items-center gap-2 text-sm font-black text-rose">
+                  Open <ArrowRight className="h-4 w-4" />
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#dcebdc] px-5 py-24 sm:px-10 lg:py-32">
         <div className="mx-auto grid max-w-[1250px] gap-12 lg:grid-cols-[1.05fr_.95fr]">
-          <div className="relative min-h-[520px] overflow-hidden rounded-[2.5rem] border-2 border-cocoa bg-[#dcebdc] p-6 shadow-sketch sm:p-9">
+          <div className="relative min-h-[520px] overflow-hidden rounded-[2.5rem] border-2 border-cocoa bg-[#cfe1d2] p-6 shadow-sketch sm:p-9">
             <div className="flex items-center justify-between">
               <div>
                 <p className="eyebrow w-fit bg-white/65">Chapter directory</p>
@@ -212,6 +244,9 @@ export function StorybookHome() {
                 </div>
               ))}
             </div>
+            <Link href="/directory" className="button-primary mt-6">
+              Open interactive map <ArrowRight aria-hidden className="h-4 w-4" />
+            </Link>
           </div>
 
           <div className="flex flex-col justify-center">
@@ -226,9 +261,14 @@ export function StorybookHome() {
               <FeatureLine icon={<Heart />} title="Shelter-first stories" body="Needs and outcomes—not performative volunteering." />
               <FeatureLine icon={<ShieldCheck />} title="Consent built in" body="Parent waivers and image permissions stay attached to the work." />
             </ul>
-            <Link href="/work" className="mt-9 inline-flex items-center gap-2 font-black text-rose underline decoration-2 underline-offset-4">
-              See what chapters do <ArrowRight aria-hidden className="h-4 w-4" />
-            </Link>
+            <div className="mt-9 flex flex-wrap gap-4">
+              <Link href="/impact" className="inline-flex items-center gap-2 font-black text-rose underline decoration-2 underline-offset-4">
+                Impact board <ArrowRight aria-hidden className="h-4 w-4" />
+              </Link>
+              <Link href="/leaderboard" className="inline-flex items-center gap-2 font-black text-rose underline decoration-2 underline-offset-4">
+                Leaderboards <ArrowRight aria-hidden className="h-4 w-4" />
+              </Link>
+            </div>
           </div>
         </div>
       </section>

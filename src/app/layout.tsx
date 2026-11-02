@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, Caveat, IBM_Plex_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
+import { SiteChrome } from "@/components/site-chrome";
 import { CursorGlow } from "@/components/effects/cursor-glow";
 import { siteConfig } from "@/lib/content";
 import "./globals.css";
@@ -56,11 +55,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <a href="#main-content" className="skip-link">
             Skip to content
           </a>
-          <Header />
-          <main id="main-content" className="relative flex-1">
-            {children}
-          </main>
-          <Footer />
+          <SiteChrome>{children}</SiteChrome>
         </ThemeProvider>
       </body>
     </html>

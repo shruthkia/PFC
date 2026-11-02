@@ -6,16 +6,22 @@ const footerLinks = {
   Explore: [
     { href: "/about", label: "Our story" },
     { href: "/work", label: "Chapter work" },
-    { href: "/start", label: "Start a chapter" },
+    { href: "/directory", label: "Chapter map" },
+    { href: "/impact", label: "Impact board" },
+    { href: "/leaderboard", label: "Leaderboards" },
     { href: "/faq", label: "FAQ" },
   ],
   Participate: [
     { href: "/apply", label: "Chapter application" },
+    { href: "/login", label: "Chapter login" },
     { href: "/portal", label: "Chapter hub" },
-    { href: "/portal#resources", label: "Resource library" },
-    { href: "/work", label: "Shelter partners" },
+    { href: "/shelter", label: "Shelter requests" },
+    { href: "/adopt", label: "Adoption feed" },
+    { href: "/alumni", label: "Alumni mentors" },
   ],
-  "Trust & legal": [
+  "Ops & trust": [
+    { href: "/advisor", label: "Advisor desk" },
+    { href: "/admin", label: "National admin / CMS" },
     { href: "/safety", label: "Youth safety" },
     { href: "/privacy", label: "Privacy" },
     { href: "/terms", label: "Terms" },
@@ -36,8 +42,7 @@ export function Footer() {
             </div>
           </div>
           <p className="mt-5 text-sm leading-6 text-cocoa/70">
-            A student-led network helping high school chapters deliver useful,
-            documented support to shelters and rescues.
+            A student-led network helping high school chapters deliver useful, documented support to shelters and rescues.
           </p>
           <p className="mt-4 text-sm font-semibold text-cocoa/70">
             Questions?{" "}
@@ -53,7 +58,7 @@ export function Footer() {
               <h2 className="text-xs font-black uppercase tracking-[.16em] text-cocoa">{title}</h2>
               <ul className="mt-4 space-y-3">
                 {links.map((link) => (
-                  <li key={link.href}>
+                  <li key={`${title}-${link.href}`}>
                     <Link href={link.href} className="text-sm font-semibold text-cocoa/70 hover:text-rose">
                       {link.label}
                     </Link>
@@ -65,7 +70,9 @@ export function Footer() {
         </div>
       </div>
       <div className="mx-auto mt-12 flex max-w-[1250px] flex-col gap-3 border-t border-cocoa/25 pt-6 text-xs font-semibold text-cocoa/60 sm:flex-row sm:items-center sm:justify-between">
-        <p>&copy; {new Date().getFullYear()} {siteConfig.name}. All rights reserved.</p>
+        <p>
+          &copy; {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
+        </p>
         <p>Made with care for students, shelters, and every animal still waiting.</p>
       </div>
     </footer>
