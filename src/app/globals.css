@@ -1,25 +1,32 @@
 @import "tailwindcss";
 
 :root {
-  --background: #faf3ee;
-  --foreground: #2a1f1a;
-  --muted: #5c4a42;
-  --muted-foreground: #8a7268;
-  --card: #fff9f5;
-  --card-foreground: #2a1f1a;
-  --border: #e8d5c8;
-  --pink: #ff8fab;
-  --pink-soft: #ffc2d4;
-  --pink-hot: #ff6b95;
-  --orange: #ffab73;
-  --orange-soft: #ffd9b8;
-  --orange-hot: #ff8c42;
-  --brown: #7a5c4f;
-  --brown-soft: #c9a88e;
-  --brown-dark: #3d2a22;
-  --cream: #fff5ed;
-  --accent: #ff8c42;
-  --ring: #ff6b95;
+  --background: #fffaf0;
+  --foreground: #352924;
+  --muted: #69584f;
+  --muted-foreground: #78665d;
+  --card: #fffdf7;
+  --card-foreground: #352924;
+  --border: #d9c7b9;
+  --pink: #e58aa8;
+  --pink-soft: #f5cad7;
+  --pink-hot: #c94d78;
+  --orange: #e5af75;
+  --orange-soft: #f5dfbe;
+  --orange-hot: #bd6d36;
+  --brown: #805e4c;
+  --brown-soft: #d6bca7;
+  --brown-dark: #6e493b;
+  --cream: #fffaf0;
+  --accent: #c94d78;
+  --ring: #8c3655;
+  --cocoa: #6e493b;
+  --ink: #352924;
+  --blush: #f8dce4;
+  --butter: #f4e3a6;
+  --mint: #cfe1d2;
+  --sage-dark: #4d7357;
+  --rose: #c94d78;
   --grain-opacity: 0.045;
   --cursor-glow: rgba(255, 107, 149, 0.15);
 }
@@ -68,9 +75,17 @@
   --color-cream: var(--cream);
   --color-accent: var(--accent);
   --color-ring: var(--ring);
+  --color-cocoa: var(--cocoa);
+  --color-ink: var(--ink);
+  --color-blush: var(--blush);
+  --color-butter: var(--butter);
+  --color-mint: var(--mint);
+  --color-sage-dark: var(--sage-dark);
+  --color-rose: var(--rose);
   --font-sans: var(--font-bricolage);
   --font-mono: var(--font-ibm-plex);
   --font-display: var(--font-bricolage);
+  --font-hand: var(--font-caveat);
 }
 
 * {
@@ -86,6 +101,19 @@ body {
   color: var(--foreground);
   font-family: var(--font-bricolage), system-ui, sans-serif;
   overflow-x: hidden;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a {
+  touch-action: manipulation;
 }
 
 ::selection {
@@ -118,6 +146,178 @@ body {
 
 .font-mono {
   font-family: var(--font-ibm-plex), ui-monospace, monospace;
+}
+
+.font-hand {
+  font-family: var(--font-caveat), cursive;
+}
+
+.paper-grid {
+  background-color: #fffaf0;
+  background-image:
+    linear-gradient(rgba(201, 77, 120, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201, 77, 120, 0.055) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.paper-grid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 83% 22%, rgba(245, 202, 215, 0.8), transparent 23%),
+    radial-gradient(circle at 20% 78%, rgba(244, 227, 166, 0.42), transparent 18%);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1.5px solid var(--cocoa);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.75);
+  padding: 0.48rem 0.9rem;
+  color: var(--cocoa);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.section-title {
+  color: var(--cocoa);
+  font-family: var(--font-bricolage), sans-serif;
+  font-size: clamp(2.6rem, 6vw, 4.8rem);
+  font-weight: 900;
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+  text-align: center;
+}
+
+.section-title span {
+  color: var(--rose);
+  font-family: var(--font-caveat), cursive;
+  letter-spacing: -0.025em;
+}
+
+.section-copy {
+  color: color-mix(in srgb, var(--ink) 72%, transparent);
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.button-primary,
+.button-paper {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  border: 2px solid var(--cocoa);
+  border-radius: 999px;
+  padding: 0.8rem 1.3rem;
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.025em;
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.button-primary {
+  background: var(--rose);
+  color: white;
+  box-shadow: 4px 4px 0 var(--cocoa);
+}
+
+.button-paper {
+  background: #fffdf7;
+  color: var(--cocoa);
+}
+
+.button-primary:hover,
+.button-paper:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--cocoa);
+}
+
+.button-paper:hover {
+  background: var(--butter);
+}
+
+.scrap-card,
+.sticker-card {
+  border: 2px solid var(--cocoa);
+  background: #fffdf7;
+  box-shadow: 6px 7px 0 var(--cocoa);
+}
+
+.scrap-card {
+  border-radius: 2.25rem;
+}
+
+.sticker-card {
+  border-radius: 2rem;
+}
+
+.shadow-sketch {
+  box-shadow: 5px 6px 0 var(--cocoa);
+}
+
+.scallop-border {
+  height: 22px;
+  background:
+    radial-gradient(circle at 15px -4px, transparent 19px, var(--cocoa) 20px, var(--cocoa) 21.5px, var(--cream) 22.5px) 0 0 / 30px 24px repeat-x;
+}
+
+.map-pin {
+  position: absolute;
+  display: grid;
+  transform: translate(-50%, -50%);
+  place-items: center;
+  filter: drop-shadow(1px 2px 0 rgba(110, 73, 59, 0.25));
+}
+
+.map-pin span {
+  position: absolute;
+  top: 100%;
+  border: 1px solid var(--cocoa);
+  border-radius: 999px;
+  background: white;
+  padding: 0.12rem 0.38rem;
+  color: var(--cocoa);
+  font-size: 0.58rem;
+  font-weight: 900;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  border: 2px solid color-mix(in srgb, var(--cocoa) 55%, transparent);
+  border-radius: 0.75rem;
+  background: #fffdf7;
+  padding: 0.7rem 0.85rem;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.95rem;
+}
+
+.form-control::placeholder {
+  color: color-mix(in srgb, var(--cocoa) 42%, transparent);
+}
+
+.form-control:focus {
+  border-color: var(--rose);
+  outline: 3px solid color-mix(in srgb, var(--rose) 20%, transparent);
+  outline-offset: 1px;
+}
+
+@media (max-width: 640px) {
+  .scallop-border {
+    height: 17px;
+    background-size: 24px 19px;
+  }
 }
 
 /* Grain overlay — behind the header (z-50), over the page wash */

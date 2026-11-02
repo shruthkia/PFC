@@ -1,54 +1,73 @@
 import Link from "next/link";
 import { HouseMark } from "@/components/brand/house-mark";
-import { CHAPTER_FORM_URL } from "@/lib/utils";
-import { navLinks, siteConfig } from "@/lib/content";
+import { siteConfig } from "@/lib/content";
+
+const footerLinks = {
+  Explore: [
+    { href: "/about", label: "Our story" },
+    { href: "/work", label: "Chapter work" },
+    { href: "/start", label: "Start a chapter" },
+    { href: "/faq", label: "FAQ" },
+  ],
+  Participate: [
+    { href: "/apply", label: "Chapter application" },
+    { href: "/portal", label: "Chapter hub" },
+    { href: "/portal#resources", label: "Resource library" },
+    { href: "/work", label: "Shelter partners" },
+  ],
+  "Trust & legal": [
+    { href: "/safety", label: "Youth safety" },
+    { href: "/privacy", label: "Privacy" },
+    { href: "/terms", label: "Terms" },
+    { href: "/accessibility", label: "Accessibility" },
+  ],
+};
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-background px-4 py-12 sm:px-8">
-      <div className="mx-auto flex max-w-[1400px] flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
-        <div className="max-w-sm">
+    <footer className="border-t-2 border-cocoa bg-[#f6d8e1] px-5 py-14 sm:px-10">
+      <div className="mx-auto grid max-w-[1250px] gap-12 lg:grid-cols-[1.2fr_1.8fr]">
+        <div className="max-w-md">
           <div className="flex items-center gap-3">
-            <HouseMark className="h-11 w-12" />
+            <HouseMark className="h-14 w-16" />
             <div>
-              <p className="font-display text-xl font-bold">{siteConfig.name}</p>
-              <p className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-muted-foreground">
-                {siteConfig.tagline}
-              </p>
+              <p className="font-display text-2xl font-black tracking-tight text-cocoa">{siteConfig.name}</p>
+              <p className="font-hand text-xl font-bold text-rose">students showing up for animals</p>
             </div>
           </div>
-          <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
-            Student animal-welfare chapters. High school first. Adopurr is a sister project, not the same org.
+          <p className="mt-5 text-sm leading-6 text-cocoa/70">
+            A student-led network helping high school chapters deliver useful,
+            documented support to shelters and rescues.
+          </p>
+          <p className="mt-4 text-sm font-semibold text-cocoa/70">
+            Questions?{" "}
+            <a href="mailto:hello@pawsforcause.org" className="text-rose underline decoration-2 underline-offset-2 hover:text-cocoa">
+              hello@pawsforcause.org
+            </a>
           </p>
         </div>
 
-        <div className="flex gap-16">
-          <ul className="space-y-2 font-mono text-[0.65rem] uppercase tracking-[0.15em]">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <Link href={link.href} className="text-muted hover:text-pink-hot">
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <ul className="space-y-2 font-mono text-[0.65rem] uppercase tracking-[0.15em]">
-            <li>
-              <a
-                href={CHAPTER_FORM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted hover:text-pink-hot"
-              >
-                Interest form
-              </a>
-            </li>
-          </ul>
+        <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
+          {Object.entries(footerLinks).map(([title, links]) => (
+            <div key={title}>
+              <h2 className="text-xs font-black uppercase tracking-[.16em] text-cocoa">{title}</h2>
+              <ul className="mt-4 space-y-3">
+                {links.map((link) => (
+                  <li key={link.href}>
+                    <Link href={link.href} className="text-sm font-semibold text-cocoa/70 hover:text-rose">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
-      <p className="mx-auto mt-10 max-w-[1400px] font-mono text-[0.6rem] uppercase tracking-[0.2em] text-muted-foreground">
-        &copy; {new Date().getFullYear()} {siteConfig.name} · House and paw mark shared with Adopurr
-      </p>
+      <div className="mx-auto mt-12 flex max-w-[1250px] flex-col gap-3 border-t border-cocoa/25 pt-6 text-xs font-semibold text-cocoa/60 sm:flex-row sm:items-center sm:justify-between">
+        <p>&copy; {new Date().getFullYear()} {siteConfig.name}. All rights reserved.</p>
+        <p>Made with care for students, shelters, and every animal still waiting.</p>
+      </div>
     </footer>
   );
 }
