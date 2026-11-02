@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, IBM_Plex_Mono } from "next/font/google";
+import { Bricolage_Grotesque, Caveat, IBM_Plex_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -17,6 +17,12 @@ const ibmPlex = IBM_Plex_Mono({
   variable: "--font-ibm-plex",
   subsets: ["latin"],
   weight: ["400", "500"],
+  display: "swap",
+});
+
+const caveat = Caveat({
+  variable: "--font-caveat",
+  subsets: ["latin"],
   display: "swap",
 });
 
@@ -40,8 +46,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
-      className={`${bricolage.variable} ${ibmPlex.variable} h-full`}
+      className={`${bricolage.variable} ${ibmPlex.variable} ${caveat.variable} h-full`}
     >
       <body className="grain min-h-full flex flex-col antialiased">
         <ThemeProvider>
