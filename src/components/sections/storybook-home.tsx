@@ -1,117 +1,89 @@
 import Link from "next/link";
 import {
   ArrowRight,
-  BadgeCheck,
-  BookOpen,
-  Check,
-  FileCheck2,
-  Heart,
+  CheckCircle2,
   ListChecks,
   MapPin,
-  Megaphone,
   Scissors,
   ShieldCheck,
 } from "lucide-react";
-import { branchRegions, chapters, networkMetrics } from "@/lib/platform-data";
-
-const toolkits = [
-  {
-    number: "01",
-    title: "Start with a real plan",
-    copy: "Apply, get school approval, gather your crew, and claim your first shelter mini-task in 30 days.",
-    items: ["Chapter application", "Launch checklist", "Parent consent", "Advisor sign-off"],
-    color: "bg-[#f5cad7]",
-  },
-  {
-    number: "02",
-    title: "Make every hour count",
-    copy: "Log scrap-to-toy nights, funds, and finished shelter tasks in one place—not five group chats.",
-    items: ["Hour & proof logging", "Fundraising tracker", "Project galleries", "Resource library"],
-    color: "bg-[#f4e3a6]",
-  },
-  {
-    number: "03",
-    title: "Protect the standard",
-    copy: "Advisors and national organizers review work before it becomes part of the public impact story.",
-    items: ["Claim review queue", "Active chapter monitor", "Service certificates", "Impact reports"],
-    color: "bg-[#cfe1d2]",
-  },
-  {
-    number: "04",
-    title: "Finish what shelters ask for",
-    copy: "Partners post small, clear tasks. Chapters claim them, complete them, and log the proof.",
-    items: ["Shelter mini-task board", "Scrap-to-toy workshops", "Social spotlight queue", "Alumni mentors"],
-    color: "bg-[#d9d2ed]",
-  },
-];
+import { HouseMark } from "@/components/brand/house-mark";
+import { branchRegions, chapters, networkMetrics, shelterTasks } from "@/lib/platform-data";
 
 const toyPct = Math.min(100, Math.round((networkMetrics.toysDonated / networkMetrics.toyGoal) * 100));
 
 export function StorybookHome() {
   return (
     <>
-      <section className="paper-grid relative overflow-hidden border-b-2 border-cocoa pt-16">
-        <div className="mx-auto grid min-h-[720px] max-w-[1400px] items-center gap-10 px-5 py-16 sm:px-10 lg:grid-cols-[1.05fr_.95fr] lg:py-20">
-          <div className="relative z-10 max-w-3xl">
-            <p className="eyebrow">Student-led animal welfare · {networkMetrics.activeChapters} chapter branches</p>
-            <h1 className="mt-7 font-display text-[clamp(3.6rem,9.5vw,7.5rem)] font-extrabold leading-[.86] tracking-[-.05em] text-cocoa">
-              PawsForCause
-            </h1>
-            <p className="mt-4 font-hand text-3xl font-semibold leading-tight text-rose sm:text-4xl">
-              High school branches. Real shelter tasks. Toys that leave campus.
-            </p>
-            <p className="mt-7 max-w-xl text-lg font-medium leading-8 text-ink/75 sm:text-xl">
-              We organize student chapters that sew enrichment toys from fashion scraps, raise clean funds,
-              and finish the mini-tasks shelters actually need.
-            </p>
-            <div className="mt-9 flex flex-wrap gap-3">
-              <Link href="/apply" className="button-primary">
-                Start a chapter <ArrowRight aria-hidden className="h-4 w-4" />
-              </Link>
-              <Link href="/directory" className="button-paper">
-                See our branches
-              </Link>
+      {/* Hero — gingham scrapbook cover like the café refs */}
+      <section className="gingham relative overflow-hidden border-b-2 border-border pt-16">
+        <div className="mx-auto grid max-w-[1200px] items-center gap-10 px-5 py-16 sm:px-10 lg:grid-cols-[1.05fr_.95fr] lg:py-20">
+          <div className="relative z-10 mx-auto w-full max-w-xl lg:mx-0">
+            <div className="menu-frame overflow-visible px-6 py-8 text-center sm:px-10 sm:py-12">
+              <div className="mx-auto mb-5 grid h-16 w-16 place-items-center rounded-full border-2 border-border bg-blush">
+                <HouseMark className="h-12 w-14" priority />
+              </div>
+              <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-muted">Student animal-welfare network</p>
+              <h1 className="mt-4 break-words font-display text-[clamp(2.4rem,7vw,4.4rem)] font-extrabold leading-[1.02] tracking-[-0.035em] text-cocoa">
+                PawsForCause
+              </h1>
+              <p className="mt-4 font-hand text-2xl font-semibold text-rose sm:text-3xl">
+                chapters · scrap toys · shelter tasks
+              </p>
+              <p className="mx-auto mt-5 max-w-md text-base leading-7 text-muted">
+                High school branches that sew enrichment toys from fashion scraps, raise clean funds, and finish the mini-tasks shelters actually need.
+              </p>
+              <div className="mt-8 flex flex-wrap justify-center gap-3">
+                <Link href="/apply" className="button-primary">
+                  Start a chapter <ArrowRight aria-hidden className="h-4 w-4" />
+                </Link>
+                <Link href="/directory" className="button-paper">
+                  See our branches
+                </Link>
+              </div>
+              <p className="mt-5 flex items-center justify-center gap-2 text-sm font-bold text-muted">
+                <ShieldCheck aria-hidden className="h-4 w-4 text-sage-dark" />
+                Light & dark modes · readable by design
+              </p>
             </div>
-            <p className="mt-5 flex items-center gap-2 text-sm font-bold text-cocoa/70">
-              <ShieldCheck aria-hidden className="h-4 w-4 text-sage-dark" />
-              USA · Qatar · India — and growing
-            </p>
           </div>
 
-          <div className="relative mx-auto w-full max-w-[560px]">
-            <div className="scrap-card relative w-full p-5 sm:p-7">
-              <div className="flex items-center justify-between border-b-2 border-dashed border-cocoa/25 pb-4">
+          <div className="relative z-10 mx-auto w-full max-w-md">
+            <div className="scrap-card p-5 sm:p-7">
+              <div className="flex items-end justify-between gap-3 border-b border-dashed border-border pb-4">
                 <div>
-                  <p className="font-hand text-2xl font-semibold text-rose">Network so far</p>
-                  <p className="text-xs font-bold uppercase tracking-[.18em] text-cocoa/55">Verified impact</p>
+                  <p className="font-hand text-2xl font-semibold text-rose">network so far</p>
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-muted">Verified impact</p>
                 </div>
-                <span className="rounded-full border-2 border-cocoa bg-mint px-3 py-1 text-xs font-black text-cocoa">
-                  LIVE
-                </span>
+                <span className="rounded-full border border-border bg-mint px-3 py-1 text-xs font-extrabold text-cocoa">live</span>
               </div>
-              <div className="grid grid-cols-2 gap-3 py-5">
-                <ImpactNote value={`${networkMetrics.toysDonated}+`} label="toys donated" className="-rotate-1 bg-[#f7d4df]" />
-                <ImpactNote value={`$${networkMetrics.toyValueUsd.toLocaleString()}`} label="toy value" className="rotate-1 bg-[#f6eab8]" />
-                <ImpactNote value={`$${networkMetrics.fundsRaised}`} label="funds raised" className="rotate-1 bg-[#dcebdc]" />
-                <ImpactNote value={String(networkMetrics.activeChapters)} label="chapter branches" className="-rotate-1 bg-[#e5ddf1]" />
-              </div>
-              <div className="rounded-[1.5rem] border-2 border-cocoa bg-cream p-4">
+              <dl className="mt-5 grid grid-cols-2 gap-3">
+                <Stat value={`${networkMetrics.toysDonated}+`} label="toys donated" tone="bg-blush" />
+                <Stat value={`$${networkMetrics.toyValueUsd.toLocaleString()}`} label="toy value" tone="bg-butter" />
+                <Stat value={`$${networkMetrics.fundsRaised}`} label="funds raised" tone="bg-mint" />
+                <Stat value={String(networkMetrics.activeChapters)} label="chapter branches" tone="bg-[#e8dff3] dark:bg-[#33283a]" />
+              </dl>
+              <div className="mt-5 rounded-2xl border border-border bg-surface-strong p-4">
                 <div className="flex items-start gap-3">
-                  <Scissors aria-hidden className="mt-1 h-5 w-5 shrink-0 text-rose" />
-                  <div>
-                    <p className="text-xs font-black uppercase tracking-[.16em] text-rose">How the toys happen</p>
-                    <p className="mt-1 text-sm font-bold leading-6 text-cocoa">
-                      We work with school fashion departments to turn fabric scraps into enrichment toys for shelters.
-                    </p>
-                  </div>
+                  <Scissors aria-hidden className="mt-0.5 h-5 w-5 shrink-0 text-rose" />
+                  <p className="text-sm font-semibold leading-6 text-cocoa">
+                    Fashion departments turn fabric scraps into kennel enrichment toys.
+                  </p>
                 </div>
                 <div className="mt-4">
-                  <div className="mb-2 flex items-center justify-between gap-3">
-                    <p className="text-sm font-black text-cocoa">Toward {networkMetrics.toyGoal} toys</p>
-                    <p className="font-hand text-xl font-semibold text-rose">{toyPct}%</p>
+                  <div className="mb-2 flex justify-between text-sm font-bold text-cocoa">
+                    <span>Toward {networkMetrics.toyGoal} toys</span>
+                    <span className="font-hand text-lg text-rose">{toyPct}%</span>
                   </div>
-                  <div className="h-4 overflow-hidden rounded-full border-2 border-cocoa bg-white">
-                    <div className="h-full border-r-2 border-cocoa bg-rose" style={{ width: `${toyPct}%` }} />
+                  <div
+                    className="h-3.5 overflow-hidden rounded-full border border-border bg-background"
+                    role="progressbar"
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-valuenow={toyPct}
+                    aria-label="Toy donation progress"
+                  >
+                    <div className="h-full bg-rose" style={{ width: `${toyPct}%` }} />
                   </div>
                 </div>
               </div>
@@ -121,148 +93,150 @@ export function StorybookHome() {
         <div className="scallop-border" aria-hidden />
       </section>
 
-      <section className="border-b-2 border-cocoa bg-[#fff3e4] px-5 py-20 sm:px-10 lg:py-24">
-        <div className="mx-auto max-w-[1250px]">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-2xl">
-              <p className="eyebrow w-fit">Our branches</p>
-              <h2 className="section-title mt-5 text-left">
-                One organization.
-                <br />
-                <span>{networkMetrics.activeChapters} chapter homes.</span>
+      {/* Branches — menu-board layout */}
+      <section className="bg-background px-5 py-20 sm:px-10 lg:py-24">
+        <div className="mx-auto max-w-[1100px]">
+          <div className="menu-frame p-6 sm:p-10">
+            <div className="text-center">
+              <span className="ribbon">Our branches</span>
+              <h2 className="mt-5 font-display text-4xl font-extrabold tracking-tight text-cocoa sm:text-5xl">
+                One org. {networkMetrics.activeChapters} chapter homes.
               </h2>
-              <p className="section-copy mt-4">
-                PawsForCause is a network of high school chapters — from DFW to Doha — running the same standard under local leadership.
+              <p className="mx-auto mt-3 max-w-2xl text-muted">
+                From DFW to Doha — same standard, local leadership.
               </p>
             </div>
-            <Link href="/directory" className="button-primary shrink-0">
-              Open chapter map <ArrowRight aria-hidden className="h-4 w-4" />
+
+            <div className="mt-10 grid gap-6 md:grid-cols-2">
+              {branchRegions.map((region) => (
+                <div key={region.label}>
+                  <p className="ribbon mb-4">{region.label}</p>
+                  <ul className="space-y-3">
+                    {region.chapters.map((name) => {
+                      const chapter = chapters.find((c) => c.city === name);
+                      return (
+                        <li key={name} className="flex items-start justify-between gap-3 border-b border-dashed border-border pb-3">
+                          <div className="flex items-start gap-3">
+                            <span className="mt-1 grid h-8 w-8 place-items-center rounded-full border border-border bg-blush text-cocoa">
+                              <MapPin className="h-4 w-4" aria-hidden />
+                            </span>
+                            <div>
+                              <p className="font-extrabold text-cocoa">{name}</p>
+                              <p className="text-sm text-muted">{chapter?.name ?? "PawsForCause chapter"}</p>
+                            </div>
+                          </div>
+                          <span className="shrink-0 text-xs font-extrabold uppercase tracking-[0.12em] text-sage-dark">Active</span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-10 text-center">
+              <Link href="/directory" className="button-primary">
+                Open chapter map <ArrowRight aria-hidden className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How it works — three clear steps */}
+      <section className="border-y-2 border-border bg-blush/40 px-5 py-20 sm:px-10">
+        <div className="mx-auto max-w-[1100px]">
+          <div className="mx-auto max-w-2xl text-center">
+            <span className="ribbon">How it works</span>
+            <h2 className="section-title mt-5">Claim a task. Finish it. Log it.</h2>
+            <p className="section-copy mx-auto mt-4">
+              Shelters post mini-tasks. Chapters complete them. Advisors verify. Public totals stay honest.
+            </p>
+          </div>
+          <ol className="mt-12 grid gap-5 md:grid-cols-3">
+            {[
+              { n: "01", title: "Join a branch", body: "Apply with a student lead and faculty advisor. Launch in about 30 days." },
+              { n: "02", title: "Pick a shelter task", body: "Sew scrap toys, sort supplies, assemble packets — clear jobs with a finish line." },
+              { n: "03", title: "Report the work", body: "Log hours and proof. Advisor sign-off unlocks network totals and certificates." },
+            ].map((step) => (
+              <li key={step.n} className="sticker-card bg-surface-strong p-6">
+                <p className="font-hand text-3xl font-semibold text-rose">{step.n}</p>
+                <h3 className="mt-3 font-display text-2xl font-extrabold text-cocoa">{step.title}</h3>
+                <p className="mt-2 text-sm leading-7 text-muted">{step.body}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* Open tasks — workable list like a café menu */}
+      <section className="bg-background px-5 py-20 sm:px-10 lg:py-24">
+        <div className="mx-auto max-w-[1100px]">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <span className="ribbon">Open shelter tasks</span>
+              <h2 className="mt-4 font-display text-4xl font-extrabold text-cocoa">Ready for a chapter to claim</h2>
+              <p className="mt-2 max-w-xl text-muted">Not animal listings — small completable jobs partners need done.</p>
+            </div>
+            <Link href="/adopt" className="button-paper">
+              Full task board <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
 
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {branchRegions.map((region) => (
-              <article key={region.label} className="sticker-card bg-white p-5">
-                <p className="text-xs font-black uppercase tracking-[.14em] text-rose">{region.label}</p>
-                <ul className="mt-4 space-y-2">
-                  {region.chapters.map((name) => (
-                    <li key={name} className="flex items-center gap-2 text-sm font-bold text-cocoa">
-                      <MapPin aria-hidden className="h-3.5 w-3.5 text-rose" />
-                      {name}
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
-
-          <ul className="mt-8 flex flex-wrap gap-2">
-            {chapters.map((chapter) => (
-              <li key={chapter.id}>
-                <Link
-                  href="/directory"
-                  className="inline-flex items-center gap-2 rounded-full border-2 border-cocoa bg-cream px-3 py-1.5 text-xs font-black text-cocoa transition hover:bg-blush"
-                >
-                  <span className="h-2 w-2 rounded-full bg-rose" aria-hidden />
-                  {chapter.city}
-                  {chapter.region ? ` · ${chapter.region}` : ""}
-                </Link>
+          <ul className="mt-10 divide-y divide-border rounded-[1.5rem] border-2 border-border bg-surface">
+            {shelterTasks.slice(0, 4).map((task) => (
+              <li key={task.id} className="flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+                <div className="flex items-start gap-4">
+                  <span className="mt-0.5 grid h-11 w-11 shrink-0 place-items-center rounded-full border border-border bg-blush text-rose">
+                    <ListChecks className="h-5 w-5" aria-hidden />
+                  </span>
+                  <div>
+                    <p className="font-extrabold text-cocoa">{task.title}</p>
+                    <p className="mt-1 text-sm text-muted">
+                      {task.shelter} · {task.city} · {task.effort}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 sm:shrink-0">
+                  {task.urgent ? (
+                    <span className="rounded-full border border-rose/40 bg-blush px-3 py-1 text-xs font-extrabold uppercase tracking-[0.1em] text-rose">
+                      Urgent
+                    </span>
+                  ) : (
+                    <span className="rounded-full border border-border bg-background px-3 py-1 text-xs font-extrabold uppercase tracking-[0.1em] text-muted">
+                      Open
+                    </span>
+                  )}
+                  <Link href="/adopt" className="button-primary min-h-0 px-3 py-2 text-xs">
+                    Claim
+                  </Link>
+                </div>
               </li>
             ))}
           </ul>
         </div>
       </section>
 
-      <section className="bg-cream px-5 py-24 sm:px-10 lg:py-32">
-        <div className="mx-auto max-w-[1250px]">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="eyebrow mx-auto w-fit">How it works</p>
-            <h2 className="section-title mt-5">
-              From “we should help” to <span>task done.</span>
-            </h2>
-            <p className="section-copy mx-auto mt-5">
-              Shelters post mini-tasks. Chapters claim them, finish them, and report the work so it counts.
-            </p>
-          </div>
-          <div className="mt-14 grid gap-6 md:grid-cols-3">
-            <StepCard icon={<Megaphone />} number="1" title="Gather your people" body="Apply with a student lead, school advisor, and a small crew ready to take ownership." />
-            <StepCard icon={<ListChecks />} number="2" title="Claim a shelter task" body="Pick a posted mini-task — sort supplies, sew scrap toys, assemble packets — and own it." />
-            <StepCard icon={<BadgeCheck />} number="3" title="Do it. Log it. Share it." body="Record hours and proof, get advisor approval, and add verified impact to the network." />
-          </div>
-        </div>
-      </section>
-
-      <section className="border-y-2 border-cocoa bg-blush px-5 py-24 sm:px-10 lg:py-32">
-        <div className="mx-auto max-w-[1250px]">
-          <div className="grid items-end gap-8 lg:grid-cols-[.85fr_1.15fr]">
-            <div>
-              <p className="eyebrow w-fit">Inside your chapter hub</p>
-              <h2 className="section-title mt-5 text-left">
-                All the work.
-                <br />
-                <span>One calm desk.</span>
-              </h2>
-            </div>
-            <p className="section-copy max-w-2xl lg:justify-self-end">
-              Launch tasks, service records, fundraising, scrap-to-toy projects, consent, and advisor review live together.
-            </p>
-          </div>
-          <div className="mt-14 grid gap-5 lg:grid-cols-2">
-            {toolkits.map((kit) => (
-              <article key={kit.number} className={`${kit.color} sticker-card p-7 sm:p-9`}>
-                <span className="font-hand text-4xl font-semibold text-cocoa/45">{kit.number}</span>
-                <h3 className="mt-5 font-display text-3xl font-extrabold tracking-tight text-cocoa">{kit.title}</h3>
-                <p className="mt-3 max-w-xl leading-7 text-ink/70">{kit.copy}</p>
-                <ul className="mt-6 grid gap-3 sm:grid-cols-2">
-                  {kit.items.map((item) => (
-                    <li key={item} className="flex items-center gap-2 text-sm font-bold text-cocoa">
-                      <span className="grid h-5 w-5 place-items-center rounded-full border border-cocoa bg-white/65">
-                        <Check aria-hidden className="h-3 w-3" strokeWidth={3} />
-                      </span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
-          <div className="mt-10 flex flex-wrap justify-center gap-3">
-            <Link href="/portal" className="button-primary">
-              Open chapter hub <ArrowRight aria-hidden className="h-4 w-4" />
-            </Link>
-            <Link href="/shelter" className="button-paper">
-              Shelter mini-tasks
-            </Link>
-            <Link href="/admin" className="button-paper">
-              National admin
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-cream px-5 py-24 sm:px-10 lg:py-32">
-        <div className="mx-auto max-w-[1250px]">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="eyebrow mx-auto w-fit">Platform</p>
-            <h2 className="section-title mt-5">
-              Tools for every branch.
-              <br />
-              <span>Not a brochure.</span>
-            </h2>
+      {/* Workspaces — clear doors into real tools */}
+      <section className="border-t-2 border-border bg-butter/30 px-5 py-20 sm:px-10">
+        <div className="mx-auto max-w-[1100px]">
+          <div className="mx-auto max-w-2xl text-center">
+            <span className="ribbon">Workspaces</span>
+            <h2 className="section-title mt-5">Built to use, not just browse</h2>
           </div>
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {[
-              ["/directory", "Chapter directory & map", "All 11 branches, filterable by region"],
-              ["/leaderboard", "Inter-chapter leaderboards", "Toys, funds, and project rankings"],
-              ["/impact", "Impact & fundraising", "85+ toys · $1,550 value · $400 funds"],
-              ["/adopt", "Shelter mini-task board", "Completable tasks shelters post for chapters"],
-              ["/shelter", "Shelter partner portal", "Post a mini-task to nearby branches"],
-              ["/alumni", "Alumni mentor portal", "Sign up and request mentor matches"],
+              ["/portal", "Chapter hub", "Log hours, funds, scrap nights, consent, certificates"],
+              ["/advisor", "Advisor desk", "Verify proof and e-sign student hours"],
+              ["/admin", "National admin", "Claims, Active Standard, CMS, impact PDFs"],
+              ["/shelter", "Shelter portal", "Post a mini-task to nearby branches"],
+              ["/login", "Chapter login", "Magic-link preview into every workspace"],
+              ["/impact", "Impact board", "85+ toys · $1,550 value · $400 funds"],
             ].map(([href, title, copy]) => (
-              <Link key={href} href={href} className="sticker-card block bg-white p-6 transition hover:-translate-y-1 hover:bg-blush/40">
-                <p className="font-display text-2xl font-extrabold text-cocoa">{title}</p>
-                <p className="mt-2 text-sm leading-6 text-ink/65">{copy}</p>
-                <span className="mt-4 inline-flex items-center gap-2 text-sm font-black text-rose">
+              <Link key={href} href={href} className="sticker-card block bg-surface-strong p-5 transition hover:-translate-y-0.5">
+                <p className="font-display text-xl font-extrabold text-cocoa">{title}</p>
+                <p className="mt-2 text-sm leading-6 text-muted">{copy}</p>
+                <span className="mt-4 inline-flex items-center gap-2 text-sm font-extrabold text-rose">
                   Open <ArrowRight className="h-4 w-4" />
                 </span>
               </Link>
@@ -271,100 +245,39 @@ export function StorybookHome() {
         </div>
       </section>
 
-      <section className="border-t-2 border-cocoa bg-[#dcebdc] px-5 py-24 sm:px-10 lg:py-32">
-        <div className="mx-auto grid max-w-[1250px] gap-12 lg:grid-cols-2">
-          <div>
-            <p className="eyebrow w-fit">Scrap to kennel</p>
-            <h2 className="section-title mt-5 text-left">
-              Fashion scraps.
-              <br />
-              <span>Shelter enrichment.</span>
-            </h2>
-            <p className="section-copy mt-5">
-              Chapters partner with school fashion departments to sew toys from leftover fabric. We&apos;ve donated{" "}
-              <strong>{networkMetrics.toysDonated}+ toys</strong> worth about{" "}
-              <strong>${networkMetrics.toyValueUsd.toLocaleString()}</strong>, and raised{" "}
-              <strong>${networkMetrics.fundsRaised}</strong> in funds so far.
-            </p>
-            <ul className="mt-8 space-y-4">
-              <FeatureLine icon={<Scissors />} title="Fashion department workshops" body="Turn scrap fabric into durable enrichment toys shelters can use." />
-              <FeatureLine icon={<BookOpen />} title="Documented donations" body="Counts only clear after advisor and HQ review." />
-              <FeatureLine icon={<Heart />} title="Task-sized help" body="Shelters ask for folding, labeling, sewing — not vague ‘volunteer vibes.’" />
-            </ul>
-          </div>
-          <div className="sticker-card bg-white p-7 sm:p-9">
-            <p className="text-xs font-black uppercase tracking-[.16em] text-rose">Why verification matters</p>
-            <h3 className="mt-3 font-display text-3xl font-extrabold text-cocoa">Public totals stay honest</h3>
-            <ul className="mt-8 space-y-4">
-              <FeatureLine icon={<FileCheck2 />} title="Reviewed impact" body="Advisor and organizer verification before publication." />
-              <FeatureLine icon={<ListChecks />} title="Shelter-first tasks" body="Needs and outcomes—not performative volunteering." />
-              <FeatureLine icon={<ShieldCheck />} title="Consent built in" body="Parent waivers and image permissions stay attached to the work." />
-            </ul>
-            <div className="mt-9 flex flex-wrap gap-4">
-              <Link href="/impact" className="inline-flex items-center gap-2 font-black text-rose underline decoration-2 underline-offset-4">
-                Impact board <ArrowRight aria-hidden className="h-4 w-4" />
-              </Link>
-              <Link href="/adopt" className="inline-flex items-center gap-2 font-black text-rose underline decoration-2 underline-offset-4">
-                Open tasks <ArrowRight aria-hidden className="h-4 w-4" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="relative overflow-hidden border-t-2 border-cocoa bg-cocoa px-5 py-24 text-cream sm:px-10 lg:py-28">
-        <div className="relative mx-auto max-w-[1000px] text-center">
-          <p className="eyebrow mx-auto w-fit border-cream bg-transparent text-cream">There&apos;s room in the network</p>
-          <h2 className="mt-7 font-display text-5xl font-extrabold tracking-[-.04em] sm:text-7xl">Your school can be the next branch.</h2>
-          <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-cream/75">
-            Join chapters already working in California, Texas, Alabama, Georgia, Qatar, and India.
+      <section className="border-t-2 border-border bg-cocoa px-5 py-20 text-[var(--background)] sm:px-10">
+        <div className="mx-auto max-w-[900px] text-center">
+          <p className="inline-flex rounded-full border border-current/30 px-4 py-1 text-xs font-extrabold uppercase tracking-[0.16em]">
+            There&apos;s room in the network
           </p>
-          <div className="mt-9 flex flex-wrap justify-center gap-3">
-            <Link href="/apply" className="button-primary border-cream bg-rose text-white shadow-[4px_4px_0_#fff8e9]">
-              Apply to start a chapter <ArrowRight aria-hidden className="h-4 w-4" />
+          <h2 className="mt-6 font-display text-4xl font-extrabold tracking-tight sm:text-6xl">
+            Your school can be the next branch.
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-base leading-7 opacity-80">
+            California · Texas · Alabama · Georgia · Qatar · India — and growing.
+          </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Link href="/apply" className="button-primary border-[var(--background)] bg-rose shadow-[3px_3px_0_rgba(255,246,239,0.35)]">
+              Apply to start a chapter <ArrowRight className="h-4 w-4" />
             </Link>
-            <Link href="/directory" className="button-paper border-cream text-cream hover:bg-cream hover:text-cocoa">
+            <Link href="/directory" className="button-paper border-[var(--background)] bg-transparent text-[var(--background)] hover:bg-[var(--background)] hover:text-cocoa">
               Browse branches
             </Link>
           </div>
+          <p className="mt-6 inline-flex items-center gap-2 text-sm font-semibold opacity-75">
+            <CheckCircle2 className="h-4 w-4" /> Use the sun/moon toggle anytime your eyes need a break
+          </p>
         </div>
       </section>
     </>
   );
 }
 
-function ImpactNote({ value, label, className }: { value: string; label: string; className: string }) {
+function Stat({ value, label, tone }: { value: string; label: string; tone: string }) {
   return (
-    <div className={`rounded-xl border-2 border-cocoa p-4 text-center shadow-[2px_3px_0_#6e493b] ${className}`}>
-      <p className="font-display text-2xl font-extrabold text-cocoa sm:text-3xl">{value}</p>
-      <p className="mt-1 text-[.65rem] font-black uppercase tracking-[.14em] text-cocoa/65">{label}</p>
+    <div className={`rounded-2xl border border-border p-4 text-center ${tone}`}>
+      <p className="font-display text-2xl font-extrabold text-cocoa">{value}</p>
+      <p className="mt-1 text-[0.65rem] font-extrabold uppercase tracking-[0.12em] text-muted">{label}</p>
     </div>
-  );
-}
-
-function StepCard({ icon, number, title, body }: { icon: React.ReactNode; number: string; title: string; body: string }) {
-  return (
-    <article className="sticker-card relative bg-white p-7 text-center">
-      <span className="absolute right-5 top-4 font-hand text-3xl font-semibold text-rose/55">{number}</span>
-      <div className="mx-auto grid h-16 w-16 place-items-center rounded-full border-2 border-cocoa bg-blush text-cocoa [&>svg]:h-7 [&>svg]:w-7">
-        {icon}
-      </div>
-      <h3 className="mt-6 font-display text-2xl font-extrabold text-cocoa">{title}</h3>
-      <p className="mt-3 leading-7 text-ink/68">{body}</p>
-    </article>
-  );
-}
-
-function FeatureLine({ icon, title, body }: { icon: React.ReactNode; title: string; body: string }) {
-  return (
-    <li className="flex gap-4">
-      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full border-2 border-cocoa bg-blush text-rose [&>svg]:h-5 [&>svg]:w-5">
-        {icon}
-      </span>
-      <div>
-        <p className="font-display text-lg font-extrabold text-cocoa">{title}</p>
-        <p className="mt-1 text-sm leading-6 text-ink/65">{body}</p>
-      </div>
-    </li>
   );
 }

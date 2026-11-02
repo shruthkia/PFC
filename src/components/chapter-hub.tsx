@@ -151,9 +151,9 @@ export function ChapterHub() {
   }
 
   return (
-    <div className="fixed inset-0 z-[60] min-h-screen overflow-y-auto bg-[#fbf7ec] text-ink">
+    <div className="fixed inset-0 z-[60] min-h-screen overflow-y-auto bg-background text-ink">
       <a href="#dashboard-main" className="skip-link">Skip to dashboard</a>
-      <aside className={`fixed inset-y-0 left-0 z-[70] w-72 overflow-y-auto border-r-2 border-cocoa bg-[#f6d8e1] p-5 transition-transform lg:translate-x-0 ${navOpen ? "translate-x-0" : "-translate-x-full"}`}>
+      <aside className={`fixed inset-y-0 left-0 z-[70] w-72 overflow-y-auto border-r-2 border-border bg-blush p-5 transition-transform lg:translate-x-0 ${navOpen ? "translate-x-0" : "-translate-x-full"}`}>
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2" aria-label="PawsForCause home">
             <HouseMark className="h-11 w-12" />
@@ -163,10 +163,10 @@ export function ChapterHub() {
             <X className="h-5 w-5" />
           </button>
         </div>
-        <div className="mt-7 rounded-2xl border-2 border-cocoa bg-cream p-4 shadow-[3px_3px_0_#6e493b]">
-          <p className="text-[.65rem] font-black uppercase tracking-[.15em] text-rose">Demo chapter login</p>
-          <p className="mt-1 font-display text-lg font-black text-cocoa">Coppell Paws</p>
-          <p className="mt-1 text-xs font-semibold text-cocoa/60">Maya Chen · Chapter President · DFW</p>
+        <div className="mt-7 rounded-2xl border-2 border-border bg-surface-strong p-4 shadow-sketch">
+          <p className="text-[.65rem] font-extrabold uppercase tracking-[.15em] text-rose">Demo chapter login</p>
+          <p className="mt-1 font-display text-lg font-extrabold text-cocoa">Coppell Paws</p>
+          <p className="mt-1 text-xs font-semibold text-muted">Maya Chen · Chapter President · DFW</p>
         </div>
         <nav className="mt-7" aria-label="Chapter hub">
           <ul className="space-y-1">
@@ -178,7 +178,7 @@ export function ChapterHub() {
                     setTab(label);
                     setNavOpen(false);
                   }}
-                  className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-extrabold transition ${tab === label ? "border-2 border-cocoa bg-white text-cocoa shadow-[2px_2px_0_#6e493b]" : "text-cocoa/70 hover:bg-white/60 hover:text-cocoa"}`}
+                  className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-extrabold transition ${tab === label ? "border-2 border-border bg-surface-strong text-cocoa shadow-sketch" : "text-muted hover:bg-surface-strong/70 hover:text-cocoa"}`}
                   aria-current={tab === label ? "page" : undefined}
                 >
                   <Icon aria-hidden className="h-4 w-4" />
@@ -198,20 +198,20 @@ export function ChapterHub() {
       {navOpen && <button type="button" aria-label="Close navigation" className="fixed inset-0 z-[60] bg-cocoa/30 lg:hidden" onClick={() => setNavOpen(false)} />}
 
       <div className="lg:pl-72">
-        <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b-2 border-cocoa bg-cream/95 px-4 backdrop-blur sm:px-7">
-          <button type="button" className="grid h-10 w-10 place-items-center rounded-full border-2 border-cocoa lg:hidden" onClick={() => setNavOpen(true)} aria-label="Open navigation">
+        <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b-2 border-border bg-surface/95 px-4 backdrop-blur sm:px-7">
+          <button type="button" className="grid h-10 w-10 place-items-center rounded-full border-2 border-border lg:hidden" onClick={() => setNavOpen(true)} aria-label="Open navigation">
             <Menu className="h-5 w-5" />
           </button>
           <div className="hidden lg:block">
-            <p className="text-xs font-black uppercase tracking-[.16em] text-cocoa/50">Chapter hub · secure preview</p>
+            <p className="text-xs font-extrabold uppercase tracking-[.16em] text-muted">Chapter hub · Coppell branch</p>
           </div>
           <div className="flex items-center gap-3">
             <StatusPill tone="warn">Preview mode</StatusPill>
-            <button type="button" className="relative grid h-10 w-10 place-items-center rounded-full border-2 border-cocoa bg-white" aria-label="Notifications">
+            <button type="button" className="relative grid h-10 w-10 place-items-center rounded-full border-2 border-border bg-surface-strong" aria-label="Notifications">
               <Bell className="h-4 w-4" />
-              <span className="absolute -right-1 -top-1 h-3 w-3 rounded-full border border-cocoa bg-rose" />
+              <span className="absolute -right-1 -top-1 h-3 w-3 rounded-full border border-border bg-rose" />
             </button>
-            <div className="grid h-10 w-10 place-items-center rounded-full border-2 border-cocoa bg-mint font-black text-cocoa" aria-label="Signed in as Maya">M</div>
+            <div className="grid h-10 w-10 place-items-center rounded-full border-2 border-border bg-mint font-extrabold text-cocoa" aria-label="Signed in as Maya">M</div>
           </div>
         </header>
 
