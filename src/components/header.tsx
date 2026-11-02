@@ -11,8 +11,20 @@ import { siteConfig } from "@/lib/content";
 const primaryLinks = [
   { href: "/about", label: "Our story" },
   { href: "/work", label: "The work" },
+  { href: "/directory", label: "Chapters" },
+  { href: "/impact", label: "Impact" },
   { href: "/start", label: "Start a chapter" },
   { href: "/faq", label: "FAQ" },
+];
+
+const moreLinks = [
+  { href: "/leaderboard", label: "Leaderboards" },
+  { href: "/adopt", label: "Shelter mini-tasks" },
+  { href: "/shelter", label: "Post a shelter task" },
+  { href: "/alumni", label: "Alumni mentors" },
+  { href: "/portal", label: "Chapter hub" },
+  { href: "/advisor", label: "Advisor desk" },
+  { href: "/admin", label: "National admin" },
 ];
 
 export function Header() {
@@ -29,14 +41,14 @@ export function Header() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 lg:flex" aria-label="Main navigation">
+        <nav className="hidden items-center gap-6 xl:flex" aria-label="Main navigation">
           {primaryLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               className={cn(
                 "text-sm font-extrabold transition-colors hover:text-rose",
-                pathname === link.href ? "text-rose" : "text-cocoa/75"
+                pathname === link.href ? "text-rose" : "text-cocoa/75",
               )}
               aria-current={pathname === link.href ? "page" : undefined}
             >
@@ -46,7 +58,7 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Link href="/portal" className="hidden text-sm font-extrabold text-cocoa hover:text-rose sm:block">
+          <Link href="/login" className="hidden text-sm font-extrabold text-cocoa hover:text-rose sm:block">
             Chapter login
           </Link>
           <Link href="/apply" className="button-primary hidden min-h-0 px-4 py-2 text-xs sm:inline-flex">
@@ -54,7 +66,7 @@ export function Header() {
           </Link>
           <button
             type="button"
-            className="grid h-11 w-11 place-items-center rounded-full border-2 border-cocoa text-cocoa lg:hidden"
+            className="grid h-11 w-11 place-items-center rounded-full border-2 border-cocoa text-cocoa xl:hidden"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-controls="mobile-nav"
@@ -66,13 +78,9 @@ export function Header() {
       </div>
 
       {open && (
-        <nav
-          id="mobile-nav"
-          className="border-t-2 border-cocoa bg-cream px-5 py-6 lg:hidden"
-          aria-label="Mobile"
-        >
-          <ul className="space-y-4">
-            {primaryLinks.map((link) => (
+        <nav id="mobile-nav" className="border-t-2 border-cocoa bg-cream px-5 py-6 xl:hidden" aria-label="Mobile">
+          <ul className="space-y-3">
+            {[...primaryLinks, ...moreLinks].map((link) => (
               <li key={link.href}>
                 <Link href={link.href} onClick={() => setOpen(false)} className="block py-1 text-lg font-black text-cocoa">
                   {link.label}
@@ -80,10 +88,14 @@ export function Header() {
               </li>
             ))}
             <li>
-              <Link href="/portal" onClick={() => setOpen(false)} className="block py-1 text-lg font-black text-cocoa">Chapter login</Link>
+              <Link href="/login" onClick={() => setOpen(false)} className="block py-1 text-lg font-black text-cocoa">
+                Chapter login
+              </Link>
             </li>
             <li className="pt-2">
-              <Link href="/apply" onClick={() => setOpen(false)} className="button-primary w-full">Apply to start a chapter</Link>
+              <Link href="/apply" onClick={() => setOpen(false)} className="button-primary w-full">
+                Apply to start a chapter
+              </Link>
             </li>
           </ul>
         </nav>

@@ -1,27 +1,25 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Caveat, IBM_Plex_Mono } from "next/font/google";
+import { Figtree, Shantell_Sans, Syne } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
+import { SiteChrome } from "@/components/site-chrome";
 import { CursorGlow } from "@/components/effects/cursor-glow";
 import { siteConfig } from "@/lib/content";
 import "./globals.css";
 
-const bricolage = Bricolage_Grotesque({
-  variable: "--font-bricolage",
+const syne = Syne({
+  variable: "--font-syne",
   subsets: ["latin"],
   display: "swap",
 });
 
-const ibmPlex = IBM_Plex_Mono({
-  variable: "--font-ibm-plex",
+const figtree = Figtree({
+  variable: "--font-figtree",
   subsets: ["latin"],
-  weight: ["400", "500"],
   display: "swap",
 });
 
-const caveat = Caveat({
-  variable: "--font-caveat",
+const shantell = Shantell_Sans({
+  variable: "--font-shantell",
   subsets: ["latin"],
   display: "swap",
 });
@@ -48,7 +46,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       data-scroll-behavior="smooth"
       suppressHydrationWarning
-      className={`${bricolage.variable} ${ibmPlex.variable} ${caveat.variable} h-full`}
+      className={`${syne.variable} ${figtree.variable} ${shantell.variable} h-full`}
     >
       <body className="grain min-h-full flex flex-col antialiased">
         <ThemeProvider>
@@ -56,11 +54,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <a href="#main-content" className="skip-link">
             Skip to content
           </a>
-          <Header />
-          <main id="main-content" className="relative flex-1">
-            {children}
-          </main>
-          <Footer />
+          <SiteChrome>{children}</SiteChrome>
         </ThemeProvider>
       </body>
     </html>

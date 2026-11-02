@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/layout/page-hero";
 import { ApplyBand } from "@/components/layout/apply-band";
-import { DogDoodle } from "@/components/brand/animal-doodles";
+import Link from "next/link";
 import {
   activityLanes,
   campaignFocus,
@@ -12,6 +12,7 @@ import {
   reporting,
   volunteerHours,
 } from "@/lib/content";
+import { networkMetrics } from "@/lib/platform-data";
 
 export const metadata: Metadata = {
   title: "The work",
@@ -35,7 +36,18 @@ export default function WorkPage() {
               <h2 className="font-display text-3xl font-bold">{campaignFocus.title}</h2>
               <p className="mt-4 max-w-2xl leading-relaxed text-muted">{campaignFocus.body}</p>
             </div>
-            <DogDoodle className="max-w-sm text-foreground/80" />
+            <aside className="border-2 border-foreground bg-blush p-6">
+              <p className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-rose">What we&apos;ve done so far</p>
+              <ul className="mt-4 space-y-3 text-sm font-bold text-cocoa">
+                <li>{networkMetrics.toysDonated}+ enrichment toys donated (~${networkMetrics.toyValueUsd.toLocaleString()} value)</li>
+                <li>${networkMetrics.fundsRaised} raised in funds</li>
+                <li>{networkMetrics.fashionPartnerNote}</li>
+                <li>Shelter mini-tasks chapters can claim and finish</li>
+              </ul>
+              <Link href="/adopt" className="mt-5 inline-block text-sm font-black text-rose underline decoration-2 underline-offset-4">
+                Browse open mini-tasks
+              </Link>
+            </aside>
           </div>
 
           <div className="mt-14 grid gap-4 md:grid-cols-2">
