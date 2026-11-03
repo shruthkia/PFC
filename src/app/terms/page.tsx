@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/legal-page";
 
-export const metadata: Metadata = { title: "Terms of use" };
+export const metadata: Metadata = {
+  title: "Terms of use",
+  alternates: { canonical: "/terms" },
+};
 
 export default function TermsPage() {
   return <LegalPage eyebrow="Trust & legal" title="Terms of use" intro="These terms set the ground rules for using PawsForCause websites, chapter tools, resources, and community spaces." sections={[

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { PageHero } from "@/components/layout/page-hero";
 import { ApplyBand } from "@/components/layout/apply-band";
-import Link from "next/link";
 import {
   activityLanes,
   campaignFocus,
@@ -13,11 +13,13 @@ import {
   volunteerHours,
 } from "@/lib/content";
 import { networkMetrics } from "@/lib/platform-data";
+import { HOURS_QUALIFICATION } from "@/lib/qualification";
 
 export const metadata: Metadata = {
   title: "The work",
   description:
     "What PFC chapters actually do: shelter days, sterilization talk, volunteer hours, fundraising rules, and member roles.",
+  alternates: { canonical: "/work" },
 };
 
 export default function WorkPage() {
@@ -29,98 +31,137 @@ export default function WorkPage() {
         lede="Good projects are useful to a kennel or a classroom and interesting enough that students will actually run them. If it only looks good on Instagram, pick again."
       />
 
-      <section className="px-4 py-16 sm:px-8 sm:py-24">
-        <div className="mx-auto max-w-[1100px]">
-          <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
-            <div>
-              <h2 className="font-display text-3xl font-bold">{campaignFocus.title}</h2>
-              <p className="mt-4 max-w-2xl leading-relaxed text-muted">{campaignFocus.body}</p>
-            </div>
-            <aside className="border-2 border-foreground bg-blush p-6">
-              <p className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-rose">What we&apos;ve done so far</p>
-              <ul className="mt-4 space-y-3 text-sm font-bold text-cocoa">
-                <li>{networkMetrics.toysDonated}+ enrichment toys donated (~${networkMetrics.toyValueUsd.toLocaleString()} value)</li>
-                <li>${networkMetrics.fundsRaised} raised in funds</li>
-                <li>{networkMetrics.fashionPartnerNote}</li>
-                <li>Shelter mini-tasks chapters can claim and finish</li>
-              </ul>
-              <Link href="/adopt" className="mt-5 inline-block text-sm font-black text-rose underline decoration-2 underline-offset-4">
-                Browse open mini-tasks
-              </Link>
-            </aside>
+      <section className="bg-background px-5 py-16 sm:px-10 sm:py-20">
+        <div className="mx-auto grid max-w-[1150px] gap-8 lg:grid-cols-[1.15fr_.85fr] lg:items-center">
+          <div>
+            <span className="ribbon">North star</span>
+            <h2 className="mt-4 font-display text-3xl font-extrabold text-cocoa sm:text-4xl">
+              {campaignFocus.title}
+            </h2>
+            <p className="mt-4 max-w-2xl leading-8 text-muted">{campaignFocus.body}</p>
           </div>
+          <aside className="scrap-card bg-blush/60 p-6 sm:p-7">
+            <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-rose">What we&apos;ve done so far</p>
+            <ul className="mt-4 space-y-3 text-sm font-bold leading-6 text-cocoa">
+              <li className="flex justify-between gap-4 border-b border-dashed border-border pb-3">
+                <span>Toys donated</span>
+                <span className="shrink-0 font-display text-lg text-rose">{networkMetrics.toysDonated}+</span>
+              </li>
+              <li className="flex justify-between gap-4 border-b border-dashed border-border pb-3">
+                <span>Toy value</span>
+                <span className="shrink-0 font-display text-lg text-rose">
+                  ${networkMetrics.toyValueUsd.toLocaleString()}
+                </span>
+              </li>
+              <li className="flex justify-between gap-4 border-b border-dashed border-border pb-3">
+                <span>Funds raised</span>
+                <span className="shrink-0 font-display text-lg text-rose">${networkMetrics.fundsRaised}</span>
+              </li>
+              <li>{networkMetrics.fashionPartnerNote}</li>
+            </ul>
+            <Link
+              href="/adopt"
+              className="mt-5 inline-flex min-h-11 items-center text-sm font-extrabold text-rose underline decoration-2 underline-offset-4 hover:text-cocoa"
+            >
+              Browse open mini-tasks
+            </Link>
+          </aside>
+        </div>
 
-          <div className="mt-14 grid gap-4 md:grid-cols-2">
-            {activityLanes.map((lane, i) => (
-              <article key={lane.title} className="border-2 border-foreground p-6 sm:p-8">
-                <p className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-pink-hot">
-                  0{i + 1}
-                </p>
-                <h3 className="mt-2 font-display text-2xl font-bold">{lane.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted">{lane.description}</p>
-              </article>
-            ))}
-          </div>
+        <div className="mx-auto mt-12 grid max-w-[1150px] gap-5 md:grid-cols-2">
+          {activityLanes.map((lane, i) => (
+            <article
+              key={lane.title}
+              className={`sticker-card p-6 sm:p-8 ${i % 3 === 0 ? "bg-surface" : i % 3 === 1 ? "bg-butter/55" : "bg-mint/55"}`}
+            >
+              <span className="grid h-10 w-10 place-items-center rounded-full border-2 border-border bg-surface-strong font-hand text-xl font-semibold text-rose">
+                0{i + 1}
+              </span>
+              <h3 className="mt-3 font-display text-2xl font-extrabold text-cocoa">{lane.title}</h3>
+              <p className="mt-2 text-sm leading-7 text-muted">{lane.description}</p>
+            </article>
+          ))}
         </div>
       </section>
 
-      <section className="border-y border-border bg-brown-dark px-4 py-16 text-cream sm:px-8 sm:py-24">
-        <div className="mx-auto max-w-[1100px]">
-          <h2 className="font-display text-3xl font-bold">What counts as hours</h2>
-          <div className="mt-8 grid gap-6 sm:grid-cols-2">
+      <section className="border-y-2 border-border bg-butter/35 px-5 py-16 sm:px-10 sm:py-20">
+        <div className="mx-auto max-w-[1150px]">
+          <div className="max-w-2xl">
+            <span className="ribbon">Hours</span>
+            <h2 className="mt-4 font-display text-3xl font-extrabold text-cocoa sm:text-4xl">
+              What counts as hours
+            </h2>
+          </div>
+          <div className="mt-9 grid gap-5 sm:grid-cols-2">
             {volunteerHours.map((item) => (
-              <article key={item.title}>
-                <h3 className="font-display text-xl font-bold text-orange">{item.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-brown-soft">{item.body}</p>
+              <article key={item.title} className="rounded-[1.4rem] border-2 border-border bg-surface p-6">
+                <h3 className="font-display text-xl font-extrabold text-cocoa">{item.title}</h3>
+                <p className="mt-2 text-sm leading-7 text-muted">{item.body}</p>
               </article>
             ))}
           </div>
-          <p className="mt-10 max-w-3xl text-sm leading-relaxed text-brown-soft">
-            <span className="font-semibold text-cream">{hourLogging.title}. </span>
+          <p className="mt-8 max-w-3xl rounded-[1.4rem] border-2 border-dashed border-border bg-surface/80 p-5 text-sm leading-7 text-muted">
+            <span className="font-extrabold text-cocoa">{hourLogging.title}. </span>
             {hourLogging.body}
           </p>
-        </div>
-      </section>
-
-      <section className="px-4 py-16 sm:px-8 sm:py-24">
-        <div className="mx-auto max-w-[1100px]">
-          <h2 className="font-display text-3xl font-bold">A menu, not a mandate</h2>
-          <p className="mt-3 max-w-2xl text-sm text-muted">
-            HQ can send a monthly list of options. Your chapter still picks based on the shelter
-            down the road and what your school will allow. Fifteen starting points:
+          <p className="mt-4 max-w-3xl rounded-[1.4rem] border-2 border-cocoa bg-blush/50 p-5 text-sm font-bold leading-7 text-cocoa">
+            {HOURS_QUALIFICATION}
           </p>
-          <ol className="mt-8 columns-1 gap-8 sm:columns-2">
-            {projectIdeas.map((idea, i) => (
-              <li key={idea} className="mb-3 flex break-inside-avoid gap-3 text-sm text-muted">
-                <span className="font-mono text-pink-hot">{String(i + 1).padStart(2, "0")}</span>
-                <span>{idea}</span>
-              </li>
-            ))}
-          </ol>
         </div>
       </section>
 
-      <section className="border-t border-border px-4 py-16 sm:px-8">
-        <div className="mx-auto grid max-w-[1100px] gap-12 lg:grid-cols-2">
-          <div>
-            <h2 className="font-display text-2xl font-bold">How fundraising works</h2>
-            <ul className="mt-6 space-y-3">
+      <section className="bg-background px-5 py-16 sm:px-10 sm:py-20">
+        <div className="mx-auto max-w-[1150px]">
+          <div className="menu-frame p-6 sm:p-9">
+            <div className="text-center">
+              <p className="font-hand text-2xl font-semibold text-rose">fifteen starting points</p>
+              <h2 className="mt-1 font-display text-3xl font-extrabold text-cocoa sm:text-4xl">
+                A menu, not a mandate
+              </h2>
+              <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-muted">
+                HQ can send a monthly list of options. Your chapter still picks based on the shelter down the
+                road and what your school will allow.
+              </p>
+            </div>
+            <ol className="mt-8 grid gap-x-10 sm:grid-cols-2">
+              {projectIdeas.map((idea, i) => (
+                <li
+                  key={idea}
+                  className="flex break-inside-avoid items-start gap-3 border-b border-dashed border-border py-3 text-sm text-muted last:border-0"
+                >
+                  <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full border border-border bg-surface-strong text-[0.65rem] font-extrabold text-rose">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="leading-6">{idea}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t-2 border-border bg-blush/30 px-5 py-16 sm:px-10 sm:py-20">
+        <div className="mx-auto grid max-w-[1150px] gap-8 lg:grid-cols-2">
+          <div className="scrap-card bg-surface p-6 sm:p-8">
+            <h2 className="font-display text-2xl font-extrabold text-cocoa">How fundraising works</h2>
+            <ul className="mt-5 space-y-3">
               {fundraisingNotes.map((line) => (
-                <li key={line} className="border-l-2 border-orange-hot pl-4 text-sm leading-relaxed text-muted">
-                  {line}
+                <li key={line} className="flex gap-3 text-sm leading-7 text-muted">
+                  <span aria-hidden className="mt-2 h-2 w-2 shrink-0 rounded-full bg-rose" />
+                  <span>{line}</span>
                 </li>
               ))}
             </ul>
           </div>
-          <div>
-            <h2 className="font-display text-2xl font-bold">{reporting.title}</h2>
-            <p className="mt-4 text-sm leading-relaxed text-muted">{reporting.body}</p>
-            <h3 className="mt-10 font-display text-2xl font-bold">What members walk away with</h3>
+          <div className="scrap-card bg-surface p-6 sm:p-8">
+            <h2 className="font-display text-2xl font-extrabold text-cocoa">{reporting.title}</h2>
+            <p className="mt-3 text-sm leading-7 text-muted">{reporting.body}</p>
+            <h3 className="mt-8 font-display text-xl font-extrabold text-cocoa">What members walk away with</h3>
             <ul className="mt-4 space-y-4">
               {memberValue.map((item) => (
-                <li key={item.title}>
-                  <p className="font-semibold">{item.title}</p>
-                  <p className="text-sm text-muted">{item.body}</p>
+                <li key={item.title} className="border-b border-dashed border-border pb-3 last:border-0 last:pb-0">
+                  <p className="font-bold text-cocoa">{item.title}</p>
+                  <p className="mt-0.5 text-sm leading-6 text-muted">{item.body}</p>
                 </li>
               ))}
             </ul>

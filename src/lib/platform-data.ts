@@ -5,23 +5,23 @@ export const networkMetrics = {
   toyValueUsd: 1550,
   fundsRaised: 400,
   activeChapters: 11,
-  countries: 3,
+  countries: 4,
   fashionPartnerNote: "Fashion department scrap-to-toy workshops",
   semesterFundGoal: 1500,
   toyGoal: 150,
 };
 
 export const chapters = [
-  { id: "shafter", name: "Shafter Paws", school: "Shafter High", city: "Shafter", state: "CA", country: "USA", lat: 35.5, lng: -119.27, status: "Active", hours: 64, funds: 40, projects: 3, members: 14, toys: 8 },
-  { id: "eastvale", name: "Eastvale Paws", school: "Eastvale area HS", city: "Eastvale", state: "CA", country: "USA", lat: 33.96, lng: -117.56, status: "Active", hours: 72, funds: 35, projects: 4, members: 18, toys: 10 },
-  { id: "richmond-hill", name: "Richmond Hill Paws", school: "Richmond Hill HS", city: "Richmond Hill", state: "GA", country: "USA", lat: 31.95, lng: -81.31, status: "Active", hours: 48, funds: 20, projects: 2, members: 12, toys: 6 },
-  { id: "doha", name: "Doha Paws", school: "Doha partner school", city: "Doha", state: "QA", country: "Qatar", lat: 25.29, lng: 51.53, status: "Active", hours: 55, funds: 50, projects: 3, members: 16, toys: 7 },
-  { id: "coimbatore", name: "Coimbatore Paws", school: "Coimbatore partner school", city: "Coimbatore", state: "TN", country: "India", lat: 11.02, lng: 76.96, status: "Active", hours: 61, funds: 30, projects: 3, members: 20, toys: 9 },
-  { id: "sulphur-springs", name: "Sulphur Springs Paws", school: "Sulphur Springs HS", city: "Sulphur Springs", state: "TX", country: "USA", lat: 33.14, lng: -95.6, status: "Active", hours: 42, funds: 25, projects: 2, members: 11, toys: 5 },
-  { id: "san-jose", name: "San Jose Paws", school: "San Jose area HS", city: "San Jose", state: "CA", country: "USA", lat: 37.34, lng: -121.89, status: "Active", hours: 80, funds: 45, projects: 5, members: 22, toys: 12 },
-  { id: "coppell", name: "Coppell Paws", school: "Coppell HS", city: "Coppell", state: "TX", country: "USA", region: "DFW", lat: 32.95, lng: -97.0, status: "Active", hours: 96, funds: 55, projects: 6, members: 24, toys: 14 },
-  { id: "spanish-fort", name: "Spanish Fort Paws", school: "Spanish Fort HS", city: "Spanish Fort", state: "AL", country: "USA", lat: 30.67, lng: -87.92, status: "Active", hours: 38, funds: 20, projects: 2, members: 10, toys: 4 },
-  { id: "plano", name: "Plano Paws", school: "Plano area HS", city: "Plano", state: "TX", country: "USA", region: "DFW", lat: 33.02, lng: -96.7, status: "Active", hours: 88, funds: 40, projects: 5, members: 21, toys: 11 },
+  { id: "shafter", name: "Shafter Paws", school: "Shafter High", city: "Shafter", state: "CA", country: "USA", lat: 35.5, lng: -119.27, status: "Active", hours: 64, funds: 40, projects: 3, members: 14, toys: 7 },
+  { id: "eastvale", name: "Eastvale Paws", school: "Eastvale area HS", city: "Eastvale", state: "CA", country: "USA", lat: 33.96, lng: -117.56, status: "Active", hours: 72, funds: 35, projects: 4, members: 18, toys: 9 },
+  { id: "richmond-hill", name: "Richmond Hill Paws", school: "Richmond Hill HS", city: "Richmond Hill", state: "ON", country: "Canada", lat: 43.88, lng: -79.44, status: "Active", hours: 48, funds: 20, projects: 2, members: 12, toys: 5 },
+  { id: "doha", name: "Doha Paws", school: "Doha partner school", city: "Doha", state: "QA", country: "Qatar", lat: 25.29, lng: 51.53, status: "Active", hours: 55, funds: 50, projects: 3, members: 16, toys: 6 },
+  { id: "coimbatore", name: "Coimbatore Paws", school: "Coimbatore partner school", city: "Coimbatore", state: "TN", country: "India", lat: 11.02, lng: 76.96, status: "Active", hours: 61, funds: 30, projects: 3, members: 20, toys: 8 },
+  { id: "sulphur-springs", name: "Sulphur Springs Paws", school: "Sulphur Springs HS", city: "Sulphur Springs", state: "TX", country: "USA", lat: 33.14, lng: -95.6, status: "Active", hours: 42, funds: 25, projects: 2, members: 11, toys: 4 },
+  { id: "san-jose", name: "San Jose Paws", school: "San Jose area HS", city: "San Jose", state: "CA", country: "USA", lat: 37.34, lng: -121.89, status: "Active", hours: 80, funds: 45, projects: 5, members: 22, toys: 11 },
+  { id: "coppell", name: "Coppell Paws", school: "Coppell HS", city: "Coppell", state: "TX", country: "USA", region: "DFW", lat: 32.95, lng: -97.0, status: "Active", hours: 96, funds: 55, projects: 6, members: 24, toys: 13 },
+  { id: "spanish-fort", name: "Spanish Fort Paws", school: "Spanish Fort HS", city: "Spanish Fort", state: "AL", country: "USA", lat: 30.67, lng: -87.92, status: "Active", hours: 38, funds: 20, projects: 2, members: 10, toys: 3 },
+  { id: "plano", name: "Plano Paws", school: "Plano area HS", city: "Plano", state: "TX", country: "USA", region: "DFW", lat: 33.02, lng: -96.7, status: "Active", hours: 88, funds: 40, projects: 5, members: 21, toys: 10 },
   { id: "frisco", name: "Frisco Paws", school: "Frisco area HS", city: "Frisco", state: "TX", country: "USA", region: "DFW", lat: 33.15, lng: -96.82, status: "Active", hours: 74, funds: 40, projects: 4, members: 19, toys: 9 },
 ];
 
@@ -35,12 +35,12 @@ export const leaderboardMonth = [
 
 /** Mini tasks shelters post for chapters to claim and finish — not animal listings. */
 export const shelterTasks = [
-  { id: "t1", shelter: "Austin Animal Center", title: "Sort donation towels by size", detail: "Fold and bin clean towels into small / medium / large for kennel restock.", effort: "45 min · 2–4 students", when: "This week", city: "DFW area", urgent: true, category: "Supplies", status: "Open" as const },
-  { id: "t2", shelter: "Safe Harbor Rescue", title: "Sew 12 scrap enrichment toys", detail: "Use donated fabric scraps (fashion dept leftovers welcome). Stuff with clean fleece.", effort: "2 hrs · craft table", when: "By Nov 15", city: "Coppell / Plano", urgent: false, category: "Enrichment", status: "Open" as const },
-  { id: "t3", shelter: "East Bay Humane", title: "Label wishlist bins", detail: "Print labels and mark incoming Amazon wishlist boxes so staff can shelve faster.", effort: "30 min · 2 students", when: "Weekend", city: "San Jose", urgent: true, category: "Ops", status: "Open" as const },
-  { id: "t4", shelter: "Coastal Pets AL", title: "Assemble welcome packets", detail: "Stuff folders with adoption tip sheets, local vet list, and sterilization FAQ.", effort: "1 hr · 3 students", when: "Ongoing", city: "Spanish Fort", urgent: false, category: "Education", status: "Open" as const },
-  { id: "t5", shelter: "Valley Friends", title: "Cut t-shirt yarn for tug toys", detail: "Prep yarn strands from old tees so volunteers can braid toys next shift.", effort: "1 hr · scissors + bins", when: "Nov 12", city: "Shafter / Eastvale", urgent: false, category: "Enrichment", status: "Open" as const },
-  { id: "t6", shelter: "Community Rescue Hub", title: "Photograph empty kennel enrichment", detail: "Take clear photos of finished toys in empty kennels for social (no animal faces required).", effort: "40 min · 1–2 students", when: "Flexible", city: "Frisco", urgent: false, category: "Outreach", status: "Open" as const },
+  { id: "t1", shelter: "Austin Animal Center", title: "Sort donation towels by size", detail: "Fold and bin clean towels into small / medium / large for kennel restock.", effort: "45 min · 2–4 students", when: "This week", city: "DFW area", urgent: true, category: "Supplies" },
+  { id: "t2", shelter: "Safe Harbor Rescue", title: "Sew 12 scrap enrichment toys", detail: "Use donated fabric scraps (fashion dept leftovers welcome). Stuff with clean fleece.", effort: "2 hrs · craft table", when: "By Nov 15", city: "Coppell / Plano", urgent: false, category: "Enrichment" },
+  { id: "t3", shelter: "East Bay Humane", title: "Label wishlist bins", detail: "Print labels and mark incoming Amazon wishlist boxes so staff can shelve faster.", effort: "30 min · 2 students", when: "Weekend", city: "San Jose", urgent: true, category: "Ops" },
+  { id: "t4", shelter: "Coastal Pets AL", title: "Assemble welcome packets", detail: "Stuff folders with adoption tip sheets, local vet list, and sterilization FAQ.", effort: "1 hr · 3 students", when: "Ongoing", city: "Spanish Fort", urgent: false, category: "Education" },
+  { id: "t5", shelter: "Valley Friends", title: "Cut t-shirt yarn for tug toys", detail: "Prep yarn strands from old tees so volunteers can braid toys next shift.", effort: "1 hr · scissors + bins", when: "Nov 12", city: "Shafter / Eastvale", urgent: false, category: "Enrichment" },
+  { id: "t6", shelter: "Community Rescue Hub", title: "Photograph empty kennel enrichment", detail: "Take clear photos of finished toys in empty kennels for social (no animal faces required).", effort: "40 min · 1–2 students", when: "Flexible", city: "Frisco", urgent: false, category: "Outreach" },
 ];
 
 export const announcements = [
@@ -135,6 +135,56 @@ export const projectTags = ["Shelter task", "Enrichment", "Education", "Fundrais
 export const branchRegions = [
   { label: "California", chapters: ["Shafter", "Eastvale", "San Jose"] },
   { label: "DFW / Texas", chapters: ["Coppell", "Plano", "Frisco", "Sulphur Springs"] },
-  { label: "Southeast", chapters: ["Richmond Hill", "Spanish Fort"] },
+  { label: "Canada", chapters: ["Richmond Hill"] },
+  { label: "Southeast", chapters: ["Spanish Fort"] },
   { label: "International", chapters: ["Doha", "Coimbatore"] },
 ];
+
+export type ShelterTaskRecord = (typeof shelterTasks)[number] & {
+  claimedBy?: string;
+  claimedAt?: string;
+};
+
+export type HourStatus = "Advisor review" | "Verified";
+
+export type HourEntry = {
+  id: string;
+  student: string;
+  activity: string;
+  date: string;
+  hours: number;
+  note?: string;
+  proof: string[];
+  status: HourStatus;
+};
+
+/** Sample hour log for the demo chapter. Advisors verify these records. */
+export const hourEntries: HourEntry[] = [
+  { id: "h1", student: "Maya Chen", activity: "Toy-making night", date: "2026-10-29", hours: 3.5, note: "Fashion scrap night, 14 toys inspected and bagged.", proof: ["craft-table-1.jpg", "roster.pdf"], status: "Advisor review" },
+  { id: "h2", student: "Maya Chen", activity: "Shelter volunteer shift", date: "2026-10-18", hours: 4, note: "Kennel laundry and supply restock at Austin Animal Center.", proof: ["supervisor-email.pdf"], status: "Verified" },
+  { id: "h3", student: "Eli Park", activity: "Wishlist bin labeling", date: "2026-10-28", hours: 1.5, note: "Printed and applied labels for incoming wishlist boxes.", proof: ["supervisor-email.pdf"], status: "Advisor review" },
+  { id: "h4", student: "Noah Diaz", activity: "Hallway education table", date: "2026-10-26", hours: 1.5, note: "Sterilization myth-busting table at lunch.", proof: ["flyer-photo.jpg"], status: "Advisor review" },
+  { id: "h5", student: "Maya Chen", activity: "Scrap-to-toy workshop", date: "2026-10-12", hours: 3, note: "Cut and braided fabric strips with the fashion department.", proof: ["count-sheet.pdf"], status: "Verified" },
+  { id: "h6", student: "Eli Park", activity: "Shelter supply sort", date: "2026-10-05", hours: 2, note: "Sorted towel donations by size.", proof: [], status: "Verified" },
+];
+
+export type AnnouncementRecord = (typeof announcements)[number];
+export type ClaimRecord = (typeof pendingClaims)[number];
+
+export type ApplicationRecord = {
+  id: string;
+  reference: string;
+  submittedAt: string;
+  name: string;
+  email: string;
+  school: string;
+  city: string;
+  region: string;
+  grade: string;
+  age: string;
+  advisor: string;
+  why: string;
+  need: string;
+  interest: string;
+  status: "Received" | "Reviewed";
+};

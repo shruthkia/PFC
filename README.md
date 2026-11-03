@@ -9,6 +9,22 @@ Public site for **PFC (PawsForCause)**, a student-led animal-welfare network. Hi
 - `/start` Chapter path, 30-day launch, roles, Active standard
 - `/work` Projects, volunteer hours, fundraising, member value
 - `/faq` The questions founders ask before they apply
+- `/apply` Redirects to the approved Google Form
+- `/directory` Chapter directory and real OpenStreetMap map
+- `/impact` Network totals, progress bars, announcements
+- `/impact/report` Printable semester report (school board, shelter, grant packet)
+- `/leaderboard` Inter-chapter rankings
+- `/adopt` Shelter mini-task board
+- `/shelter` Shelter partner portal
+- `/portal` Chapter hub (checklist, hours, funds, projects, consent, certificates)
+- `/advisor` Advisor verification desk
+- `/admin` National admin desk (claims, Active Standard, CMS, reports)
+- `/alumni` Alumni mentor directory
+- `/prototype` One page explaining the preview and linking every workspace
+- `/login` Create a preview account or sign in
+- `/contact` Role-based contact channels
+- `/safety`, `/conduct`, `/privacy`, `/cookies`, `/terms`, `/accessibility` — trust and legal pages
+- `/sitemap.xml`, `/robots.txt`, `/manifest.webmanifest`, `/opengraph-image` — generated metadata
 
 ## Run locally
 
@@ -19,11 +35,20 @@ npm run dev
 
 Open [http://localhost:4317](http://localhost:4317).
 
-## Build
+## Checks
 
 ```bash
+npm run lint
 npm run build
-npm start
 ```
+
+## Notes
+
+- Design system lives in `src/app/globals.css` (cream paper, dusty rose, gingham, scallops, sticker cards). Display type is Baloo 2, accents are Shantell Sans, body copy is Figtree.
+- Brand and contact details come from `src/lib/config.ts`; set `NEXT_PUBLIC_SITE_URL` for canonical URLs and metadata.
+- Accounts use email and password with scrypt hashing, server-side sessions in an HttpOnly cookie, and a one-time recovery code for password resets. Workspace records are stored in a SQLite database at `.data/pawsforcause.db` and shared by students, advisors, and organizers; the browser keeps an offline copy under `pfc:` keys.
+- The database is git-ignored. Set `PFC_DATABASE_PATH` to move it. This prototype needs a Node server with a persistent disk; before a real launch, move the data layer to a hosted Postgres/Supabase and add verified email plus role approval.
+- Chapter applications are collected only through the approved Google Form. The native application form and its API were removed from the live path.
+- Real outputs work without external services: resource templates download as files, and the practice certificate and impact report print from the browser. Nothing is emailed or sent to a school, shelter, or national program.
 
 Primary CTA: the live [chapter interest form](https://docs.google.com/forms/d/e/1FAIpQLScT8S5ygsbBoEzovYqMu-b30oQmUyzNE3LvwL8IB0PsSu5KzA/viewform).

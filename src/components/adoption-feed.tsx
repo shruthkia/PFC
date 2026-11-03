@@ -2,68 +2,104 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, CheckCircle2, ListChecks } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ListChecks, RotateCcw } from "lucide-react";
 import { Panel, StatusPill } from "@/components/platform/ui";
-import { shelterTasks as seedTasks } from "@/lib/platform-data";
+import { shelterTasks as seedTasks, type ShelterTaskRecord } from "@/lib/platform-data";
+import { storageKeys, useStoredState } from "@/lib/storage";
 
-type BoardTask = (typeof seedTasks)[number] & { claimedBy?: string };
+const CHAPTER_NAME = "Coppell Paws";
 
 export function AdoptionFeed() {
-  const [tasks, setTasks] = useState<BoardTask[]>(seedTasks);
+  const [tasks, setTasks] = useStoredState<ShelterTaskRecord[]>(storageKeys.tasks, seedTasks);
   const [category, setCategory] = useState("All");
   const [toast, setToast] = useState<string | null>(null);
 
   const categories = useMemo(
-    () => ["All", ...Array.from(new Set(seedTasks.map((task) => task.category)))],
-    [],
+    () => ["All", ...Array.from(new Set(tasks.map((task) => task.category)))],
+    [tasks],
   );
 
   const visible = category === "All" ? tasks : tasks.filter((task) => task.category === category);
+  const openCount = tasks.filter((task) => !task.claimedBy).length;
+
+  function flash(message: string) {
+    setToast(message);
+    window.setTimeout(() => setToast(null), 4200);
+  }
 
   function claim(id: string) {
     setTasks((current) =>
       current.map((task) =>
-        task.id === id ? { ...task, status: "Open", claimedBy: "Coppell Paws" } : task,
+        task.id === id
+          ? { ...task, claimedBy: CHAPTER_NAME, claimedAt: new Date().toLocaleDateString() }
+          : task,
       ),
     );
-    setToast("Task claimed for Coppell Paws. Finish it, then log proof in the chapter hub.");
-    window.setTimeout(() => setToast(null), 4200);
+    flash("Claimed for Coppell Paws. It now shows as claimed for everyone on this board.");
+  }
+
+  function release(id: string) {
+    setTasks((current) =>
+      current.map((task) => (task.id === id ? { ...task, claimedBy: undefined, claimedAt: undefined } : task)),
+    );
+    flash("Claim released. The task is open again.");
   }
 
   return (
     <div className="paper-grid min-h-screen px-5 pb-24 pt-28 sm:px-10">
       <div className="mx-auto max-w-[1250px]">
-        <Link href="/" className="inline-flex items-center gap-2 text-sm font-black text-cocoa/65 hover:text-rose">
-          <ArrowLeft className="h-4 w-4" /> Public site
+        <Link href="/" className="inline-flex items-center gap-2 text-sm font-black text-muted hover:text-rose">
+          <ArrowLeft aria-hidden className="h-4 w-4" /> Public site
         </Link>
         <div className="mt-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="eyebrow w-fit">Shelter partners → chapters</p>
-            <h1 className="mt-4 font-display text-5xl font-extrabold tracking-tight text-cocoa">Shelter mini-task board</h1>
-            <p className="mt-3 max-w-2xl text-ink/65">
-              These are completable jobs shelters ask for — sew scrap toys, sort supplies, assemble packets — not animal profiles.
+            <h1 className="mt-4 font-display text-5xl font-extrabold tracking-tight text-cocoa">
+              Shelter mini-task board
+            </h1>
+            <p className="mt-3 max-w-2xl text-muted">
+              Completable jobs that shelters and rescues actually asked for — sort supplies, sew scrap toys,
+              assemble packets. These are not animal profiles or adoption listings.
             </p>
           </div>
-          <StatusPill tone="good">Claim · finish · log</StatusPill>
+          <StatusPill tone="good">{openCount} open</StatusPill>
         </div>
 
-        {toast && (
-          <div role="status" className="mt-6 flex items-center gap-3 rounded-2xl border-2 border-[#4d7357] bg-mint p-4 font-bold text-[#31513a]">
-            <CheckCircle2 className="h-5 w-5" /> {toast}
+        {toast ? (
+          <div
+            role="status"
+            className="mt-6 flex items-center gap-3 rounded-2xl border-2 border-[#4d7357] bg-mint p-4 font-bold text-[#31513a]"
+          >
+            <CheckCircle2 aria-hidden className="h-5 w-5" /> {toast}
           </div>
-        )}
+        ) : null}
 
-        <div className="mt-8 flex flex-wrap gap-2" role="tablist" aria-label="Filter by category">
+        <section className="mt-8 rounded-[1.5rem] border-2 border-border bg-surface-strong p-5">
+          <h2 className="font-display text-2xl font-extrabold text-cocoa">How claiming works</h2>
+          <ol className="mt-3 grid gap-3 text-sm leading-6 text-muted sm:grid-cols-3">
+            <li>
+              <strong className="text-cocoa">1. Claim a task.</strong> It is reserved for your chapter on
+              this board.
+            </li>
+            <li>
+              <strong className="text-cocoa">2. Do the work.</strong> Keep the shelter contact and any proof
+              your advisor needs.
+            </li>
+            <li>
+              <strong className="text-cocoa">3. Log it.</strong> Add the hours and proof in the chapter hub
+              so it counts.
+            </li>
+          </ol>
+        </section>
+
+        <div className="mt-8 flex flex-wrap gap-2" role="group" aria-label="Filter mini-tasks by category">
           {categories.map((option) => (
             <button
               key={option}
               type="button"
-              role="tab"
-              aria-selected={category === option}
+              aria-pressed={category === option}
               onClick={() => setCategory(option)}
-              className={`rounded-full border-2 border-cocoa px-4 py-2 text-sm font-black ${
-                category === option ? "bg-rose text-white shadow-[3px_3px_0_#6e493b]" : "bg-white text-cocoa"
-              }`}
+              className="tab-pill"
             >
               {option}
             </button>
@@ -72,6 +108,7 @@ export function AdoptionFeed() {
 
         <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
           {visible.map((task) => {
+            const claimedByUs = task.claimedBy === CHAPTER_NAME;
             const claimed = Boolean(task.claimedBy);
             return (
               <article key={task.id} className="sticker-card bg-white p-5">
@@ -84,17 +121,39 @@ export function AdoptionFeed() {
                   </StatusPill>
                 </div>
                 <h2 className="mt-4 font-display text-2xl font-extrabold text-cocoa">{task.title}</h2>
-                <p className="mt-2 text-sm text-cocoa/60">
+                <p className="mt-2 text-sm text-muted">
                   {task.shelter} · {task.city}
                 </p>
-                <p className="mt-3 text-sm leading-6 text-cocoa/75">{task.detail}</p>
+                <p className="mt-3 text-sm leading-6 text-muted">{task.detail}</p>
                 <p className="mt-4 text-sm font-bold text-rose">{task.effort}</p>
-                <p className="mt-1 text-xs font-black uppercase tracking-[.12em] text-cocoa/45">{task.when}</p>
-                {claimed ? (
-                  <p className="mt-5 text-sm font-bold text-cocoa/65">Claimed by {task.claimedBy}</p>
+                <p className="mt-1 text-xs font-black uppercase tracking-[.12em] text-muted">{task.when}</p>
+                {claimedByUs ? (
+                  <div className="mt-5">
+                    <p className="text-sm font-bold text-cocoa">
+                      Claimed by your chapter{task.claimedAt ? ` · ${task.claimedAt}` : ""}
+                    </p>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      <Link href="/prototype" className="button-primary min-h-0 px-3 py-2 text-xs">
+                        Preview the chapter hub
+                      </Link>
+                      <button
+                        type="button"
+                        className="button-paper min-h-0 px-3 py-2 text-xs"
+                        onClick={() => release(task.id)}
+                      >
+                        <RotateCcw aria-hidden className="h-3.5 w-3.5" /> Release
+                      </button>
+                    </div>
+                  </div>
+                ) : claimed ? (
+                  <p className="mt-5 text-sm font-bold text-muted">Claimed by {task.claimedBy}</p>
                 ) : (
-                  <button type="button" className="button-primary mt-5 min-h-0 px-4 py-2 text-xs" onClick={() => claim(task.id)}>
-                    <ListChecks className="h-3.5 w-3.5" /> Claim for my chapter
+                  <button
+                    type="button"
+                    className="button-primary mt-5 min-h-0 px-4 py-2 text-xs"
+                    onClick={() => claim(task.id)}
+                  >
+                    <ListChecks aria-hidden className="h-3.5 w-3.5" /> Claim for Coppell Paws
                   </button>
                 )}
               </article>
@@ -102,14 +161,25 @@ export function AdoptionFeed() {
           })}
         </div>
 
+        {!visible.length ? (
+          <p className="mt-8 rounded-2xl border border-dashed border-border bg-surface-strong p-5 text-sm font-semibold text-muted">
+            No tasks in this category yet. Switch the filter or check the shelter portal.
+          </p>
+        ) : null}
+
         <Panel tone="butter" className="mt-10">
           <h2 className="font-display text-2xl font-extrabold text-cocoa">For shelter partners</h2>
-          <p className="mt-2 max-w-3xl text-sm leading-7 text-ink/65">
-            Need a job done? Post it from the{" "}
-            <Link href="/shelter" className="font-black text-rose underline decoration-2 underline-offset-4">
-              shelter mini-task portal
+          <p className="mt-2 max-w-3xl text-sm leading-7 text-muted">
+            Need a job done in the real program? Start from the{" "}
+            <Link href="/prototype" className="font-black text-rose underline decoration-2 underline-offset-4">
+              preview shelter portal
             </Link>
-            . Keep it specific so a chapter can finish it in one meeting or afternoon.
+            , where the flow is demonstrated. A live board would keep tasks specific enough to finish in one
+            meeting or afternoon, and say what a chapter should bring.
+          </p>
+          <p className="mt-3 text-sm font-semibold text-muted">
+            This is a preview board: claims are saved in the preview, not sent to a shelter. A live board
+            would notify the partner when a chapter claims a task.
           </p>
         </Panel>
       </div>

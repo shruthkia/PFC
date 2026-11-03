@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
-import { ChapterApplication } from "@/components/chapter-application";
+import { redirect } from "next/navigation";
+import { CHAPTER_FORM_URL } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Apply to start a chapter",
-  description: "Tell PawsForCause about your school, your founding team, and the animal-welfare need you want to address.",
+  description: "Open the approved PawsForCause chapter interest form.",
+  robots: { index: false, follow: true },
 };
 
 export default function ApplyPage() {
-  return <ChapterApplication />;
+  redirect(CHAPTER_FORM_URL);
 }
