@@ -35,7 +35,7 @@ export function Mission() {
               <ul className="mt-3 space-y-2 text-sm font-bold text-cocoa">
                 {branchRegions.map((region) => (
                   <li key={region.label}>
-                    <span className="text-cocoa/55">{region.label}:</span> {region.chapters.join(", ")}
+                    <span className="text-muted">{region.label}:</span> {region.chapters.join(", ")}
                   </li>
                 ))}
               </ul>

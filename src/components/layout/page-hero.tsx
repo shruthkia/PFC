@@ -1,12 +1,10 @@
 import { HouseMark } from "@/components/brand/house-mark";
 import { PawTrail } from "@/components/brand/animal-doodles";
-import { cn } from "@/lib/utils";
 
 export function PageHero({
   kicker,
   title,
   lede,
-  dark = false,
 }: {
   kicker: string;
   title: string;
@@ -14,27 +12,40 @@ export function PageHero({
   dark?: boolean;
 }) {
   return (
-    <header
-      className={cn(
-        "relative overflow-hidden border-b border-border px-4 pb-16 pt-28 sm:px-8 sm:pb-20 sm:pt-32",
-        dark ? "bg-brown-dark text-cream" : "bg-cream dark:bg-card"
-      )}
-    >
-      <div className="pointer-events-none absolute -right-8 top-24 w-40 sm:top-28 sm:w-56" aria-hidden>
-        <HouseMark className="h-full w-full" decorative />
-      </div>
-      <div className="relative mx-auto max-w-[1100px]">
-        <p className="font-mono text-[0.65rem] uppercase tracking-[0.3em] text-pink-hot">{kicker}</p>
-        <h1 className="mt-4 max-w-3xl font-display text-4xl font-extrabold leading-[1.02] tracking-tight sm:text-6xl">
-          {title}
-        </h1>
-        <p className={cn("mt-6 max-w-xl text-lg leading-relaxed", dark ? "text-brown-soft" : "text-muted")}>
-          {lede}
-        </p>
-        <div className="mt-10 max-w-sm text-pink-hot/70">
-          <PawTrail />
+    <header className="gingham relative overflow-hidden border-b-2 border-border pb-16 pt-24 sm:pb-20 sm:pt-32">
+      <div className="mx-auto max-w-[1150px] px-5 sm:px-10">
+        <div className="scrap-card relative overflow-hidden bg-surface px-6 py-10 sm:px-12 sm:py-14">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -right-10 -top-8 h-40 w-44 rotate-6 opacity-25 sm:h-52 sm:w-56"
+          >
+            <HouseMark className="h-full w-full" decorative />
+          </div>
+          <div aria-hidden className="pointer-events-none absolute inset-x-6 top-4 flex justify-between text-rose/45">
+            <span className="font-hand text-2xl">✦</span>
+            <span className="font-hand text-2xl">✧</span>
+          </div>
+
+          <div className="relative">
+            <p className="eyebrow w-fit">{kicker}</p>
+            <h1 className="mt-5 max-w-3xl text-balance font-display text-4xl font-extrabold leading-[1.05] tracking-[-0.02em] text-cocoa sm:text-6xl">
+              {title}
+            </h1>
+            <p className="mt-5 max-w-2xl text-lg leading-8 text-muted">{lede}</p>
+
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+              <div className="max-w-[190px] text-rose/60">
+                <PawTrail />
+              </div>
+              <p className="inline-flex items-center gap-2 rounded-full border-2 border-border bg-surface-strong px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.12em] text-cocoa">
+                <span aria-hidden className="h-2 w-2 rounded-full bg-sage-dark" />
+                Student-led · verified work
+              </p>
+            </div>
+          </div>
         </div>
       </div>
+      <div className="scallop-border absolute inset-x-0 bottom-0" aria-hidden />
     </header>
   );
 }

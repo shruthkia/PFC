@@ -5,4 +5,5 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const CHAPTER_FORM_URL = "/apply";
+export const CHAPTER_FORM_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLScT8S5ygsbBoEzovYqMu-b30oQmUyzNE3LvwL8IB0PsSu5KzA/viewform";

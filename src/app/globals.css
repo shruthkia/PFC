@@ -11,7 +11,7 @@
   --border: #d7b8c0;
   --pink: #e8a0b4;
   --pink-soft: #f7d6e0;
-  --pink-hot: #c45d7f;
+  --pink-hot: #a83b5f;
   --orange: #e2b07a;
   --orange-soft: #f3dfc0;
   --orange-hot: #b8793f;
@@ -23,11 +23,12 @@
   --ring: #a84d6c;
   --cocoa: #5c4338;
   --ink: #3f2f28;
-  --blush: #f7d6e0;
+  --blush: #fbe4ec;
   --butter: #f3e4b4;
   --mint: #d5e6d8;
   --sage-dark: #45664f;
-  --rose: #c45d7f;
+  --rose: #a8385d;
+  --rose-deep: #7d2a45;
   --surface: #fffaf4;
   --surface-strong: #ffffff;
   --shadow: #5c4338;
@@ -105,13 +106,15 @@
   --color-mint: var(--mint);
   --color-sage-dark: var(--sage-dark);
   --color-rose: var(--rose);
+  --color-rose-deep: var(--rose-deep);
   --color-surface: var(--surface);
   --color-surface-strong: var(--surface-strong);
   --color-ribbon: var(--ribbon);
   --font-sans: var(--font-figtree);
   --font-mono: var(--font-figtree);
-  --font-display: var(--font-syne);
+  --font-display: var(--font-baloo);
   --font-hand: var(--font-shantell);
+  --radius-sticker: 1.6rem;
 }
 
 * {
@@ -170,7 +173,8 @@ a {
 }
 
 .font-display {
-  font-family: var(--font-syne), ui-sans-serif, sans-serif;
+  font-family: var(--font-baloo), ui-sans-serif, sans-serif;
+  letter-spacing: -0.01em;
 }
 
 .font-mono {
@@ -228,7 +232,7 @@ a {
 
 .section-title {
   color: var(--cocoa);
-  font-family: var(--font-syne), ui-sans-serif, sans-serif;
+  font-family: var(--font-baloo), ui-sans-serif, sans-serif;
   font-size: clamp(2.3rem, 5.5vw, 4.2rem);
   font-weight: 800;
   letter-spacing: -0.04em;
@@ -290,6 +294,18 @@ a {
   background: var(--blush);
 }
 
+.button-primary:active,
+.button-paper:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 transparent;
+}
+
+.button-primary:disabled,
+.button-paper:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .scrap-card,
 .sticker-card {
   border: 2px solid color-mix(in srgb, var(--cocoa) 70%, var(--border));
@@ -344,24 +360,172 @@ a {
     0 0 / 28px 22px repeat-x;
 }
 
-.map-pin {
-  position: absolute;
-  display: grid;
-  transform: translate(-50%, -50%);
-  place-items: center;
-  filter: drop-shadow(1px 2px 0 color-mix(in srgb, var(--shadow) 25%, transparent));
+/* Real OpenStreetMap surface, tinted to match the scrapbook palette. */
+.leaflet-container {
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+  background: #f3eadb;
+  font-family: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  cursor: grab;
 }
 
-.map-pin span {
-  position: absolute;
-  top: 100%;
-  border: 1px solid color-mix(in srgb, var(--cocoa) 55%, var(--border));
-  border-radius: 999px;
+.leaflet-container:active {
+  cursor: grabbing;
+}
+
+.leaflet-tile-pane {
+  filter: saturate(0.6) sepia(0.12) brightness(1.04) contrast(0.95);
+}
+
+.leaflet-control-zoom {
+  overflow: hidden;
+  border: 2px solid var(--cocoa) !important;
+  border-radius: 12px !important;
+  box-shadow: 3px 3px 0 color-mix(in srgb, var(--cocoa) 20%, transparent) !important;
+}
+
+.leaflet-control-zoom a {
+  width: 34px;
+  height: 34px;
+  border: 0 !important;
   background: var(--surface-strong);
-  padding: 0.12rem 0.4rem;
   color: var(--cocoa);
-  font-size: 0.6rem;
   font-weight: 800;
+  line-height: 32px;
+}
+
+.leaflet-control-zoom a:hover,
+.leaflet-control-zoom a:focus-visible {
+  background: var(--blush);
+  color: var(--cocoa);
+}
+
+.leaflet-container .leaflet-control-attribution {
+  background: color-mix(in srgb, var(--surface-strong) 90%, transparent);
+  color: var(--ink);
+  font-size: 10px;
+  padding: 2px 6px;
+}
+
+.leaflet-popup-content-wrapper {
+  border: 2px solid var(--cocoa);
+  border-radius: 16px;
+  background: var(--surface-strong);
+  box-shadow: 4px 4px 0 color-mix(in srgb, var(--cocoa) 22%, transparent);
+}
+
+.leaflet-popup-tip {
+  border: 2px solid var(--cocoa);
+  background: var(--surface-strong);
+}
+
+.leaflet-popup-content {
+  margin: 14px 16px;
+  color: var(--ink);
+  font-family: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  line-height: 1.45;
+}
+
+.leaflet-popup-close-button {
+  padding: 8px 8px 0 0 !important;
+  color: var(--cocoa) !important;
+  font-weight: 800;
+}
+
+.pfc-popup-kicker {
+  margin: 0;
+  color: var(--rose);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.pfc-popup-title {
+  margin: 0.15rem 0 0;
+  color: var(--cocoa);
+  font-family: var(--font-baloo), ui-rounded, sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.pfc-popup-meta {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.pfc-popup-stats {
+  display: flex;
+  gap: 0.9rem;
+  margin: 0.7rem 0 0;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--border);
+}
+
+.pfc-popup-stats dt {
+  color: var(--muted);
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pfc-popup-stats dd {
+  margin: 0;
+  color: var(--cocoa);
+  font-family: var(--font-baloo), ui-rounded, sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.pfc-pin-wrap {
+  border: 0;
+  background: transparent;
+}
+
+.pfc-pin {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  transform: rotate(-45deg);
+  border: 2px solid var(--cocoa);
+  border-radius: 50% 50% 50% 0;
+  background: var(--surface-strong);
+  box-shadow: 2px 3px 0 color-mix(in srgb, var(--cocoa) 22%, transparent);
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.pfc-pin-dot {
+  display: block;
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--cocoa);
+  border-radius: 50%;
+  background: var(--rose);
+}
+
+.pfc-pin.is-selected {
+  background: var(--rose);
+  box-shadow: 3px 4px 0 color-mix(in srgb, var(--cocoa) 30%, transparent);
+}
+
+.pfc-pin.is-selected .pfc-pin-dot {
+  border-color: #fff;
+  background: #fff;
+}
+
+.leaflet-marker-icon:focus-visible {
+  border-radius: 50%;
+  outline: 3px solid var(--rose);
+  outline-offset: 3px;
+}
+
+#branch-list {
+  scroll-margin-top: 6rem;
 }
 
 .form-control {
@@ -542,4 +706,134 @@ a {
   .grain::after {
     display: none;
   }
+}
+
+/* ——— Scrapbook extras ——————————————————————————————— */
+
+.checker-band {
+  height: 14px;
+  background-image: repeating-conic-gradient(
+    color-mix(in srgb, var(--rose) 26%, transparent) 0% 25%,
+    transparent 0% 50%
+  );
+  background-size: 18px 18px;
+  background-position: 0 0;
+}
+
+.tab-pill {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border: 2px solid color-mix(in srgb, var(--cocoa) 80%, var(--border));
+  border-radius: 999px;
+  background: var(--surface-strong);
+  padding: 0.5rem 1rem;
+  color: var(--cocoa);
+  font-size: 0.8rem;
+  font-weight: 800;
+  transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.tab-pill:hover {
+  background: var(--blush);
+}
+
+.tab-pill[aria-pressed="true"],
+.tab-pill[aria-selected="true"] {
+  background: var(--rose);
+  border-color: var(--cocoa);
+  color: #fffaf4;
+  box-shadow: 3px 3px 0 color-mix(in srgb, var(--shadow) 40%, transparent);
+}
+
+.tab-pill[aria-pressed="true"]:hover {
+  background: var(--rose-deep);
+  color: #fffaf4;
+}
+
+.dashed-rule {
+  border-top: 2px dashed color-mix(in srgb, var(--cocoa) 30%, transparent);
+}
+
+.lede-sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 2px solid var(--cocoa);
+  border-radius: 999px;
+  background: var(--butter);
+  padding: 0.4rem 0.9rem;
+  color: var(--cocoa);
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+[id] {
+  scroll-margin-top: 6rem;
+}
+
+@media print {
+  header,
+  footer,
+  .skip-link,
+  .cursor-glow,
+  .grain::after,
+  .checker-band,
+  .scallop-border {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+    font-size: 11pt;
+  }
+
+  main,
+  .paper-grid {
+    background: #fff !important;
+  }
+
+  .scrap-card,
+  .sticker-card,
+  .menu-frame {
+    border: 1px solid #444 !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    word-break: break-all;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Print output: certificates and the impact report are real documents
+   --------------------------------------------------------------------------- */
+@media print {
+  @page {
+    margin: 12mm;
+  }
+
+  body {
+    background: #fff !important;
+  }
+
+  header,
+  footer,
+  .skip-link,
+  .no-print {
+    display: none !important;
+  }
+
+  .print-report {
+    padding: 0 !important;
+  }
+
 }

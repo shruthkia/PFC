@@ -17,7 +17,7 @@ export function Hero() {
           <div className="grid min-h-[calc(100svh-4rem)] items-center gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-4">
             <div className="relative z-10 py-12 lg:py-0">
               <p className="font-mono text-[0.65rem] uppercase tracking-[0.3em] text-muted">
-                High school chapters · 5 countries
+                High school chapters · 4 countries
               </p>
 
               <h1 className="mt-6 select-none">
@@ -41,7 +41,7 @@ export function Hero() {
               <div className="mt-10 flex flex-wrap items-center gap-4">
                 <Button asChild size="lg">
                   <a href={CHAPTER_FORM_URL} target="_blank" rel="noopener noreferrer">
-                    Start a chapter
+                    Apply to start a chapter
                     <ArrowDownRight className="h-4 w-4" aria-hidden />
                   </a>
                 </Button>

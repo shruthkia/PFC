@@ -9,6 +9,9 @@ import {
 } from "lucide-react";
 import { HouseMark } from "@/components/brand/house-mark";
 import { branchRegions, chapters, networkMetrics, shelterTasks } from "@/lib/platform-data";
+import { studentOffer } from "@/lib/content";
+import { HOURS_QUALIFICATION } from "@/lib/qualification";
+import { CHAPTER_FORM_URL } from "@/lib/utils";
 
 const toyPct = Math.min(100, Math.round((networkMetrics.toysDonated / networkMetrics.toyGoal) * 100));
 
@@ -34,16 +37,21 @@ export function StorybookHome() {
                 High school branches that sew enrichment toys from fashion scraps, raise clean funds, and finish the mini-tasks shelters actually need.
               </p>
               <div className="mt-8 flex flex-wrap justify-center gap-3">
-                <Link href="/apply" className="button-primary">
-                  Start a chapter <ArrowRight aria-hidden className="h-4 w-4" />
-                </Link>
+                <a
+                  href={CHAPTER_FORM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="button-primary"
+                >
+                  Apply to start a chapter <ArrowRight aria-hidden className="h-4 w-4" />
+                </a>
                 <Link href="/directory" className="button-paper">
                   See our branches
                 </Link>
               </div>
               <p className="mt-5 flex items-center justify-center gap-2 text-sm font-bold text-muted">
                 <ShieldCheck aria-hidden className="h-4 w-4 text-sage-dark" />
-                Light & dark modes · readable by design
+                Free · current high school students · usually 1–3 hours a week
               </p>
             </div>
           </div>
@@ -53,9 +61,9 @@ export function StorybookHome() {
               <div className="flex items-end justify-between gap-3 border-b border-dashed border-border pb-4">
                 <div>
                   <p className="font-hand text-2xl font-semibold text-rose">network so far</p>
-                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-muted">Verified impact</p>
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-muted">Sample dataset · Nov 2026</p>
                 </div>
-                <span className="rounded-full border border-border bg-mint px-3 py-1 text-xs font-extrabold text-cocoa">live</span>
+                <span className="rounded-full border border-border bg-mint px-3 py-1 text-xs font-extrabold text-cocoa">11 chapters</span>
               </div>
               <dl className="mt-5 grid grid-cols-2 gap-3">
                 <Stat value={`${networkMetrics.toysDonated}+`} label="toys donated" tone="bg-blush" />
@@ -63,7 +71,10 @@ export function StorybookHome() {
                 <Stat value={`$${networkMetrics.fundsRaised}`} label="funds raised" tone="bg-mint" />
                 <Stat value={String(networkMetrics.activeChapters)} label="chapter branches" tone="bg-[#e8dff3] dark:bg-[#33283a]" />
               </dl>
-              <div className="mt-5 rounded-2xl border border-border bg-surface-strong p-4">
+              <p className="mt-4 text-[.7rem] font-semibold leading-5 text-muted">
+                Illustrative totals from the 11 sample chapter branches.
+              </p>
+              <div className="mt-4 rounded-2xl border border-border bg-surface-strong p-4">
                 <div className="flex items-start gap-3">
                   <Scissors aria-hidden className="mt-0.5 h-5 w-5 shrink-0 text-rose" />
                   <p className="text-sm font-semibold leading-6 text-cocoa">
@@ -91,6 +102,39 @@ export function StorybookHome() {
           </div>
         </div>
         <div className="scallop-border" aria-hidden />
+      </section>
+
+      {/* The offer, stated before the scrapbook details */}
+      <section
+        className="border-y-2 border-border bg-butter/35 px-5 py-14 sm:px-10"
+        aria-labelledby="student-offer"
+      >
+        <div className="mx-auto grid max-w-[1100px] gap-8 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
+          <div>
+            <span className="ribbon">The student offer</span>
+            <h2
+              id="student-offer"
+              className="mt-4 font-display text-3xl font-extrabold tracking-tight text-cocoa sm:text-4xl"
+            >
+              Free, student-led, and sized for a school week.
+            </h2>
+            <p className="mt-3 max-w-xl text-sm leading-7 text-muted">
+              If you are in high school and willing to run one real project, you do not need a budget or a
+              perfect plan. HQ supplies the starting kit; your chapter supplies the people.
+            </p>
+          </div>
+          <ul className="grid gap-3 sm:grid-cols-2">
+            {studentOffer.map((item) => (
+              <li
+                key={item}
+                className="flex gap-3 rounded-2xl border-2 border-border bg-surface p-4 text-sm font-bold leading-6 text-cocoa"
+              >
+                <CheckCircle2 aria-hidden className="mt-1 h-4 w-4 shrink-0 text-sage-dark" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
 
       {/* Branches — menu-board layout */}
@@ -166,6 +210,9 @@ export function StorybookHome() {
               </li>
             ))}
           </ol>
+          <p className="mx-auto mt-8 max-w-2xl text-center text-sm font-semibold leading-6 text-muted">
+            {HOURS_QUALIFICATION}
+          </p>
         </div>
       </section>
 
@@ -174,12 +221,12 @@ export function StorybookHome() {
         <div className="mx-auto max-w-[1100px]">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <span className="ribbon">Open shelter tasks</span>
-              <h2 className="mt-4 font-display text-4xl font-extrabold text-cocoa">Ready for a chapter to claim</h2>
-              <p className="mt-2 max-w-xl text-muted">Not animal listings — small completable jobs partners need done.</p>
+              <span className="ribbon">Sample shelter tasks</span>
+              <h2 className="mt-4 font-display text-4xl font-extrabold text-cocoa">Small jobs a chapter could take on</h2>
+              <p className="mt-2 max-w-xl text-muted">Examples, not live shelter listings. Claims stay inside the preview.</p>
             </div>
             <Link href="/adopt" className="button-paper">
-              Full task board <ArrowRight className="h-4 w-4" />
+              Preview task board <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
 
@@ -208,7 +255,7 @@ export function StorybookHome() {
                     </span>
                   )}
                   <Link href="/adopt" className="button-primary min-h-0 px-3 py-2 text-xs">
-                    Claim
+                    Preview
                   </Link>
                 </div>
               </li>
@@ -217,31 +264,25 @@ export function StorybookHome() {
         </div>
       </section>
 
-      {/* Workspaces — clear doors into real tools */}
-      <section className="border-t-2 border-border bg-butter/30 px-5 py-20 sm:px-10">
-        <div className="mx-auto max-w-[1100px]">
-          <div className="mx-auto max-w-2xl text-center">
-            <span className="ribbon">Workspaces</span>
-            <h2 className="section-title mt-5">Built to use, not just browse</h2>
+      {/* One preview door, not a wall of public workspaces */}
+      <section
+        className="border-t-2 border-border bg-butter/30 px-5 py-16 sm:px-10"
+        aria-labelledby="preview-heading"
+      >
+        <div className="mx-auto flex max-w-[1100px] flex-col gap-6 rounded-[1.75rem] border-2 border-border bg-surface p-7 sm:flex-row sm:items-center sm:justify-between sm:p-10">
+          <div className="max-w-2xl">
+            <span className="ribbon">Prototype preview</span>
+            <h2 id="preview-heading" className="mt-4 font-display text-3xl font-extrabold text-cocoa">
+              The workspaces are a preview, not a live PFC service.
+            </h2>
+            <p className="mt-3 text-sm leading-7 text-muted">
+              Student, advisor, organizer, shelter, and alumni desks share one account system. They are
+              loaded with sample chapter data; nothing is sent to a school, shelter, or national program.
+            </p>
           </div>
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              ["/portal", "Chapter hub", "Log hours, funds, scrap nights, consent, certificates"],
-              ["/advisor", "Advisor desk", "Verify proof and e-sign student hours"],
-              ["/admin", "National admin", "Claims, Active Standard, CMS, impact PDFs"],
-              ["/shelter", "Shelter portal", "Post a mini-task to nearby branches"],
-              ["/login", "Chapter login", "Magic-link preview into every workspace"],
-              ["/impact", "Impact board", "85+ toys · $1,550 value · $400 funds"],
-            ].map(([href, title, copy]) => (
-              <Link key={href} href={href} className="sticker-card block bg-surface-strong p-5 transition hover:-translate-y-0.5">
-                <p className="font-display text-xl font-extrabold text-cocoa">{title}</p>
-                <p className="mt-2 text-sm leading-6 text-muted">{copy}</p>
-                <span className="mt-4 inline-flex items-center gap-2 text-sm font-extrabold text-rose">
-                  Open <ArrowRight className="h-4 w-4" />
-                </span>
-              </Link>
-            ))}
-          </div>
+          <Link href="/prototype" className="button-primary shrink-0">
+            See what the preview includes <ArrowRight aria-hidden className="h-4 w-4" />
+          </Link>
         </div>
       </section>
 
@@ -257,15 +298,20 @@ export function StorybookHome() {
             California · Texas · Alabama · Georgia · Qatar · India — and growing.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link href="/apply" className="button-primary border-[var(--background)] bg-rose shadow-[3px_3px_0_rgba(255,246,239,0.35)]">
+            <a
+              href={CHAPTER_FORM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="button-primary border-[var(--background)] bg-rose shadow-[3px_3px_0_rgba(255,246,239,0.35)]"
+            >
               Apply to start a chapter <ArrowRight className="h-4 w-4" />
-            </Link>
+            </a>
             <Link href="/directory" className="button-paper border-[var(--background)] bg-transparent text-[var(--background)] hover:bg-[var(--background)] hover:text-cocoa">
               Browse branches
             </Link>
           </div>
           <p className="mt-6 inline-flex items-center gap-2 text-sm font-semibold opacity-75">
-            <CheckCircle2 className="h-4 w-4" /> Use the sun/moon toggle anytime your eyes need a break
+            <CheckCircle2 className="h-4 w-4" /> Applications are read by student organizers, not a bot
           </p>
         </div>
       </section>

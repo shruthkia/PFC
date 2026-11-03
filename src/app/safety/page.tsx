@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/legal-page";
 
-export const metadata: Metadata = { title: "Youth and animal safety" };
+export const metadata: Metadata = {
+  title: "Youth and animal safety",
+  alternates: { canonical: "/safety" },
+};
 
 export default function SafetyPage() {
   return <LegalPage eyebrow="Safety first" title="Youth & animal safety" intro="A successful project is one where students, shelter staff, volunteers, and animals are all treated with care. Public impact never comes before safety." sections={[

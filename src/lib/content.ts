@@ -1,20 +1,22 @@
-export const siteConfig = {
-  name: "PawsForCause",
-  shortName: "PFC",
-  tagline: "A student house for animals who still need one.",
-  description:
-    "PawsForCause is a student-led animal-welfare network with chapter branches across the US, Qatar, and India. Students sew scrap-to-toy enrichment, raise funds, and finish shelter mini-tasks.",
-};
+export { siteConfig } from "@/lib/config";
 
 export const navLinks = [
-  { href: "/about", label: "About" },
-  { href: "/start", label: "Start a chapter" },
-  { href: "/work", label: "The work" },
+  { href: "/", label: "Home" },
+  { href: "/work", label: "What chapters do" },
+  { href: "/impact", label: "Impact" },
   { href: "/faq", label: "FAQ" },
 ];
 
+export const studentOffer = [
+  "Free to start — no chapter dues or fees.",
+  "For current high school students.",
+  "Usually 1 to 3 hours a week.",
+  "Student-led, with a faculty advisor.",
+  "Templates, recruiting materials, project playbooks, and HQ help.",
+];
+
 export const stats = [
-  { value: "11", label: "chapter branches", detail: "USA · Qatar · India" },
+  { value: "11", label: "chapter branches", detail: "USA · Canada · Qatar · India" },
   { value: "85+", label: "toys donated", detail: "worth about $1,550" },
   { value: "$400", label: "funds raised", detail: "so far" },
 ];

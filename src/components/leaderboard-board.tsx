@@ -24,21 +24,22 @@ export function LeaderboardBoard() {
   return (
     <div className="paper-grid min-h-screen px-5 pb-24 pt-28 sm:px-10">
       <div className="mx-auto max-w-[1100px]">
-        <Link href="/" className="inline-flex items-center gap-2 text-sm font-black text-cocoa/65 hover:text-rose">
-          <ArrowLeft className="h-4 w-4" /> Public site
+        <Link href="/" className="inline-flex items-center gap-2 text-sm font-black text-muted hover:text-rose">
+          <ArrowLeft aria-hidden className="h-4 w-4" /> Public site
         </Link>
         <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="eyebrow w-fit">Friendly competition</p>
+            <p className="eyebrow w-fit">Sample leaderboard</p>
             <h1 className="mt-4 font-display text-5xl font-extrabold tracking-tight text-cocoa">Inter-chapter leaderboards</h1>
-            <p className="mt-3 max-w-2xl text-ink/65">
-              Rankings across our branches — toys donated, funds raised, and finished projects.
+            <p className="mt-3 max-w-2xl text-muted">
+              Sample rankings from the preview chapter dataset — toys donated, funds raised, and finished
+              projects.
             </p>
           </div>
-          <StatusPill tone="info">Network wide</StatusPill>
+          <StatusPill tone="info">Sample network</StatusPill>
         </div>
 
-        <div className="mt-8 flex flex-wrap gap-2" role="tablist" aria-label="Leaderboard metric">
+        <div className="mt-8 flex flex-wrap gap-2" role="group" aria-label="Rank chapters by metric">
           {(
             [
               ["toys", "Toys donated"],
@@ -49,12 +50,9 @@ export function LeaderboardBoard() {
             <button
               key={key}
               type="button"
-              role="tab"
-              aria-selected={metric === key}
+              aria-pressed={metric === key}
               onClick={() => setMetric(key)}
-              className={`rounded-full border-2 border-cocoa px-4 py-2 text-sm font-black ${
-                metric === key ? "bg-rose text-white shadow-[3px_3px_0_#6e493b]" : "bg-white text-cocoa"
-              }`}
+              className="tab-pill"
             >
               {label}
             </button>
@@ -76,7 +74,7 @@ export function LeaderboardBoard() {
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-display text-xl font-extrabold text-cocoa">{row.city}</p>
-                    <p className="text-xs font-bold text-cocoa/55">
+                    <p className="text-xs font-bold text-muted">
                       {row.chapter} · {row.region}
                     </p>
                   </div>
@@ -88,10 +86,10 @@ export function LeaderboardBoard() {
 
           <Panel tone="blush">
             <div className="flex items-start gap-3">
-              <Trophy className="mt-1 h-6 w-6 text-rose" />
+              <Trophy aria-hidden className="mt-1 h-6 w-6 text-rose" />
               <div>
                 <h2 className="font-display text-2xl font-extrabold text-cocoa">Month badges</h2>
-                <p className="mt-2 text-sm text-ink/65">Spotlight badges rotate when scrap-to-toy and task claims clear HQ.</p>
+                <p className="mt-2 text-sm text-muted">Spotlight badges rotate when scrap-to-toy and task claims clear HQ.</p>
               </div>
             </div>
             <ul className="mt-6 space-y-3">
@@ -101,7 +99,7 @@ export function LeaderboardBoard() {
                     #{item.rank} · {item.badge}
                   </p>
                   <p className="mt-2 font-display text-xl font-extrabold text-cocoa">{item.chapter}</p>
-                  <p className="mt-1 text-sm font-bold text-cocoa/60">{item.metric}</p>
+                  <p className="mt-1 text-sm font-bold text-muted">{item.metric}</p>
                 </li>
               ))}
             </ul>
