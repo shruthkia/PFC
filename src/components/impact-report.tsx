@@ -2,29 +2,30 @@
 
 import Link from "next/link";
 import { ArrowLeft, Printer } from "lucide-react";
-import { chapters, networkMetrics } from "@/lib/platform-data";
+import type { PublicNetwork } from "@/lib/platform-data";
 
 export function ImpactReport({
+  network,
   audience,
   semester,
   scope = "All active chapters",
 }: {
+  network: PublicNetwork;
   audience: string;
   semester: string;
   scope?: string;
 }) {
-  const scoped =
-    scope === "DFW only"
-      ? chapters.filter((chapter) => chapter.region === "DFW")
-      : scope === "Coppell Paws only"
-        ? chapters.filter((chapter) => chapter.id === "coppell")
-        : chapters;
+  const scoped = network.records.filter((record) => {
+    if (scope === "DFW only") return record.region === "DFW";
+    if (scope === "Coppell Paws only") return record.chapterId === "coppell";
+    return true;
+  });
 
-  const toys = scoped.reduce((total, chapter) => total + chapter.toys, 0);
-  const funds = scoped.reduce((total, chapter) => total + chapter.funds, 0);
-  const hours = scoped.reduce((total, chapter) => total + chapter.hours, 0);
-  const projects = scoped.reduce((total, chapter) => total + chapter.projects, 0);
-  const members = scoped.reduce((total, chapter) => total + chapter.members, 0);
+  const toys = scoped.reduce((total, record) => total + record.toysMade, 0);
+  const funds = scoped.reduce((total, record) => total + record.fundsRaised, 0);
+  const hours = scoped.reduce((total, record) => total + record.verifiedHours, 0);
+  const projects = scoped.reduce((total, record) => total + record.projectsApproved, 0);
+  const members = scoped.reduce((total, record) => total + record.members, 0);
 
   return (
     <div className="mx-auto max-w-[900px] px-5 pb-20 pt-28 sm:px-8">
@@ -50,7 +51,7 @@ export function ImpactReport({
           </p>
           <p className="mt-1 text-xs font-semibold text-muted">
             Generated {new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}{" "}
-            from advisor-verified chapters.
+            from chapter portal entries.
           </p>
         </header>
 
@@ -61,7 +62,7 @@ export function ImpactReport({
               [String(scoped.length), "chapters"],
               [String(toys), "toys donated"],
               [`$${funds}`, "funds raised"],
-              [String(hours), "service hours"],
+              [String(hours), "verified hours"],
               [String(members), "members"],
             ].map(([value, label]) => (
               <div key={label} className="rounded-xl border-2 border-cocoa bg-cream p-3">
@@ -71,9 +72,8 @@ export function ImpactReport({
             ))}
           </dl>
           <p className="mt-3 text-xs font-semibold leading-5 text-muted">
-            Network-wide verified totals: {networkMetrics.toysDonated} toys (about $
-            {networkMetrics.toyValueUsd.toLocaleString()} value), ${networkMetrics.fundsRaised} raised across{" "}
-            {networkMetrics.countries} countries. Toy value is an estimate, not a cash figure.
+            Totals are built from what chapters entered in their portal: advisor-verified hours,
+            HQ-approved funds, and approved project records. Chapters with no entries show zero.
           </p>
         </section>
 
@@ -93,16 +93,16 @@ export function ImpactReport({
                 </tr>
               </thead>
               <tbody>
-                {scoped.map((chapter) => (
-                  <tr key={chapter.id} className="border-b border-border">
-                    <th scope="row" className="py-2 pr-3 font-bold text-cocoa">{chapter.name}</th>
+                {scoped.map((record) => (
+                  <tr key={record.chapterId} className="border-b border-border">
+                    <th scope="row" className="py-2 pr-3 font-bold text-cocoa">{record.chapterName}</th>
                     <td className="py-2 pr-3 text-muted">
-                      {chapter.city}, {chapter.country}
+                      {record.city}, {record.country}
                     </td>
-                    <td className="py-2 pr-3 text-cocoa">{chapter.toys}</td>
-                    <td className="py-2 pr-3 text-cocoa">${chapter.funds}</td>
-                    <td className="py-2 pr-3 text-cocoa">{chapter.projects}</td>
-                    <td className="py-2 text-cocoa">{chapter.hours}</td>
+                    <td className="py-2 pr-3 text-cocoa">{record.toysMade}</td>
+                    <td className="py-2 pr-3 text-cocoa">${record.fundsRaised}</td>
+                    <td className="py-2 pr-3 text-cocoa">{record.projectsApproved}</td>
+                    <td className="py-2 text-cocoa">{record.verifiedHours}</td>
                   </tr>
                 ))}
               </tbody>
@@ -122,22 +122,22 @@ export function ImpactReport({
 
         <section className="mt-8 grid gap-5 sm:grid-cols-2">
           <div>
-            <h2 className="font-display text-2xl font-black text-cocoa">What the work looked like</h2>
+            <h2 className="font-display text-2xl font-black text-cocoa">What this report counts</h2>
             <ul className="mt-3 space-y-2 text-sm leading-6 text-muted">
-              <li>Scrap-to-toy workshops with school fashion departments.</li>
-              <li>Shelter supply sorting, wishlist drives, and kennel laundry shifts.</li>
-              <li>Responsible-adoption and sterilization education tables.</li>
-              <li>Student-made flyers and photo sets that shelters actually used.</li>
+              <li>Toys recorded on projects approved by HQ.</li>
+              <li>Funds from approved claims tied to a named shelter or supply list.</li>
+              <li>Hours signed off by a chapter advisor.</li>
+              <li>Projects reviewed and approved after the work was finished.</li>
             </ul>
           </div>
           <div>
             <h2 className="font-display text-2xl font-black text-cocoa">How to read these numbers</h2>
             <ul className="mt-3 space-y-2 text-sm leading-6 text-muted">
+              <li>Every number starts as a chapter portal entry, not a site-wide estimate.</li>
               <li>Only advisor-signed hours are reported.</li>
               <li>PFC can document participation. Schools and shelters decide whether hours are accepted.</li>
-              <li>Funds are tied to a named shelter or supply list.</li>
-              <li>Toy value is an estimated replacement cost.</li>
-              <li>Paused chapters are excluded from active totals.</li>
+              <li>Pending or rejected entries are not counted in public totals.</li>
+              <li>Chapters with no approved entries show zero.</li>
             </ul>
           </div>
         </section>

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { faqItems } from "@/lib/content";
 
 export function FaqTeaser() {
-  const preview = faqItems.slice(0, 4);
+  const teasers = faqItems.slice(0, 4);
 
   return (
     <section className="border-t border-border bg-cream px-4 py-24 dark:bg-card/50 sm:px-8 sm:py-32">
@@ -25,7 +25,7 @@ export function FaqTeaser() {
           </Link>
         </div>
         <ul className="divide-y divide-border border-y border-border">
-          {preview.map((item, i) => (
+          {teasers.map((item, i) => (
             <li key={item.question} className="py-5">
               <p className="font-mono text-[0.6rem] text-muted-foreground">{String(i + 1).padStart(2, "0")}</p>
               <p className="mt-1 font-display text-xl font-semibold">{item.question}</p>

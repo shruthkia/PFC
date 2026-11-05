@@ -13,6 +13,28 @@ import { isServerStateKey, stateKeys } from "@/lib/state-keys";
 
 export const storageKeys = stateKeys;
 
+/** Records that shipped with the old demo. They are ignored if they are still in storage. */
+const legacySampleIds: Record<string, Set<string>> = {
+  [stateKeys.hours]: new Set(["h1", "h2", "h3", "h4", "h5", "h6"]),
+  [stateKeys.funds]: new Set(["f1", "f2"]),
+  [stateKeys.projects]: new Set(["p1", "p2"]),
+  [stateKeys.consents]: new Set(["co1", "co2", "co3"]),
+  [stateKeys.tasks]: new Set(["t1", "t2", "t3", "t4", "t5", "t6"]),
+  [stateKeys.claims]: new Set(["c1", "c2", "c3", "c4"]),
+  [stateKeys.announcements]: new Set(["n1", "n2", "n3"]),
+  [stateKeys.mentors]: new Set(["al1", "al2", "al3", "al4"]),
+  [stateKeys.social]: new Set(["sm1", "sm2"]),
+};
+
+function withoutLegacySamples<T>(key: string, value: T): T {
+  const ids = legacySampleIds[key];
+  if (!ids || !Array.isArray(value)) return value;
+  return value.filter((item) => {
+    if (!item || typeof item !== "object" || !("id" in item)) return true;
+    return !ids.has(String((item as { id: unknown }).id));
+  }) as T;
+}
+
 type Cache = Record<string, unknown> | null;
 
 let cache: Cache = null;
@@ -107,18 +129,20 @@ export function useStoredState<T>(key: string, initial: T) {
   const value = useMemo<T>(() => {
     if (!raw) return initial;
     try {
-      return JSON.parse(raw) as T;
+      return withoutLegacySamples(key, JSON.parse(raw) as T);
     } catch {
       return initial;
     }
-  }, [raw, initial]);
+  }, [raw, initial, key]);
 
   const update = useCallback(
     (next: T | ((current: T) => T)) => {
-      const current =
+      const current = withoutLegacySamples(
+        key,
         cache && Object.prototype.hasOwnProperty.call(cache, key)
           ? (cache[key] as T)
-          : readStored(key, initial);
+          : readStored(key, initial),
+      );
       const resolved = typeof next === "function" ? (next as (current: T) => T)(current) : next;
 
       cache = { ...(cache ?? {}), [key]: resolved };
@@ -147,7 +171,7 @@ export function useStoredState<T>(key: string, initial: T) {
               new CustomEvent("pfc:sync", {
                 detail: {
                   ok: false,
-                  message: "Saved in this browser only — the server did not accept that change.",
+                  message: "Saved in this browser only. The server did not accept that change.",
                 },
               }),
             );

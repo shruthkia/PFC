@@ -4,11 +4,11 @@ import { FormEvent, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, BadgeCheck, ListChecks, Send } from "lucide-react";
 import { Field, Panel, StatusPill } from "@/components/platform/ui";
-import { chapters, shelterTasks as seedTasks, type ShelterTaskRecord } from "@/lib/platform-data";
+import { chapters, type ShelterTaskRecord } from "@/lib/platform-data";
 import { storageKeys, useStoredState } from "@/lib/storage";
 
 export function ShelterPortal() {
-  const [tasks, setTasks] = useStoredState<ShelterTaskRecord[]>(storageKeys.tasks, seedTasks);
+  const [tasks, setTasks] = useStoredState<ShelterTaskRecord[]>(storageKeys.tasks, []);
   const [toast, setToast] = useState<string | null>(null);
   const [filter, setFilter] = useState("All");
 
@@ -78,7 +78,7 @@ export function ShelterPortal() {
             </h1>
             <p className="mt-3 max-w-2xl text-muted">
               Post one small, completable job and a nearby high school chapter can claim it. Not animal
-              listings, not rescue requests — just work that helps your team this week.
+              listings, not rescue requests, just work that helps your team this week.
             </p>
           </div>
           <StatusPill tone="info">Shared task board</StatusPill>
@@ -141,7 +141,7 @@ export function ShelterPortal() {
                 <Field label="City / region for matching">
                   <input name="city" required className="form-control" placeholder="Coppell / Plano" list="task-cities" />
                   <datalist id="task-cities">
-                    {Array.from(new Set(seedTasks.map((item) => item.city))).map((city) => (
+                    {Array.from(new Set(chapters.map((chapter) => chapter.city))).map((city) => (
                       <option key={city} value={city} />
                     ))}
                   </datalist>
@@ -155,8 +155,7 @@ export function ShelterPortal() {
                 <Send aria-hidden className="h-4 w-4" /> Post task to chapters
               </button>
               <p className="text-xs font-semibold leading-5 text-muted">
-                The task publishes to the shared board immediately for every chapter. Email alerts to chapter
-                presidents are not wired yet, so tell your contact to check the board.
+                The task appears on the shared board right away. Tell your chapter contact to check the board.
               </p>
             </form>
           </Panel>
@@ -207,7 +206,9 @@ export function ShelterPortal() {
               ))}
             </ul>
             {!visible.length ? (
-              <p className="mt-4 text-sm font-bold text-muted">No tasks for that area yet.</p>
+              <p className="mt-4 rounded-2xl border border-dashed border-border bg-cream p-4 text-sm font-semibold text-muted">
+                {tasks.length ? "No tasks for that area yet." : "No tasks yet. Post the first one."}
+              </p>
             ) : null}
             <Link
               href="/adopt"

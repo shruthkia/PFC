@@ -1,5 +1,5 @@
 export const stateKeys = {
-  checklist: "pfc:checklist-v1",
+  checklist: "pfc:checklist-v2",
   hours: "pfc:hours-v1",
   funds: "pfc:funds-v1",
   projects: "pfc:projects-v1",

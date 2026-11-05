@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ChapterDirectory } from "@/components/chapter-directory";
+import { getPublicNetwork } from "@/lib/public-record";
 
 export const metadata: Metadata = {
   title: "Chapter directory & map",
@@ -7,6 +8,9 @@ export const metadata: Metadata = {
   alternates: { canonical: "/directory" },
 };
 
-export default function DirectoryPage() {
-  return <ChapterDirectory />;
+export const dynamic = "force-dynamic";
+
+export default async function DirectoryPage() {
+  const network = await getPublicNetwork();
+  return <ChapterDirectory records={network.records} />;
 }

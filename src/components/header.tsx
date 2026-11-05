@@ -21,8 +21,8 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const session = useSessionUser();
-  const accountHref = session ? "/account" : "/prototype";
-  const accountLabel = session ? "Account" : "Prototype preview";
+  const accountHref = session ? "/account" : "/login";
+  const accountLabel = session ? "Account" : "Sign in";
   const toggleRef = useRef<HTMLButtonElement>(null);
   const navRef = useRef<HTMLElement>(null);
 
@@ -160,27 +160,19 @@ export function Header() {
             </ul>
 
             <p className="mt-6 border-t border-border pt-5 text-[.65rem] font-black uppercase tracking-[.16em] text-muted">
-              Prototype preview
+              Chapter access
             </p>
             <p className="mt-1 text-xs font-semibold leading-5 text-muted">
-              The student, advisor, organizer, shelter, and alumni desks live behind one preview door.
+              One account opens the workspace for your role.
             </p>
             <Link
-              href="/prototype"
+              href={accountHref}
               onClick={() => setOpen(false)}
-              className="mt-3 flex min-h-11 items-center rounded-xl px-3 py-2 text-base font-extrabold text-rose hover:bg-blush/60"
+              className="mt-3 flex min-h-11 items-center gap-2 rounded-xl px-3 py-2 text-base font-extrabold text-rose hover:bg-blush/60"
             >
-              Open the prototype preview <ArrowUpRight aria-hidden className="h-4 w-4" />
+              {session ? `Account · ${session.name.split(" ")[0]}` : "Sign in to your chapter"}
+              <ArrowUpRight aria-hidden className="h-4 w-4" />
             </Link>
-            {session ? (
-              <Link
-                href={accountHref}
-                onClick={() => setOpen(false)}
-                className="mt-1 flex min-h-11 items-center rounded-xl px-3 py-2 text-base font-extrabold text-cocoa hover:bg-blush/60"
-              >
-                Account · {session.name.split(" ")[0]}
-              </Link>
-            ) : null}
 
             <a
               href={CHAPTER_FORM_URL}

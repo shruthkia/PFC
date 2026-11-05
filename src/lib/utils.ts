@@ -6,4 +6,4 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const CHAPTER_FORM_URL =
-  "https://docs.google.com/forms/d/e/1FAIpQLScT8S5ygsbBoEzovYqMu-b30oQmUyzNE3LvwL8IB0PsSu5KzA/viewform";
+  "https://docs.google.com/forms/d/e/1FAIpQLSftTTnp2gOjve20xRyvtBdNwr7hclFw8jJgq4vW5q9Ub9sc0w/viewform";

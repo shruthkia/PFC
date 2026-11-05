@@ -8,7 +8,7 @@ export const navLinks = [
 ];
 
 export const studentOffer = [
-  "Free to start — no chapter dues or fees.",
+  "Free to start. No chapter dues or fees.",
   "For current high school students.",
   "Usually 1 to 3 hours a week.",
   "Student-led, with a faculty advisor.",

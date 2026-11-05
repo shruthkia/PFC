@@ -15,7 +15,7 @@ const footerLinks = {
     { href: CHAPTER_FORM_URL, label: "Apply to start a chapter" },
     { href: "/start", label: "How chapters launch" },
     { href: "/directory", label: "Chapter map" },
-    { href: "/prototype", label: "Prototype preview" },
+    { href: "/login", label: "Chapter sign in" },
     { href: "/contact", label: "Contact" },
   ],
   "Trust & legal": [
@@ -46,7 +46,7 @@ export function Footer() {
                 </div>
               </div>
               <p className="mt-5 text-sm leading-7 text-muted">
-                A student-led network of chapter branches delivering documented shelter support — scrap toys,
+                A student-led network of chapter branches delivering documented shelter support: scrap toys,
                 clean funds, and completable mini-tasks.
               </p>
               <p className="mt-4 text-sm font-semibold text-muted">

@@ -20,11 +20,10 @@ Public site for **PFC (PawsForCause)**, a student-led animal-welfare network. Hi
 - `/advisor` Advisor verification desk
 - `/admin` National admin desk (claims, Active Standard, CMS, reports)
 - `/alumni` Alumni mentor directory
-- `/prototype` One page explaining the preview and linking every workspace
-- `/login` Create a preview account or sign in
+- `/login` Sign in to the chapter workspace
 - `/contact` Role-based contact channels
-- `/safety`, `/conduct`, `/privacy`, `/cookies`, `/terms`, `/accessibility` — trust and legal pages
-- `/sitemap.xml`, `/robots.txt`, `/manifest.webmanifest`, `/opengraph-image` — generated metadata
+- `/safety`, `/conduct`, `/privacy`, `/cookies`, `/terms`, `/accessibility`: trust and legal pages
+- `/sitemap.xml`, `/robots.txt`, `/manifest.webmanifest`, `/opengraph-image`: generated metadata
 
 ## Run locally
 
@@ -44,11 +43,11 @@ npm run build
 
 ## Notes
 
-- Design system lives in `src/app/globals.css` (cream paper, dusty rose, gingham, scallops, sticker cards). Display type is Baloo 2, accents are Shantell Sans, body copy is Figtree.
+- Design system lives in `src/app/globals.css` (cream paper, dusty rose, gingham, scallops, sticker cards). Display type is Bricolage Grotesque, accents are Shantell Sans, body copy is Figtree.
 - Brand and contact details come from `src/lib/config.ts`; set `NEXT_PUBLIC_SITE_URL` for canonical URLs and metadata.
 - Accounts use email and password with scrypt hashing, server-side sessions in an HttpOnly cookie, and a one-time recovery code for password resets. Workspace records are stored in a SQLite database at `.data/pawsforcause.db` and shared by students, advisors, and organizers; the browser keeps an offline copy under `pfc:` keys.
-- The database is git-ignored. Set `PFC_DATABASE_PATH` to move it. This prototype needs a Node server with a persistent disk; before a real launch, move the data layer to a hosted Postgres/Supabase and add verified email plus role approval.
+- The database is git-ignored. Set `PFC_DATABASE_PATH` to move it. The app needs a Node server with a persistent disk; before a public launch, move the data layer to a hosted Postgres/Supabase and add verified email plus role approval.
 - Chapter applications are collected only through the approved Google Form. The native application form and its API were removed from the live path.
 - Real outputs work without external services: resource templates download as files, and the practice certificate and impact report print from the browser. Nothing is emailed or sent to a school, shelter, or national program.
 
-Primary CTA: the live [chapter interest form](https://docs.google.com/forms/d/e/1FAIpQLScT8S5ygsbBoEzovYqMu-b30oQmUyzNE3LvwL8IB0PsSu5KzA/viewform).
+Primary CTA: the live [chapter interest form](https://docs.google.com/forms/d/e/1FAIpQLSftTTnp2gOjve20xRyvtBdNwr7hclFw8jJgq4vW5q9Ub9sc0w/viewform).

@@ -4,12 +4,12 @@ import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, BadgeCheck, Check, PenLine, ShieldCheck } from "lucide-react";
 import { Panel, ProgressBar, StatusPill } from "@/components/platform/ui";
-import { hourEntries as seedHours, type HourEntry } from "@/lib/platform-data";
+import { type HourEntry } from "@/lib/platform-data";
 import { storageKeys, useStoredState } from "@/lib/storage";
 import { HOURS_QUALIFICATION } from "@/lib/qualification";
 
-export function AdvisorDesk({ advisorName = "Ms. Rivera" }: { advisorName?: string }) {
-  const [hours, setHours] = useStoredState<HourEntry[]>(storageKeys.hours, seedHours);
+export function AdvisorDesk({ advisorName = "Faculty advisor" }: { advisorName?: string }) {
+  const [hours, setHours] = useStoredState<HourEntry[]>(storageKeys.hours, []);
   const [toast, setToast] = useState<string | null>(null);
 
   const waiting = hours.filter((row) => row.status === "Advisor review");
@@ -23,7 +23,7 @@ export function AdvisorDesk({ advisorName = "Ms. Rivera" }: { advisorName?: stri
     setHours((current) =>
       current.map((item) => (item.id === id ? { ...item, status: "Verified" } : item)),
     );
-    setToast("Marked verified in the preview. It updates preview certificates and totals only.");
+    setToast("Marked verified. It updates certificates and totals.");
     window.setTimeout(() => setToast(null), 4200);
   }
 
@@ -115,7 +115,7 @@ export function AdvisorDesk({ advisorName = "Ms. Rivera" }: { advisorName?: stri
               </ul>
             ) : (
               <p className="mt-5 rounded-2xl border border-dashed border-border bg-cream p-4 text-sm font-semibold text-muted">
-                Nothing waiting. Every submitted entry has been reviewed.
+                No hours submitted yet. New entries will show up here.
               </p>
             )}
 
@@ -135,6 +135,11 @@ export function AdvisorDesk({ advisorName = "Ms. Rivera" }: { advisorName?: stri
                   </span>
                 </li>
               ))}
+              {!verified.length ? (
+                <li className="rounded-xl border border-dashed border-border bg-white px-4 py-3 text-sm font-semibold text-muted">
+                  No verified entries yet.
+                </li>
+              ) : null}
             </ul>
           </Panel>
 

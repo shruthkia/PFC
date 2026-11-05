@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Baloo_2, Figtree, Shantell_Sans } from "next/font/google";
+import { Bricolage_Grotesque, Figtree, Shantell_Sans } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SiteChrome } from "@/components/site-chrome";
 import { CursorGlow } from "@/components/effects/cursor-glow";
@@ -7,11 +7,11 @@ import { siteConfig } from "@/lib/content";
 import "leaflet/dist/leaflet.css";
 import "./globals.css";
 
-const baloo = Baloo_2({
-  variable: "--font-baloo",
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: "variable",
 });
 
 const figtree = Figtree({
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: `${siteConfig.name} — students showing up for animals`,
+        alt: `${siteConfig.name}: students showing up for animals`,
       },
     ],
   },
@@ -111,7 +111,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       data-scroll-behavior="smooth"
       suppressHydrationWarning
-      className={`${baloo.variable} ${figtree.variable} ${shantell.variable} h-full`}
+      className={`${bricolage.variable} ${figtree.variable} ${shantell.variable} h-full`}
     >
       <body className="grain min-h-full flex flex-col antialiased">
         <ThemeProvider>
@@ -123,7 +123,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </ThemeProvider>
         <script
           type="application/ld+json"
-          // Static, trusted data only — never user input.
+          // Static, trusted data only. Never user input.
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
       </body>

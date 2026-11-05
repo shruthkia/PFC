@@ -1,19 +1,17 @@
-"use client";
-
 import Link from "next/link";
 import { ArrowLeft, FileText, Scissors, Target } from "lucide-react";
 import { Panel, ProgressBar, StatTile, StatusPill } from "@/components/platform/ui";
-import {
-  announcements as announcementSeed,
-  networkMetrics,
-  type AnnouncementRecord,
-} from "@/lib/platform-data";
-import { storageKeys, useStoredState } from "@/lib/storage";
+import { networkMetrics, type PublicNetwork } from "@/lib/platform-data";
 
-export function ImpactBoard() {
-  const toyPct = Math.min(100, Math.round((networkMetrics.toysDonated / networkMetrics.toyGoal) * 100));
-  const fundPct = Math.min(100, Math.round((networkMetrics.fundsRaised / networkMetrics.semesterFundGoal) * 100));
-  const [announcements] = useStoredState<AnnouncementRecord[]>(storageKeys.announcements, announcementSeed);
+export function ImpactBoard({ network }: { network: PublicNetwork }) {
+  const toyPct = Math.min(
+    100,
+    Math.round((network.totals.toysMade / Math.max(1, networkMetrics.toyGoal)) * 100),
+  );
+  const fundPct = Math.min(
+    100,
+    Math.round((network.totals.fundsRaised / Math.max(1, networkMetrics.semesterFundGoal)) * 100),
+  );
 
   return (
     <div className="paper-grid min-h-screen px-5 pb-24 pt-28 sm:px-10">
@@ -28,18 +26,38 @@ export function ImpactBoard() {
               Impact &amp; fundraising
             </h1>
             <p className="mt-3 max-w-2xl text-muted">
-              Totals come from claims HQ approved, not from optimistic self-reporting. The dataset on this
-              page is a November 2026 sample of 11 chapters.
+              Totals come from records chapters enter in their portal. Hours count after advisor
+              verification; funds and projects count after HQ approval.
             </p>
           </div>
-          <StatusPill tone="good">{networkMetrics.activeChapters} branches</StatusPill>
+          <StatusPill tone="good">{network.totals.chapters} branches</StatusPill>
         </div>
 
         <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <StatTile value={`${networkMetrics.toysDonated}+`} label="Toys donated" note="Enrichment for shelters" tone="blush" />
-          <StatTile value={`$${networkMetrics.toyValueUsd.toLocaleString()}`} label="Toy value" note="Estimated donated value" tone="butter" />
-          <StatTile value={`$${networkMetrics.fundsRaised}`} label="Funds raised" note="Verified claims only" tone="mint" />
-          <StatTile value={String(networkMetrics.activeChapters)} label="Chapter branches" note={`${networkMetrics.countries} countries`} tone="lilac" />
+          <StatTile
+            value={String(network.totals.toysMade)}
+            label="Toys donated"
+            note="From approved projects"
+            tone="blush"
+          />
+          <StatTile
+            value={String(network.totals.verifiedHours)}
+            label="Verified hours"
+            note="Advisor-signed entries"
+            tone="butter"
+          />
+          <StatTile
+            value={`$${network.totals.fundsRaised}`}
+            label="Funds raised"
+            note="Approved claims only"
+            tone="mint"
+          />
+          <StatTile
+            value={String(network.totals.chapters)}
+            label="Chapter branches"
+            note={`${network.totals.countries} countries`}
+            tone="lilac"
+          />
         </div>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-2">
@@ -49,7 +67,7 @@ export function ImpactBoard() {
               <div className="flex-1">
                 <h2 className="font-display text-2xl font-extrabold text-cocoa">Scrap-to-toy workshops</h2>
                 <p className="mt-2 text-sm text-muted">
-                  {networkMetrics.fashionPartnerNote}. {networkMetrics.toysDonated} toys toward a near-term
+                  {networkMetrics.fashionPartnerNote}. {network.totals.toysMade} toys toward a near-term
                   goal of {networkMetrics.toyGoal}.
                 </p>
                 <div className="mt-5">
@@ -64,8 +82,8 @@ export function ImpactBoard() {
               <div className="flex-1">
                 <h2 className="font-display text-2xl font-extrabold text-cocoa">Funds raised so far</h2>
                 <p className="mt-2 text-sm text-muted">
-                  ${networkMetrics.fundsRaised} of ${networkMetrics.semesterFundGoal.toLocaleString()} semester
-                  goal for shelter supplies and medical support.
+                  ${network.totals.fundsRaised} of ${networkMetrics.semesterFundGoal.toLocaleString()}{" "}
+                  semester goal for shelter supplies and medical support.
                 </p>
                 <div className="mt-5">
                   <ProgressBar value={fundPct} label="Semester fund goal" />
@@ -79,9 +97,7 @@ export function ImpactBoard() {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <h2 className="font-display text-2xl font-extrabold text-cocoa">Public announcements</h2>
-              <p className="mt-2 text-sm text-muted">
-                Posted from the national CMS. New posts appear here for every visitor as soon as they are published.
-              </p>
+              <p className="mt-2 text-sm text-muted">Updates from the national team.</p>
             </div>
             <div className="flex flex-wrap items-center gap-4">
               <Link
@@ -91,15 +107,15 @@ export function ImpactBoard() {
                 <FileText aria-hidden className="h-4 w-4" /> Printable report
               </Link>
               <Link
-                href="/prototype"
+                href="/login"
                 className="text-sm font-black text-rose underline decoration-2 underline-offset-4"
               >
-                See the preview
+                Chapter sign in
               </Link>
             </div>
           </div>
           <ul className="mt-6 space-y-3">
-            {announcements.map((post) => (
+            {network.announcements.map((post) => (
               <li key={post.id} className="rounded-2xl border-2 border-cocoa bg-cream p-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="font-display text-xl font-extrabold text-cocoa">{post.title}</p>
@@ -116,6 +132,11 @@ export function ImpactBoard() {
               </li>
             ))}
           </ul>
+          {!network.announcements.length ? (
+            <p className="mt-4 rounded-2xl border border-dashed border-border bg-cream p-4 text-sm font-semibold text-muted">
+              No announcements yet.
+            </p>
+          ) : null}
         </Panel>
       </div>
     </div>

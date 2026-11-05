@@ -212,17 +212,16 @@ export function LoginGate({ initialUser }: { initialUser: SessionUser | null }) 
         </Link>
 
         <div className="mt-6 max-w-3xl">
-          <p className="eyebrow w-fit">Prototype preview</p>
+          <p className="eyebrow w-fit">Chapter access</p>
           <h1 className="mt-4 font-display text-5xl font-black tracking-tight text-cocoa">
             {mode === "signup"
-              ? "Create a preview account"
+              ? "Create your account"
               : mode === "reset"
-                ? "Reset your preview password"
-                : "Preview sign in"}
+                ? "Reset your password"
+                : "Sign in"}
           </h1>
           <p className="mt-3 text-lg leading-8 text-muted">
-            This is the account door for the prototype, not a live PFC membership. One account opens one
-            workspace, edits save to the preview database, and no email is sent to anyone.
+            One account opens the workspace for your role. Account details and workspace changes save to the PFC database. Email is not connected yet, so save the recovery code shown at sign-up.
           </p>
         </div>
 
@@ -250,7 +249,7 @@ export function LoginGate({ initialUser }: { initialUser: SessionUser | null }) 
               <ul className="mt-4 space-y-3 text-sm font-semibold leading-6 text-cocoa">
                 <li className="flex gap-2">
                   <ShieldCheck aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-rose" />
-                  Hashed passwords and an HttpOnly session cookie — no passwords in browser storage.
+                  Hashed passwords and an HttpOnly session cookie. No passwords in browser storage.
                 </li>
                 <li className="flex gap-2">
                   <ShieldCheck aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-rose" />
@@ -258,11 +257,11 @@ export function LoginGate({ initialUser }: { initialUser: SessionUser | null }) 
                 </li>
                 <li className="flex gap-2">
                   <ShieldCheck aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-rose" />
-                  Changes save to the preview database and survive signing out or switching devices.
+                  Changes save to the PFC database and survive signing out or switching devices.
                 </li>
               </ul>
               <p className="mt-5 rounded-xl border border-border bg-white/70 p-3 text-xs font-semibold leading-5 text-muted">
-                No email is sent by this prototype. At sign-up you receive a one-time recovery code — keep it
+                Email is not connected yet. At sign-up you receive a one-time recovery code. Keep it
                 somewhere safe, because it is the only way to reset the password.
               </p>
             </Panel>
@@ -392,12 +391,12 @@ export function LoginGate({ initialUser }: { initialUser: SessionUser | null }) 
                 </Field>
                 <Field
                   label="Workspace role"
-                  hint="This decides which desk opens after sign-in. Production would verify advisor, organizer, and shelter roles before granting them."
+                  hint="This decides which desk opens after sign-in. Advisor, organizer, and shelter roles must be verified by PFC."
                 >
                   <select className="form-control" name="role" defaultValue="student" required>
                     {roles.map((role) => (
                       <option key={role.id} value={role.id}>
-                        {role.label} — {role.hint}
+                        {role.label}: {role.hint}
                       </option>
                     ))}
                   </select>
@@ -448,7 +447,7 @@ export function LoginGate({ initialUser }: { initialUser: SessionUser | null }) 
                   <Link href="/privacy" className="text-rose underline decoration-2 underline-offset-2">
                     privacy notice
                   </Link>
-                  . Accounts are for the prototype chapter workspace; no email is sent.
+                  . Accounts are for the chapter workspace. Email is not connected yet.
                 </p>
               </form>
             ) : (

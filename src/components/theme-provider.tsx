@@ -8,6 +8,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       attribute="class"
       defaultTheme="system"
       enableSystem
+      enableColorScheme
+      storageKey="pfc-theme"
       disableTransitionOnChange={false}
     >
       {children}

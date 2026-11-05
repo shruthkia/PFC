@@ -11,7 +11,7 @@ import {
   vision,
   whoItsFor,
 } from "@/lib/content";
-import { branchRegions, networkMetrics } from "@/lib/platform-data";
+import { branchRegions, chapters } from "@/lib/platform-data";
 
 export const metadata: Metadata = {
   title: "About PFC",
@@ -70,7 +70,7 @@ export default function AboutPage() {
 
             <div className="scrap-card bg-blush/60 p-6 sm:p-8">
               <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-rose">
-                {networkMetrics.activeChapters} chapter branches
+                {chapters.length} chapter branches
               </p>
               <h2 className="mt-2 font-display text-2xl font-extrabold text-cocoa">Where the pack lives</h2>
               <ul className="mt-4 space-y-3">

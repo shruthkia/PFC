@@ -1,7 +1,6 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useSyncExternalStore } from "react";
 
 function SunIcon() {
   return (
@@ -26,33 +25,16 @@ function MoonIcon() {
 }
 
 export function ThemeToggle() {
-  const { theme, setTheme, resolvedTheme } = useTheme();
-  const mounted = useSyncExternalStore(
-    () => () => undefined,
-    () => true,
-    () => false,
-  );
-
-  if (!mounted) {
-    return (
-      <button
-        type="button"
-        aria-label="Toggle color theme"
-        className="grid h-11 w-11 place-items-center rounded-full border-2 border-border text-cocoa"
-      >
-        <SunIcon />
-      </button>
-    );
-  }
-
-  const isDark = (theme === "system" ? resolvedTheme : theme) === "dark";
+  const { resolvedTheme, setTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
 
   return (
     <button
       type="button"
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      aria-label="Toggle color theme"
       aria-pressed={isDark}
+      suppressHydrationWarning
       className="grid h-11 w-11 place-items-center rounded-full border-2 border-border bg-surface-strong text-cocoa transition hover:border-rose hover:text-rose"
     >
       {isDark ? <SunIcon /> : <MoonIcon />}

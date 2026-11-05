@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
-/* Soft scrapbook light mode — cream paper, dusty rose, readable cocoa ink */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Soft scrapbook light mode: cream paper, dusty rose, readable cocoa ink */
 :root {
   --background: #fff6ef;
   --foreground: #3f2f28;
@@ -40,7 +42,7 @@
   --paper-line: rgba(92, 67, 56, 0.05);
 }
 
-/* Warm dark mode — no pure black, muted rose, easy on the eyes */
+/* Warm dark mode: no pure black, muted rose, easy on the eyes */
 .dark {
   --background: #1c1715;
   --foreground: #f0e4da;
@@ -112,7 +114,7 @@
   --color-ribbon: var(--ribbon);
   --font-sans: var(--font-figtree);
   --font-mono: var(--font-figtree);
-  --font-display: var(--font-baloo);
+  --font-display: var(--font-bricolage);
   --font-hand: var(--font-shantell);
   --radius-sticker: 1.6rem;
 }
@@ -173,7 +175,7 @@ a {
 }
 
 .font-display {
-  font-family: var(--font-baloo), ui-sans-serif, sans-serif;
+  font-family: var(--font-bricolage), ui-sans-serif, sans-serif;
   letter-spacing: -0.01em;
 }
 
@@ -232,7 +234,7 @@ a {
 
 .section-title {
   color: var(--cocoa);
-  font-family: var(--font-baloo), ui-sans-serif, sans-serif;
+  font-family: var(--font-bricolage), ui-sans-serif, sans-serif;
   font-size: clamp(2.3rem, 5.5vw, 4.2rem);
   font-weight: 800;
   letter-spacing: -0.04em;
@@ -347,6 +349,46 @@ a {
   box-shadow: 4px 5px 0 color-mix(in srgb, var(--shadow) 28%, transparent);
 }
 
+.tape {
+  position: absolute;
+  z-index: 3;
+  width: 5.5rem;
+  height: 1.35rem;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(243, 228, 180, 0.92) 0 10px,
+    rgba(255, 250, 244, 0.72) 10px 12px
+  );
+  border-inline: 1px dashed rgba(92, 67, 56, 0.28);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  opacity: 0.94;
+}
+
+.marker {
+  background: linear-gradient(
+    transparent 56%,
+    color-mix(in srgb, var(--butter) 92%, transparent) 56%
+  );
+  padding-inline: 0.12em;
+}
+
+.spin-slow {
+  animation: spin-slow 24s linear infinite;
+}
+
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+.wiggle {
+  animation: wiggle 5s ease-in-out infinite;
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+
 .scallop-border {
   height: 20px;
   background:
@@ -445,7 +487,7 @@ a {
 .pfc-popup-title {
   margin: 0.15rem 0 0;
   color: var(--cocoa);
-  font-family: var(--font-baloo), ui-rounded, sans-serif;
+  font-family: var(--font-bricolage), ui-sans-serif, sans-serif;
   font-size: 1rem;
   font-weight: 800;
 }
@@ -476,7 +518,7 @@ a {
 .pfc-popup-stats dd {
   margin: 0;
   color: var(--cocoa);
-  font-family: var(--font-baloo), ui-rounded, sans-serif;
+  font-family: var(--font-bricolage), ui-sans-serif, sans-serif;
   font-size: 1rem;
   font-weight: 800;
 }
@@ -708,7 +750,7 @@ a {
   }
 }
 
-/* ——— Scrapbook extras ——————————————————————————————— */
+/* Scrapbook extras */
 
 .checker-band {
   height: 14px;

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AdminConsole } from "@/components/admin-console";
 import { requireRole } from "@/lib/auth/session";
+import { getPublicNetwork } from "@/lib/public-record";
 
 export const metadata: Metadata = {
   title: "National admin desk",
@@ -8,7 +9,10 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminPage() {
   await requireRole("admin", "/admin");
-  return <AdminConsole />;
+  const network = await getPublicNetwork();
+  return <AdminConsole network={network} />;
 }

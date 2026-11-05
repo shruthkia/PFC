@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, MapPin, Search } from "lucide-react";
 import { Panel, StatusPill } from "@/components/platform/ui";
-import { chapters } from "@/lib/platform-data";
+import { chapters, type PublicRecord } from "@/lib/platform-data";
 
 const TILE_URL = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
 const ATTRIBUTION =
@@ -26,22 +26,26 @@ function escapeHtml(value: string) {
   });
 }
 
-function popupMarkup(chapter: Chapter) {
+function popupMarkup(chapter: Chapter, record?: PublicRecord) {
   return `<div class="pfc-popup">
     <p class="pfc-popup-kicker">${escapeHtml(chapter.status)} chapter</p>
     <p class="pfc-popup-title">${escapeHtml(chapter.name)}</p>
     <p class="pfc-popup-meta">${escapeHtml(chapter.school)}<br />${escapeHtml(chapter.city)}, ${escapeHtml(
       chapter.country === "USA" ? chapter.state : chapter.country,
     )}</p>
-    <dl class="pfc-popup-stats">
-      <div><dt>Toys</dt><dd>${chapter.toys}</dd></div>
-      <div><dt>Members</dt><dd>${chapter.members}</dd></div>
-      <div><dt>Hours</dt><dd>${chapter.hours}</dd></div>
-    </dl>
+    ${
+      record
+        ? `<dl class="pfc-popup-stats">
+      <div><dt>Toys</dt><dd>${record.toysMade}</dd></div>
+      <div><dt>Members</dt><dd>${record.members}</dd></div>
+      <div><dt>Hours</dt><dd>${record.verifiedHours}</dd></div>
+    </dl>`
+        : `<p class="pfc-popup-meta">No portal record yet.</p>`
+    }
   </div>`;
 }
 
-export function ChapterDirectory() {
+export function ChapterDirectory({ records }: { records: PublicRecord[] }) {
   const [query, setQuery] = useState("");
   const [region, setRegion] = useState("All");
   const [selected, setSelected] = useState("coppell");
@@ -53,6 +57,10 @@ export function ChapterDirectory() {
   const layerRef = useRef<LayerGroup | null>(null);
   const markersRef = useRef<Map<string, Marker>>(new Map());
   const activeIdRef = useRef(selected);
+  const recordById = useMemo(
+    () => new Map(records.map((record) => [record.chapterId, record])),
+    [records],
+  );
 
   const regions = useMemo(() => {
     const set = new Set<string>();
@@ -79,6 +87,15 @@ export function ChapterDirectory() {
   }, [query, region]);
 
   const active = filtered.find((chapter) => chapter.id === selected) ?? filtered[0] ?? null;
+  const activeRecord = active ? recordById.get(active.id) : undefined;
+  const activeHasEntries = Boolean(
+    activeRecord &&
+      (activeRecord.toysMade ||
+        activeRecord.fundsRaised ||
+        activeRecord.projectsApproved ||
+        activeRecord.verifiedHours ||
+        activeRecord.members),
+  );
 
   // Keep the selected chapter available to the marker builder without making
   // selection rebuild every marker (which would close the open popup).
@@ -157,7 +174,7 @@ export function ChapterDirectory() {
           alt: `${chapter.name} in ${chapter.city}`,
           keyboard: true,
         });
-        marker.bindPopup(popupMarkup(chapter), { maxWidth: 270, closeButton: true });
+        marker.bindPopup(popupMarkup(chapter, recordById.get(chapter.id)), { maxWidth: 270, closeButton: true });
         marker.on("click", () => setSelected(chapter.id));
         marker.addTo(layer);
         markersRef.current.set(chapter.id, marker);
@@ -174,7 +191,7 @@ export function ChapterDirectory() {
     return () => {
       cancelled = true;
     };
-  }, [filtered, map]);
+  }, [filtered, map, recordById]);
 
   // Reflect the current selection on the marker without rebuilding the map.
   useEffect(() => {
@@ -207,13 +224,13 @@ export function ChapterDirectory() {
           <ArrowLeft className="h-4 w-4" aria-hidden /> Public site
         </Link>
         <div className="mt-6 max-w-3xl">
-          <p className="eyebrow w-fit">Preview chapter roster</p>
+          <p className="eyebrow w-fit">Chapter roster</p>
           <h1 className="mt-4 font-display text-5xl font-extrabold tracking-tight text-cocoa">
             Chapter directory &amp; map
           </h1>
           <p className="mt-3 text-lg text-muted">
-            {chapters.length} sample branches across California, DFW, the Southeast, Canada, Qatar, and
-            India. The map is real; the roster is preview data. Search, filter, then pick a pin or a name.
+            {chapters.length} branches across California, DFW, the Southeast, Canada, Qatar, and India.
+            Search, filter, then pick a pin or a name.
           </p>
         </div>
 
@@ -318,17 +335,23 @@ export function ChapterDirectory() {
                     {active.status}
                   </StatusPill>
                 </div>
-                <dl className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-                  <MiniStat label="Toys" value={String(active.toys)} />
-                  <MiniStat label="Funds" value={`$${active.funds}`} />
-                  <MiniStat label="Projects" value={String(active.projects)} />
-                  <MiniStat label="Members" value={String(active.members)} />
+                <dl className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-5">
+                  <MiniStat label="Toys" value={String(activeRecord?.toysMade ?? 0)} />
+                  <MiniStat label="Funds" value={`$${activeRecord?.fundsRaised ?? 0}`} />
+                  <MiniStat label="Projects" value={String(activeRecord?.projectsApproved ?? 0)} />
+                  <MiniStat label="Members" value={String(activeRecord?.members ?? 0)} />
+                  <MiniStat label="Hours" value={String(activeRecord?.verifiedHours ?? 0)} />
                 </dl>
+                {!activeHasEntries ? (
+                  <p className="mt-3 rounded-xl border border-dashed border-cocoa/30 bg-cream px-3 py-2 text-xs font-semibold text-muted">
+                    No portal entries yet. Totals start here when this chapter logs work.
+                  </p>
+                ) : null}
               </div>
             ) : (
               <div className="mt-4 rounded-2xl border-2 border-dashed border-cocoa bg-white p-5">
                 <p className="font-display text-lg font-extrabold text-cocoa">No chapters match that search.</p>
-                <p className="mt-1 text-sm text-muted">Try a city, school, or region — or clear the filters.</p>
+                <p className="mt-1 text-sm text-muted">Try a city, school, or region, or clear the filters.</p>
                 <button type="button" className="button-paper mt-3 min-h-0 px-4 py-2 text-xs" onClick={clearFilters}>
                   Clear filters
                 </button>

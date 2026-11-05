@@ -13,6 +13,7 @@ import {
   volunteerHours,
 } from "@/lib/content";
 import { networkMetrics } from "@/lib/platform-data";
+import { getPublicNetwork } from "@/lib/public-record";
 import { HOURS_QUALIFICATION } from "@/lib/qualification";
 
 export const metadata: Metadata = {
@@ -22,7 +23,11 @@ export const metadata: Metadata = {
   alternates: { canonical: "/work" },
 };
 
-export default function WorkPage() {
+export const dynamic = "force-dynamic";
+
+export default async function WorkPage() {
+  const network = await getPublicNetwork();
+
   return (
     <>
       <PageHero
@@ -41,21 +46,23 @@ export default function WorkPage() {
             <p className="mt-4 max-w-2xl leading-8 text-muted">{campaignFocus.body}</p>
           </div>
           <aside className="scrap-card bg-blush/60 p-6 sm:p-7">
-            <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-rose">What we&apos;ve done so far</p>
+            <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-rose">What chapters have logged</p>
             <ul className="mt-4 space-y-3 text-sm font-bold leading-6 text-cocoa">
               <li className="flex justify-between gap-4 border-b border-dashed border-border pb-3">
                 <span>Toys donated</span>
-                <span className="shrink-0 font-display text-lg text-rose">{networkMetrics.toysDonated}+</span>
+                <span className="shrink-0 font-display text-lg text-rose">{network.totals.toysMade}</span>
               </li>
               <li className="flex justify-between gap-4 border-b border-dashed border-border pb-3">
-                <span>Toy value</span>
-                <span className="shrink-0 font-display text-lg text-rose">
-                  ${networkMetrics.toyValueUsd.toLocaleString()}
-                </span>
+                <span>Projects finished</span>
+                <span className="shrink-0 font-display text-lg text-rose">{network.totals.projectsApproved}</span>
+              </li>
+              <li className="flex justify-between gap-4 border-b border-dashed border-border pb-3">
+                <span>Verified hours</span>
+                <span className="shrink-0 font-display text-lg text-rose">{network.totals.verifiedHours}</span>
               </li>
               <li className="flex justify-between gap-4 border-b border-dashed border-border pb-3">
                 <span>Funds raised</span>
-                <span className="shrink-0 font-display text-lg text-rose">${networkMetrics.fundsRaised}</span>
+                <span className="shrink-0 font-display text-lg text-rose">${network.totals.fundsRaised}</span>
               </li>
               <li>{networkMetrics.fashionPartnerNote}</li>
             </ul>

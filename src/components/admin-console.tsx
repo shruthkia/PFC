@@ -5,14 +5,12 @@ import Link from "next/link";
 import { ArrowLeft, BadgeCheck, FileText, Megaphone, ShieldAlert } from "lucide-react";
 import { Field, Panel, ProgressBar, StatusPill } from "@/components/platform/ui";
 import {
-  activeHealth,
-  announcements as announcementSeed,
   cmsPages,
-  pendingClaims,
-  socialQueue as socialSeed,
   type AnnouncementRecord,
   type ApplicationRecord,
   type ClaimRecord,
+  type PublicNetwork,
+  type SocialPostRecord,
 } from "@/lib/platform-data";
 import { storageKeys, useStoredState } from "@/lib/storage";
 import { CHAPTER_FORM_URL } from "@/lib/utils";
@@ -28,12 +26,12 @@ const tabs: AdminTab[] = [
   "Social spotlight",
 ];
 
-export function AdminConsole() {
+export function AdminConsole({ network }: { network: PublicNetwork }) {
   const [tab, setTab] = useState<AdminTab>("Claims");
-  const [claims, setClaims] = useStoredState<ClaimRecord[]>(storageKeys.claims, pendingClaims);
+  const [claims, setClaims] = useStoredState<ClaimRecord[]>(storageKeys.claims, []);
   const [applications, setApplications] = useStoredState<ApplicationRecord[]>(storageKeys.applications, []);
-  const [posts, setPosts] = useStoredState<AnnouncementRecord[]>(storageKeys.announcements, announcementSeed);
-  const [social, setSocial] = useStoredState(storageKeys.social, socialSeed);
+  const [posts, setPosts] = useStoredState<AnnouncementRecord[]>(storageKeys.announcements, []);
+  const [social, setSocial] = useStoredState<SocialPostRecord[]>(storageKeys.social, []);
   const [cmsDraft, setCmsDraft] = useStoredState(
     storageKeys.cmsDraft,
     "People still do not understand sterilization and responsible adoption. That is the PFC-wide thread.",
@@ -42,6 +40,7 @@ export function AdminConsole() {
 
   const openClaims = claims.filter((claim) => claim.status === "pending" || claim.status === "needs_info");
   const newApplications = applications.filter((app) => app.status === "Received");
+  const countries = Array.from(new Set(network.records.map((record) => record.country))).join(", ");
 
   function flash(message: string) {
     setToast(message);
@@ -61,7 +60,7 @@ export function AdminConsole() {
     setApplications((current) =>
       current.map((app) => (app.id === id ? { ...app, status: "Reviewed" } : app)),
     );
-    flash("Marked reviewed in the preview. No email is sent to the applicant.");
+    flash("Application marked reviewed.");
   }
 
   return (
@@ -81,7 +80,7 @@ export function AdminConsole() {
               and export the impact report.
             </p>
           </div>
-          <StatusPill tone="good">Shared chapter record</StatusPill>
+          <StatusPill tone="good">National workspace</StatusPill>
         </div>
 
         {toast ? (
@@ -191,7 +190,7 @@ export function AdminConsole() {
                 <div>
                   <h2 className="font-display text-3xl font-black text-cocoa">Chapter applications</h2>
                   <p className="mt-2 text-sm text-muted">
-                    New applications are collected in the approved Google Form. This preview queue only
+                    New applications are collected in the approved Google Form. This queue only
                     keeps submissions created before the form moved.
                   </p>
                 </div>
@@ -243,7 +242,7 @@ export function AdminConsole() {
                 </ul>
               ) : (
                 <p className="mt-6 rounded-2xl border border-dashed border-border bg-white p-5 text-sm font-semibold leading-6 text-muted">
-                  No preview submissions. Open the{" "}
+                  No submissions. Open the{" "}
                   <a
                     href={CHAPTER_FORM_URL}
                     target="_blank"
@@ -270,19 +269,9 @@ export function AdminConsole() {
                   </p>
                 </div>
               </div>
-              <ul className="mt-6 space-y-3">
-                {activeHealth.map((row) => (
-                  <li key={row.chapter} className="rounded-2xl border-2 border-cocoa bg-white p-4">
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                      <p className="font-display text-xl font-black text-cocoa">{row.chapter}</p>
-                      <StatusPill tone={row.risk === "high" ? "bad" : row.risk === "medium" ? "warn" : "good"}>
-                        {row.pulse}
-                      </StatusPill>
-                    </div>
-                    <p className="mt-2 text-sm text-muted">{row.note}</p>
-                  </li>
-                ))}
-              </ul>
+              <p className="mt-6 rounded-2xl border border-dashed border-border bg-white p-4 text-sm font-semibold text-muted">
+                No chapter check-ins yet. Health notes appear here when a chapter files one.
+              </p>
             </Panel>
           ) : null}
 
@@ -367,7 +356,7 @@ export function AdminConsole() {
                   <button
                     type="button"
                     className="button-paper mt-3"
-                    onClick={() => flash("Draft saved. Publishing it updates the public announcements.")}
+                    onClick={() => flash("Draft saved. It is not published.")}
                   >
                     Save draft
                   </button>
@@ -385,6 +374,11 @@ export function AdminConsole() {
                       <p className="mt-2 text-xs font-bold text-muted">{post.date}</p>
                     </li>
                   ))}
+                  {!posts.length ? (
+                    <li className="rounded-xl border border-dashed border-border bg-cream p-4 text-sm font-semibold text-muted">
+                      No announcements yet.
+                    </li>
+                  ) : null}
                 </ul>
               </Panel>
             </div>
@@ -427,10 +421,10 @@ export function AdminConsole() {
                 <div className="rounded-2xl border-2 border-dashed border-cocoa bg-white/70 p-6">
                   <p className="font-hand text-2xl font-bold text-rose">Fall 2026 snapshot</p>
                   <ul className="mt-4 space-y-2 text-sm font-bold text-cocoa">
-                    <li>85 enrichment toys donated (about $1,550 value)</li>
-                    <li>$400 raised across 11 chapters</li>
-                    <li>4 countries: USA, Canada, Qatar, India</li>
-                    <li>Verified hours from advisor-signed logs only</li>
+                    <li>{network.totals.toysMade} enrichment toys from approved projects</li>
+                    <li>${network.totals.fundsRaised} raised across {network.totals.chapters} chapters</li>
+                    <li>{network.totals.countries} countries: {countries}</li>
+                    <li>{network.totals.verifiedHours} verified hours from advisor-signed logs</li>
                   </ul>
                   <Link
                     href="/impact"
@@ -451,7 +445,7 @@ export function AdminConsole() {
                   <h2 className="font-display text-3xl font-black text-cocoa">Social spotlight</h2>
                   <p className="mt-2 text-sm text-muted">
                     Approved project claims can become a short caption. Queue one here; scheduling still
-                    happens in the social tool, not this preview.
+                    happens in the social tool, not this workspace.
                   </p>
                 </div>
               </div>
@@ -490,6 +484,11 @@ export function AdminConsole() {
                   </li>
                 ))}
               </ul>
+              {!social.length ? (
+                <p className="mt-4 rounded-2xl border border-dashed border-border bg-cream p-4 text-sm font-semibold text-muted">
+                  No captions in the queue yet.
+                </p>
+              ) : null}
             </Panel>
           ) : null}
         </div>

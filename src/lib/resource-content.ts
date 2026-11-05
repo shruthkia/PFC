@@ -8,7 +8,7 @@
 export const resourceFiles: Record<string, { filename: string; body: string }> = {
   r1: {
     filename: "pfc-first-meeting-agenda.txt",
-    body: `PAWSFORCAUSE — FIRST CHAPTER MEETING AGENDA
+    body: `PAWSFORCAUSE: FIRST CHAPTER MEETING AGENDA
 Length: 45 minutes. Goal: leave with a first project and a next meeting date.
 
 1. Welcome and why we exist (5 min)
@@ -45,41 +45,41 @@ AFTER THE MEETING
     body: `PAWSFORCAUSE CHAPTER BYLAWS (TEMPLATE)
 Replace bracketed text. Keep it short enough that members will read it.
 
-ARTICLE I — NAME
+ARTICLE I: NAME
 The name of this organization is [School] PawsForCause, a chapter of the
 PawsForCause student animal-welfare network.
 
-ARTICLE II — PURPOSE
+ARTICLE II: PURPOSE
 The chapter supports local shelters, rescues, and responsible adoption through
 documented service, education, and supply or fundraising projects. The chapter
 does not handle animal rescue, transport, or medical decisions.
 
-ARTICLE III — MEMBERSHIP
+ARTICLE III: MEMBERSHIP
 Membership is open to students at [School] who follow school rules and the PFC
 Code of Conduct. No dues beyond [amount, or "none"]. Membership does not
 require owning a pet.
 
-ARTICLE IV — OFFICERS
+ARTICLE IV: OFFICERS
 President, Operations/VP, Outreach, Events/Service, and Fundraising/Partnerships.
 Term: [one school year]. Elections: [month]. Vacancies are filled by chapter vote.
 
-ARTICLE V — FACULTY ADVISOR
+ARTICLE V: FACULTY ADVISOR
 A school-approved faculty advisor must be named at all times. The advisor
 receives meeting notices and reviews off-campus activity plans.
 
-ARTICLE VI — MEETINGS
+ARTICLE VI: MEETINGS
 The chapter meets [cadence] during the school year. A quorum is [number].
 
-ARTICLE VII — FINANCES
+ARTICLE VII: FINANCES
 All funds are raised for a named shelter, rescue, or supply list. The treasurer
 or president keeps receipts. No fundraiser goes live without HQ review.
 
-ARTICLE VIII — SAFETY
+ARTICLE VIII: SAFETY
 School, shelter, and guardian rules take priority. Off-campus work requires the
 school's permission process and parent/guardian consent. Photos of minors need
 permission before publication.
 
-ARTICLE IX — AMENDMENTS
+ARTICLE IX: AMENDMENTS
 Amendments pass by [two-thirds] vote with the advisor informed.
 
 Adopted on [date] by [chapter name].
@@ -152,23 +152,23 @@ AFTER
   },
   r5: {
     filename: "pfc-hallway-flyer-copy.txt",
-    body: `HALLWAY FLYER COPY — pick one, keep the QR/date accurate
+    body: `HALLWAY FLYER COPY: pick one, keep the QR/date accurate
 
-VERSION A — ADOPTION
+VERSION A: ADOPTION
 Headline: A pet is a 10-year decision, not a surprise.
 Body: Shelters are full of animals who were bought on impulse. Meet the animal,
 ask about behavior and medical history, and make sure your home can keep them.
 Line: Adopt deliberately. Sterilize your pets.
 Footer: [School] PawsForCause · [meeting day] in [room]
 
-VERSION B — STERILIZATION
+VERSION B: STERILIZATION
 Headline: One litter is cute. Six hundred thousand is not.
 Body: Sterilization prevents litters that shelters cannot place. Ask a vet about
 timing and cost before you bring home a pet.
 Line: Fix your pets. Fund the fix for someone who cannot.
 Footer: [School] PawsForCause · [meeting day] in [room]
 
-VERSION C — VOLUNTEER
+VERSION C: VOLUNTEER
 Headline: Two hours. Real tasks. No sad-puppy photos required.
 Body: Our chapter sorts supplies, makes enrichment toys, and runs supply drives
 for [shelter name]. Come to one meeting and pick a job.
@@ -182,7 +182,7 @@ PRINT NOTES
   },
   r6: {
     filename: "pfc-parent-consent-packet.txt",
-    body: `PAWSFORCAUSE OFF-CAMPUS ACTIVITY — PARENT/GUARDIAN CONSENT
+    body: `PAWSFORCAUSE OFF-CAMPUS ACTIVITY: PARENT/GUARDIAN CONSENT
 This is a template. Your school's own form wins wherever it is stricter.
 
 STUDENT
@@ -257,7 +257,7 @@ HOUSE RULES
   },
   r8: {
     filename: "pfc-fashion-partnership-one-pager.txt",
-    body: `FASHION DEPARTMENT x PAWSFORCAUSE — ONE PAGE
+    body: `FASHION DEPARTMENT x PAWSFORCAUSE: ONE PAGE
 
 THE IDEA
 Fashion classes already generate fabric offcuts. Local shelters need washable

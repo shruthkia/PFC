@@ -71,11 +71,9 @@ export default async function AccountPage() {
           </Panel>
 
           <Panel>
-            <h2 className="font-display text-xl font-black text-cocoa">No email is sent yet</h2>
+            <h2 className="font-display text-xl font-black text-cocoa">Email is not connected yet</h2>
             <p className="mt-2 text-sm font-semibold leading-6 text-muted">
-              This prototype does not have an email provider, so it does not pretend to send verification or
-              reset links. Your one-time recovery code is the reset path. A production launch should add
-              verified email, a proper hosted database, and a privacy review before real student data.
+              Email is not connected yet, so verification and reset links are not sent. Your one-time recovery code is the reset path.
             </p>
           </Panel>
         </div>

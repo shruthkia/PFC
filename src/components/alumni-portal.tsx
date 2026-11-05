@@ -4,13 +4,13 @@ import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, BadgeCheck, GraduationCap, HeartHandshake } from "lucide-react";
 import { Field, Panel, StatusPill } from "@/components/platform/ui";
-import { alumni as alumniSeed } from "@/lib/platform-data";
+import type { MentorRecord } from "@/lib/platform-data";
 import { storageKeys, useStoredState } from "@/lib/storage";
 
-type Mentor = (typeof alumniSeed)[number];
+type Mentor = MentorRecord;
 
 export function AlumniPortal({ memberName = "Alumni mentor" }: { memberName?: string }) {
-  const [people, setPeople] = useStoredState<Mentor[]>(storageKeys.mentors, alumniSeed);
+  const [people, setPeople] = useStoredState<Mentor[]>(storageKeys.mentors, []);
   const [requests, setRequests] = useStoredState<string[]>(storageKeys.mentorRequests, []);
   const [toast, setToast] = useState<string | null>(null);
 
@@ -49,7 +49,7 @@ export function AlumniPortal({ memberName = "Alumni mentor" }: { memberName?: st
     flash(
       requested
         ? `Match request to ${person.name} cancelled.`
-        : `Match request to ${person.name} saved. A real intro still needs an email from a person.`,
+        : `Match request to ${person.name} saved. You still need to send an email.`,
     );
   }
 
@@ -64,7 +64,7 @@ export function AlumniPortal({ memberName = "Alumni mentor" }: { memberName?: st
             <p className="eyebrow w-fit">Graduating seniors &amp; mentors</p>
             <h1 className="mt-4 font-display text-5xl font-black tracking-tight text-cocoa">Alumni portal</h1>
             <p className="mt-3 max-w-2xl text-muted">
-              Keep the next class from starting at zero. Offer one specific kind of help — a launch call,
+              Keep the next class from starting at zero. Offer one specific kind of help: a launch call,
               fundraising review, or a campus club handoff.
             </p>
           </div>
@@ -121,8 +121,7 @@ export function AlumniPortal({ memberName = "Alumni mentor" }: { memberName?: st
                 <HeartHandshake aria-hidden className="h-4 w-4" /> Add me to the mentor pack
               </button>
               <p className="text-xs font-semibold leading-5 text-muted">
-                Saved to the shared mentor directory. A production directory would verify graduation and contact
-                details first.
+                Saved to the shared mentor directory.
               </p>
             </form>
           </Panel>
@@ -162,6 +161,11 @@ export function AlumniPortal({ memberName = "Alumni mentor" }: { memberName?: st
                 );
               })}
             </ul>
+            {!people.length ? (
+              <p className="mt-4 rounded-2xl border border-dashed border-border bg-cream p-4 text-sm font-semibold text-muted">
+                No mentors yet. Add the first one above.
+              </p>
+            ) : null}
             <p className="mt-5 text-xs font-semibold leading-5 text-muted">
               Requests are saved for the chapter and listed here. Nothing is emailed automatically.
             </p>

@@ -3,7 +3,7 @@ import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
 
 /**
- * Server-side prototype database.
+ * Server-side account database.
  *
  * Accounts, sessions, and shared chapter state live in a SQLite file on the
  * machine running the app. The file is git-ignored, persists across restarts,

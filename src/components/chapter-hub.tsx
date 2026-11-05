@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useId, useMemo, useRef, useState } from "react";
+import { FormEvent, useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -22,7 +22,6 @@ import {
   Printer,
   ShieldCheck,
   Upload,
-  Users,
   X,
 } from "lucide-react";
 import { HouseMark } from "@/components/brand/house-mark";
@@ -30,12 +29,9 @@ import { Field, ProgressBar, StatusPill } from "@/components/platform/ui";
 import {
   chapters,
   fundCategories,
-  hourEntries as hourSeed,
   launchChecklist as launchSeed,
-  pendingClaims,
   projectTags,
   resources,
-  shelterTasks as taskSeed,
   type ClaimRecord,
   type HourEntry,
   type ShelterTaskRecord,
@@ -56,8 +52,7 @@ type Tab =
   | "Projects"
   | "Resources"
   | "Consent"
-  | "Certificates"
-  | "Members";
+  | "Certificates";
 
 type FundEntry = {
   id: string;
@@ -75,6 +70,7 @@ type ProjectEntry = {
   tags: string[];
   status: "Approved" | "Draft" | "Pending review" | "Rejected";
   body?: string;
+  toys: number;
   photos: string[];
   claimId?: string;
 };
@@ -95,7 +91,6 @@ const nav: { label: Tab; icon: typeof LayoutDashboard }[] = [
   { label: "Resources", icon: BookOpen },
   { label: "Consent", icon: ShieldCheck },
   { label: "Certificates", icon: BadgeCheck },
-  { label: "Members", icon: Users },
 ];
 
 const chapter = chapters.find((item) => item.id === "coppell") ?? chapters[0];
@@ -107,13 +102,14 @@ function makeId(prefix: string) {
   return `${prefix}${Date.now()}`;
 }
 
-export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }) {
+export function ChapterHub({ memberName = "Student" }: { memberName?: string }) {
   const [tab, setTab] = useState<Tab>("Overview");
   const [navOpen, setNavOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const [hourOpen, setHourOpen] = useState(false);
   const [fundOpen, setFundOpen] = useState(false);
   const [projectOpen, setProjectOpen] = useState(false);
+  const [consentOpen, setConsentOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [proofNames, setProofNames] = useState<string[]>([]);
   const [photoNames, setPhotoNames] = useState<string[]>([]);
@@ -127,22 +123,12 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
     storageKeys.checklist,
     launchSeed.map((item) => item.done),
   );
-  const [hours, setHours] = useStoredState<HourEntry[]>(storageKeys.hours, hourSeed);
-  const [funds, setFunds] = useStoredState<FundEntry[]>(storageKeys.funds, [
-    { id: "f1", event: "Bake sale", category: "Bake sale / campus sale", amount: 35, beneficiary: "Austin Animal Center medical fund", status: "Pending HQ" },
-    { id: "f2", event: "Wishlist drive", category: "Wishlist / supplies", amount: 20, beneficiary: "Safe Harbor Rescue supply list", status: "Verified" },
-  ]);
-  const [projects, setProjects] = useStoredState<ProjectEntry[]>(storageKeys.projects, [
-    { id: "p1", title: "October enrichment night", tags: ["Enrichment", "Shelter task"], status: "Approved", photos: [] },
-    { id: "p2", title: "Sterilization hallway posters", tags: ["Education"], status: "Draft", photos: [] },
-  ]);
-  const [consents, setConsents] = useStoredState<ConsentEntry[]>(storageKeys.consents, [
-    { id: "co1", student: memberName, event: "Austin Animal Center shift", status: "Signed" },
-    { id: "co2", student: "Eli Park", event: "Austin Animal Center shift", status: "Sent" },
-    { id: "co3", student: "Noah Diaz", event: "Austin Animal Center shift", status: "Needed" },
-  ]);
-  const [tasks, setTasks] = useStoredState<ShelterTaskRecord[]>(storageKeys.tasks, taskSeed);
-  const [claims, setClaims] = useStoredState<ClaimRecord[]>(storageKeys.claims, pendingClaims);
+  const [hours, setHours] = useStoredState<HourEntry[]>(storageKeys.hours, []);
+  const [funds, setFunds] = useStoredState<FundEntry[]>(storageKeys.funds, []);
+  const [projects, setProjects] = useStoredState<ProjectEntry[]>(storageKeys.projects, []);
+  const [consents, setConsents] = useStoredState<ConsentEntry[]>(storageKeys.consents, []);
+  const [tasks, setTasks] = useStoredState<ShelterTaskRecord[]>(storageKeys.tasks, []);
+  const [claims, setClaims] = useStoredState<ClaimRecord[]>(storageKeys.claims, []);
 
   const progress = Math.round((checked.filter(Boolean).length / Math.max(1, checked.length)) * 100);
   const loggedHours = hours.reduce((total, row) => total + row.hours, 0);
@@ -179,10 +165,7 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
   }
 
   const approvedProjects = projects.filter((row) => projectStatus(row) === "Approved").length;
-  const myChapterTasks = useMemo(
-    () => tasks.filter((task) => /Coppell|Plano|Frisco|DFW/i.test(task.city)),
-    [tasks],
-  );
+  const openTasks = tasks.filter((task) => !task.claimedBy);
 
   const notifications = [
     ...(reviewCount
@@ -194,8 +177,8 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
     ...(remainingSteps
       ? [{ text: `${remainingSteps} launch ${remainingSteps === 1 ? "step" : "steps"} left in the 30-day plan`, tab: "Launch plan" as Tab }]
       : []),
-    ...(myChapterTasks.filter((task) => !task.claimedBy).length
-      ? [{ text: `${myChapterTasks.filter((task) => !task.claimedBy).length} nearby shelter tasks are still unclaimed`, tab: "Overview" as Tab }]
+    ...(openTasks.length
+      ? [{ text: `${openTasks.length} shelter ${openTasks.length === 1 ? "task is" : "tasks are"} still open`, tab: "Overview" as Tab }]
       : []),
   ];
 
@@ -243,7 +226,7 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
     setHours((current) => [entry, ...current]);
     setHourOpen(false);
     setProofNames([]);
-    flash(`Saved to the preview chapter record and sent to the preview advisor queue (${entry.hours} hrs).`);
+    flash(`Saved. Your advisor will see the ${entry.hours} hour entry in their queue.`);
   }
 
   function submitFunds(event: FormEvent<HTMLFormElement>) {
@@ -253,7 +236,7 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
     const eventName = String(data.get("event") || "Fundraiser");
     const beneficiary = String(data.get("beneficiary") || "Named shelter");
     const claimId = addClaim({
-      chapter: "Coppell Paws",
+      chapter: chapter.name,
       student: memberName,
       type: "Funds",
       summary: `${eventName} · $${amount}`,
@@ -271,7 +254,7 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
       ...current,
     ]);
     setFundOpen(false);
-    flash(`$${amount} added and sent to the national claim queue.`);
+    flash(`$${amount} added. HQ will review the claim.`);
   }
 
   function submitProject(event: FormEvent<HTMLFormElement>) {
@@ -279,8 +262,9 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
     const data = new FormData(event.currentTarget);
     const selected = projectTags.filter((tag) => data.get(`tag-${tag}`));
     const title = String(data.get("title") || "Untitled project");
+    const toys = Math.max(0, Math.floor(Number(data.get("toys") || 0)));
     const claimId = addClaim({
-      chapter: "Coppell Paws",
+      chapter: chapter.name,
       student: memberName,
       type: "Project",
       summary: title,
@@ -291,6 +275,7 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
         title,
         body: String(data.get("body") || ""),
         tags: selected.length ? selected : ["Outreach"],
+        toys,
         photos: photoNames,
         status: "Pending review",
         claimId,
@@ -299,25 +284,39 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
     ]);
     setProjectOpen(false);
     setPhotoNames([]);
-    flash("Project saved to the preview claim queue. No national review is triggered.");
+    flash("Project saved. HQ will review it.");
   }
 
   function sendConsent(id: string) {
     setConsents((current) =>
       current.map((item) => (item.id === id ? { ...item, status: "Sent" } : item)),
     );
-    flash("Waiver status changed in the preview. No email is sent to a guardian.");
+    flash("Waiver marked sent. Send the form through your school's process.");
+  }
+
+  function submitConsent(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const student = String(data.get("student") || "").trim();
+    const eventName = String(data.get("event") || "").trim();
+    if (!student || !eventName) return;
+    setConsents((current) => [
+      { id: makeId("co"), student, event: eventName, status: "Needed" },
+      ...current,
+    ]);
+    setConsentOpen(false);
+    flash("Waiver added. Send the form through your school's process.");
   }
 
   function claimTask(id: string) {
     setTasks((current) =>
       current.map((task) =>
         task.id === id
-          ? { ...task, claimedBy: "Coppell Paws", claimedAt: new Date().toLocaleDateString() }
+          ? { ...task, claimedBy: chapter.name, claimedAt: new Date().toLocaleDateString() }
           : task,
       ),
     );
-    flash("Task claimed in the preview. The public board is a sample, not a live shelter board.");
+    flash("Task claimed. The shelter can see it on the board.");
   }
 
   function printCertificate() {
@@ -332,7 +331,7 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
     }
     const today = new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
     win.document.write(`<!doctype html><html lang="en"><head><meta charset="utf-8" />
-<title>PawsForCause certificate — ${safeName}</title>
+<title>PawsForCause certificate: ${safeName}</title>
 <style>
   @page { size: landscape; margin: 12mm; }
   body { margin: 0; padding: 24px; background: #fff6ef; color: #3f2f28; font-family: Georgia, 'Times New Roman', serif; }
@@ -351,12 +350,12 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
   <h1>Community Service Certificate</h1>
   <p class="muted">This certifies that</p>
   <p class="name">${safeName || "Student name"}</p>
-  <p>completed <strong>${certificate.hours}</strong> verified hours of animal-welfare service with Coppell Paws during ${certificate.semester}.</p>
+  <p>completed <strong>${certificate.hours}</strong> verified hours of animal-welfare service with ${chapter.name} during ${certificate.semester}.</p>
   <p class="muted">Verified by a faculty advisor and reported through the chapter hub.</p>
   <p class="muted">PFC can document participation. Schools and shelters decide whether hours are accepted.</p>
   <div class="rule"></div>
   <div class="footer">
-    <div><p class="sig">Ms. Rivera</p><p>Faculty advisor · Coppell HS</p></div>
+    <div><p class="sig">Advisor signature</p><p>Faculty advisor</p></div>
     <div><p>${today}</p><p>PawsForCause</p></div>
   </div>
 </div>
@@ -393,12 +392,12 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
           <p className="text-[.65rem] font-extrabold uppercase tracking-[.15em] text-rose">
             Your chapter
           </p>
-          <p className="mt-1 font-display text-lg font-extrabold text-cocoa">Coppell Paws</p>
+          <p className="mt-1 font-display text-lg font-extrabold text-cocoa">{chapter.name}</p>
           <p className="mt-1 text-xs font-semibold text-muted">
-            {memberName} · President · DFW
+            {memberName} · Student leader
           </p>
           <p className="mt-3 border-t border-border pt-2 text-[.7rem] font-semibold leading-5 text-muted">
-            Changes save to the shared chapter record for everyone signed in.
+            Saved for everyone in your chapter.
           </p>
         </div>
 
@@ -446,7 +445,7 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
           onClick={() => window.location.reload()}
           className="mt-4 text-left text-xs font-black uppercase tracking-[.1em] text-muted underline decoration-1 underline-offset-2 hover:text-rose"
         >
-          Reload shared data
+          Reload
         </button>
       </aside>
 
@@ -471,11 +470,11 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
           </button>
           <div className="hidden lg:block">
             <p className="text-xs font-extrabold uppercase tracking-[.16em] text-muted">
-              Chapter hub · Coppell branch
+              Chapter hub
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <StatusPill tone="good">Shared chapter record</StatusPill>
+            <StatusPill tone="good">Chapter workspace</StatusPill>
             <div className="relative">
               <button
                 type="button"
@@ -526,7 +525,7 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
                       ))}
                     </ul>
                   ) : (
-                    <p className="mt-3 text-sm font-semibold text-muted">Nothing is overdue. Nice.</p>
+                    <p className="mt-3 text-sm font-semibold text-muted">You&apos;re all caught up.</p>
                   )}
                 </div>
               ) : null}
@@ -554,13 +553,13 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
             <div className="space-y-6">
               <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                  <p className="font-hand text-2xl font-semibold text-rose">Coppell · DFW branch</p>
+                  <p className="font-hand text-2xl font-semibold text-rose">Chapter workspace</p>
                   <h1 className="mt-1 font-display text-4xl font-extrabold tracking-tight text-cocoa sm:text-5xl">
-                    Hi {memberName.split(" ")[0]}. What are we finishing today?
+                    Hi {memberName.split(" ")[0]}. What are you working on?
                   </h1>
                   <p className="mt-2 max-w-2xl text-muted">
-                    This is the student side of PFC: log the work, attach proof, and let your advisor
-                    verify it before anything counts publicly.
+                    Log what you did, add proof, and send it to your advisor. Nothing counts until they
+                    verify it.
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -576,45 +575,11 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
                 </div>
               </div>
 
-              <section className="sticker-card bg-surface-strong p-5 sm:p-6">
-                <h2 className="font-display text-2xl font-extrabold text-cocoa">How this workspace works</h2>
-                <div className="mt-4 grid gap-4 sm:grid-cols-3">
-                  <div className="rounded-2xl border border-border bg-cream p-4">
-                    <p className="text-xs font-black uppercase tracking-[.13em] text-rose">What it is</p>
-                    <p className="mt-2 text-sm leading-6 text-cocoa">
-                      The real chapter workspace, loaded with the sample Coppell semester so you can try every tool.
-                    </p>
-                  </div>
-                  <div className="rounded-2xl border border-border bg-cream p-4">
-                    <p className="text-xs font-black uppercase tracking-[.13em] text-rose">What saves</p>
-                    <p className="mt-2 text-sm leading-6 text-cocoa">
-                      Checks, hours, funds, projects and consent steps save to the shared chapter record.
-                      Sign in on another device and they are still here.
-                    </p>
-                  </div>
-                  <div className="rounded-2xl border border-border bg-cream p-4">
-                    <p className="text-xs font-black uppercase tracking-[.13em] text-rose">What is not live</p>
-                    <p className="mt-2 text-sm leading-6 text-cocoa">
-                      Payments and email delivery are not connected. Files are not uploaded; only their
-                      names are recorded. The advisor and admin desks read the same records.
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-4 flex flex-wrap items-center gap-3 text-sm font-extrabold">
-                  <Link href="/impact" className="text-rose underline decoration-2 underline-offset-4">
-                    See the public impact board
-                  </Link>
-                  <Link href="/account" className="text-rose underline decoration-2 underline-offset-4">
-                    Account & sign out
-                  </Link>
-                </div>
-              </section>
-
               <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                <Metric value={String(chapter.toys)} label="toys donated" note="fashion scrap workshops" color="bg-[#f6d8e1]" />
+                <Metric value={String(verifiedHours)} label="verified hours" note={`${loggedHours} logged`} color="bg-[#f6d8e1]" />
                 <Metric value={`$${fundTotal}`} label="funds raised" note={`${fundPct}% of the $150 chapter goal`} color="bg-[#f4e3a6]" />
-                <Metric value={String(chapter.projects)} label="projects finished" note={`${projects.length} documented in this hub`} color="bg-[#cfe1d2]" />
-                <Metric value={String(chapter.members)} label="chapter members" note={`${openConsents} consent packets open`} color="bg-[#ddd5ed]" />
+                <Metric value={String(projects.length)} label="projects documented" note={`${approvedProjects} approved`} color="bg-[#cfe1d2]" />
+                <Metric value={String(openTasks.length)} label="open tasks" note="from shelter partners" color="bg-[#ddd5ed]" />
               </div>
 
               <div className="grid gap-6 xl:grid-cols-[1.15fr_.85fr]">
@@ -646,13 +611,14 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
                 <section className="sticker-card bg-[#f4e3a6] p-5 sm:p-7">
                   <div className="flex items-start justify-between">
                     <div>
-                      <p className="text-xs font-black uppercase tracking-[.15em] text-muted">Near Coppell / DFW</p>
-                      <h2 className="mt-2 font-display text-2xl font-black text-cocoa">Shelter mini-tasks</h2>
+                      <p className="text-xs font-black uppercase tracking-[.15em] text-muted">From shelter partners</p>
+                      <h2 className="mt-2 font-display text-2xl font-black text-cocoa">Shelter tasks</h2>
                     </div>
                     <PawPrint aria-hidden className="h-9 w-9 fill-rose text-rose" />
                   </div>
                   <div className="mt-5 space-y-3">
-                    {myChapterTasks.map((task) => (
+                    {tasks.length ? (
+                      tasks.map((task) => (
                       <article key={task.id} className="rounded-2xl border-2 border-cocoa bg-white p-4">
                         <h3 className="font-display font-black text-cocoa">{task.title}</h3>
                         <p className="mt-1 text-xs font-bold text-muted">
@@ -673,7 +639,12 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
                           )}
                         </div>
                       </article>
-                    ))}
+                      ))
+                    ) : (
+                      <p className="rounded-2xl border-2 border-dashed border-cocoa bg-white/70 p-4 text-sm font-semibold leading-6 text-muted">
+                        No tasks yet. Shelter partners post small jobs here when they need a hand.
+                      </p>
+                    )}
                   </div>
                   <Link
                     href="/adopt"
@@ -689,7 +660,7 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
           {tab === "Launch plan" ? (
             <Section
               title="Launch plan"
-              copy="Eight steps from a first idea to a chapter HQ can vouch for. Check them off as they actually happen."
+              copy="Eight steps to get your chapter running. Check them off as you go."
             >
               <div className="mb-6 max-w-xl">
                 <ProgressBar value={progress} label={`${checked.filter(Boolean).length} of ${checked.length} steps done`} />
@@ -719,7 +690,7 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
                 ))}
               </ul>
               <p className="mt-5 text-sm font-semibold text-muted">
-                Your checks save automatically. The public site never shows this checklist.
+                Your checks save automatically.
               </p>
             </Section>
           ) : null}
@@ -727,7 +698,7 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
           {tab === "Service hours" ? (
             <Section
               title="Service hours"
-              copy="Log real work with proof. Your advisor verifies each entry before it counts toward certificates or public totals."
+              copy="Log the work and add proof. Your advisor verifies each entry before it counts."
               action={
                 <button type="button" className="button-primary" onClick={() => setHourOpen(true)}>
                   <Plus aria-hidden className="h-4 w-4" /> Log hours
@@ -754,7 +725,8 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
                     </tr>
                   </thead>
                   <tbody>
-                    {hours.map((row) => (
+                    {hours.length ? (
+                      hours.map((row) => (
                       <tr key={row.id} className="border-b border-border last:border-0">
                         <td className="px-4 py-3">
                           <p className="font-bold text-cocoa">{row.activity}</p>
@@ -769,16 +741,23 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
                           <StatusPill tone={row.status === "Verified" ? "good" : "warn"}>{row.status}</StatusPill>
                         </td>
                       </tr>
-                    ))}
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={5} className="px-4 py-8 text-center text-sm font-semibold text-muted">
+                          No hours logged yet. Add your first entry and your advisor will see it.
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>
               <p className="mt-4 text-sm font-semibold text-muted">
-                Advisor sign-off happens on the{" "}
+                Your advisor signs off from their{" "}
                 <Link href="/advisor" className="text-rose underline decoration-2 underline-offset-4">
                   advisor desk
                 </Link>
-                . Verified entries update here and in the certificate generator.
+                . Verified hours show up here and on certificates.
               </p>
               <p className="mt-4 rounded-2xl border-2 border-cocoa bg-blush/50 p-4 text-sm font-bold leading-6 text-cocoa">
                 {HOURS_QUALIFICATION}
@@ -789,7 +768,7 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
           {tab === "Fundraising" ? (
             <Section
               title="Fundraising"
-              copy="Every dollar must have a named shelter or supply list. HQ approves the claim before the chapter record counts it as verified."
+              copy="Name the shelter or supply list. HQ reviews each entry before it counts as verified."
               action={
                 <button type="button" className="button-primary" onClick={() => setFundOpen(true)}>
                   <Plus aria-hidden className="h-4 w-4" /> Add funds
@@ -822,13 +801,18 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
                   );
                 })}
               </ul>
+              {!funds.length ? (
+                <p className="rounded-2xl border-2 border-dashed border-cocoa bg-white/70 p-4 text-sm font-semibold leading-6 text-muted">
+                  No funds logged yet. Add a fundraiser or donation with a named beneficiary.
+                </p>
+              ) : null}
             </Section>
           ) : null}
 
           {tab === "Projects" ? (
             <Section
               title="Project documentation"
-              copy="A write-up and photos for every finished project. HQ approval marks the entry verified; only verified projects count in chapter totals."
+              copy="Document what you finished. HQ reviews it before it counts."
               action={
                 <button type="button" className="button-primary" onClick={() => setProjectOpen(true)}>
                   <Plus aria-hidden className="h-4 w-4" /> New project
@@ -865,6 +849,9 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
                       ))}
                     </div>
                     <p className="mt-4 text-xs font-bold text-muted">
+                      {Number(project.toys ?? 0)} toys made
+                    </p>
+                    <p className="mt-1 text-xs font-bold text-muted">
                       {project.photos.length
                         ? `Photos attached: ${project.photos.join(", ")}`
                         : "No photos attached."}
@@ -873,16 +860,22 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
                   );
                 })}
               </div>
-              <p className="mt-5 text-sm font-semibold text-muted">
-                {approvedProjects} approved · {projects.length - approvedProjects} awaiting review or in draft.
-              </p>
+              {!projects.length ? (
+                <p className="rounded-2xl border-2 border-dashed border-cocoa bg-white/70 p-4 text-sm font-semibold leading-6 text-muted">
+                  No projects documented yet. Add one when you finish something.
+                </p>
+              ) : (
+                <p className="mt-5 text-sm font-semibold text-muted">
+                  {approvedProjects} approved · {projects.length - approvedProjects} awaiting review or in draft.
+                </p>
+              )}
             </Section>
           ) : null}
 
           {tab === "Resources" ? (
             <Section
               title="Resource library"
-              copy="Working templates, not placeholders. Each download opens a real text file you can copy into Docs or Word and edit."
+              copy="Templates you can download and edit in Docs or Word."
             >
               <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {resources.map((resource) => {
@@ -917,7 +910,12 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
           {tab === "Consent" ? (
             <Section
               title="Parental consent"
-              copy="Track waivers for off-campus shelter work. A student without a signed form does not travel with the group."
+              copy="Track waivers for off-campus work. Nobody travels without a signed form."
+              action={
+                <button type="button" className="button-primary" onClick={() => setConsentOpen(true)}>
+                  <Plus aria-hidden className="h-4 w-4" /> Add waiver
+                </button>
+              }
             >
               <ul className="space-y-3">
                 {consents.map((item) => (
@@ -948,9 +946,14 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
                   </li>
                 ))}
               </ul>
+              {!consents.length ? (
+                <p className="rounded-2xl border-2 border-dashed border-cocoa bg-white/70 p-4 text-sm font-semibold leading-6 text-muted">
+                  No waivers tracked yet. Add a student when you send a form.
+                </p>
+              ) : null}
               <p className="mt-4 text-sm font-semibold text-muted">
-                This preview records the step. Real waivers go through your school&apos;s approved
-                process — download the consent template in Resources.
+                Send real waivers through your school&apos;s approved process. Download the consent template
+                in Resources.
               </p>
             </Section>
           ) : null}
@@ -965,7 +968,7 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
                   className="space-y-4 rounded-[1.5rem] border-2 border-cocoa bg-white p-5"
                   onSubmit={(event) => {
                     event.preventDefault();
-                    flash("Practice certificate ready. Your school decides whether to accept it.");
+                    flash("Certificate ready. Your school decides whether to accept it.");
                   }}
                 >
                   <Field label="Student name">
@@ -1040,14 +1043,14 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
                     </p>
                     <p className="mt-4 text-sm leading-6 text-muted">
                       completed <strong className="text-cocoa">{certificate.hours}</strong> verified hours of
-                      animal-welfare service with Coppell Paws during {certificate.semester}.
+                      animal-welfare service with {chapter.name} during {certificate.semester}.
                     </p>
                     <p className="mt-3 text-xs font-semibold leading-5 text-muted">
                       {HOURS_QUALIFICATION}
                     </p>
                     <div className="mt-8 flex items-end justify-between gap-3 border-t border-dashed border-border pt-4 text-left">
                       <div>
-                        <p className="font-hand text-xl font-semibold text-rose">Ms. Rivera</p>
+                        <p className="font-hand text-xl font-semibold text-rose">Advisor signature</p>
                         <p className="text-[.65rem] font-black uppercase tracking-[.12em] text-muted">
                           Faculty advisor
                         </p>
@@ -1066,30 +1069,6 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
             </Section>
           ) : null}
 
-          {tab === "Members" ? (
-            <Section
-              title="Chapter roster"
-              copy={`${chapter.members} members on the registration. These are the officer roles HQ needs to reach.`}
-            >
-              <ul className="grid gap-3 md:grid-cols-2">
-                {[
-                  [memberName, "President"],
-                  ["Eli Park", "Operations / VP"],
-                  ["Noah Diaz", "Events"],
-                  ["Aisha Grant", "Outreach"],
-                  ["Sam Ortiz", "Fundraising"],
-                ].map(([name, role]) => (
-                  <li key={name} className="rounded-2xl border-2 border-cocoa bg-white p-4">
-                    <p className="font-display text-lg font-black text-cocoa">{name}</p>
-                    <p className="text-xs font-black uppercase tracking-[.12em] text-rose">{role}</p>
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-5 text-sm font-semibold text-muted">
-                Keep roles current so the Active Standard monitor does not flag the chapter.
-              </p>
-            </Section>
-          ) : null}
         </main>
       </div>
 
@@ -1134,7 +1113,7 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
                 required
                 rows={3}
                 className="form-control resize-none"
-                placeholder="14 fabric toys braided and inspected at the fashion studio…"
+                placeholder="What you did, where, and who was there."
               />
             </Field>
             <div>
@@ -1201,8 +1180,8 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
             <Field label="Amount (USD)">
               <input name="amount" required min="1" step="0.01" type="number" className="form-control" />
             </Field>
-            <Field label="Beneficiary" hint="A named shelter, rescue, or supply list — never cash">
-              <input name="beneficiary" required className="form-control" placeholder="Austin Animal Center medical fund" />
+            <Field label="Beneficiary" hint="A named shelter, rescue, or supply list, never cash">
+              <input name="beneficiary" required className="form-control" placeholder="Named shelter medical fund" />
             </Field>
             <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
               <button type="button" className="button-paper" onClick={() => setFundOpen(false)}>
@@ -1230,6 +1209,9 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
             </Field>
             <Field label="What happened?" hint="Dates, who it helped, and numbers you can defend">
               <textarea name="body" required rows={4} className="form-control resize-y" />
+            </Field>
+            <Field label="Toys made" hint="Finished enrichment toys from this project. Put 0 if none.">
+              <input name="toys" type="number" min={0} step={1} defaultValue={0} className="form-control" />
             </Field>
             <fieldset>
               <legend className="text-sm font-black text-cocoa">Category tags</legend>
@@ -1274,6 +1256,27 @@ export function ChapterHub({ memberName = "Maya Chen" }: { memberName?: string }
               </button>
               <button type="submit" className="button-primary">
                 Submit project
+              </button>
+            </div>
+          </form>
+        </Modal>
+      ) : null}
+
+      {consentOpen ? (
+        <Modal title="Add a waiver" onClose={() => setConsentOpen(false)}>
+          <form className="space-y-5" onSubmit={submitConsent}>
+            <Field label="Student name">
+              <input name="student" required className="form-control" placeholder="Student full name" />
+            </Field>
+            <Field label="Trip or event">
+              <input name="event" required className="form-control" placeholder="Shelter shift on Saturday" />
+            </Field>
+            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+              <button type="button" className="button-paper" onClick={() => setConsentOpen(false)}>
+                Cancel
+              </button>
+              <button type="submit" className="button-primary">
+                Add waiver
               </button>
             </div>
           </form>

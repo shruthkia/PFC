@@ -3,7 +3,7 @@ import { siteConfig } from "@/lib/config";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: `${siteConfig.name} — student animal-welfare chapters`,
+    name: `${siteConfig.name}: student animal-welfare chapters`,
     short_name: siteConfig.shortName,
     description: siteConfig.description,
     start_url: "/",

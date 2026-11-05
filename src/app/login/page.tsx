@@ -3,9 +3,8 @@ import { LoginGate } from "@/components/login-gate";
 import { getSessionUser } from "@/lib/auth/session";
 
 export const metadata: Metadata = {
-  title: "Prototype preview account",
-  description:
-    "Create or open a PawsForCause prototype account for the student, advisor, organizer, shelter, or alumni preview workspace.",
+  title: "Chapter sign in",
+  description: "Sign in to the PawsForCause chapter workspace for your role.",
   robots: { index: false, follow: false },
 };
 
