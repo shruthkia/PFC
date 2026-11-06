@@ -47,10 +47,10 @@ export default function OpengraphImage() {
           chapters · scrap toys · shelter tasks
         </div>
         <div style={{ display: "flex", fontSize: 28, marginTop: 34, color: "#6f5a50", maxWidth: 900 }}>
-          11 high school chapters across the US, Canada, Qatar, and India documenting real hours, toys, and funds.
+          A student-run network for shelter support, scrap toys, and responsible adoption.
         </div>
         <div style={{ display: "flex", gap: 18, marginTop: 44 }}>
-          {["85+ toys donated", "$1,550 value", "$400 raised"].map((label) => (
+          {["Student logged", "Advisor verified", "HQ approved"].map((label) => (
             <div
               key={label}
               style={{

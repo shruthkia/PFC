@@ -15,12 +15,6 @@ export const studentOffer = [
   "Templates, recruiting materials, project playbooks, and HQ help.",
 ];
 
-export const stats = [
-  { value: "11", label: "chapter branches", detail: "USA · Canada · Qatar · India" },
-  { value: "85+", label: "toys donated", detail: "worth about $1,550" },
-  { value: "$400", label: "funds raised", detail: "so far" },
-];
-
 export const homeBeats = [
   {
     href: "/about",
