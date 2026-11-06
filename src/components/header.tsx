@@ -103,14 +103,16 @@ export function Header() {
           <Link href={accountHref} className="hidden text-sm font-bold text-cocoa hover:text-rose lg:block">
             {accountLabel}
           </Link>
-          <a
-            href={CHAPTER_FORM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="button-primary hidden min-h-0 px-3.5 py-2 text-xs sm:inline-flex"
-          >
-            Apply <ArrowUpRight aria-hidden className="h-3.5 w-3.5" />
-          </a>
+          <div className="hidden sm:block">
+            <a
+              href={CHAPTER_FORM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="button-primary min-h-0 px-3.5 py-2 text-xs"
+            >
+              Apply <ArrowUpRight aria-hidden className="h-3.5 w-3.5" />
+            </a>
+          </div>
           <button
             ref={toggleRef}
             type="button"
