@@ -2,6 +2,7 @@ import { mkdirSync } from "node:fs";
 import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import { Pool } from "pg";
+import { chapters } from "@/lib/platform-data";
 
 /**
  * Server-side account database.
@@ -80,13 +81,21 @@ function getSqlite(): DatabaseSync {
   return globalForDb.__pfcDatabase;
 }
 
+const chapterSeedSql = chapters
+  .map(
+    (chapter) =>
+      `('${chapter.id.replace(/'/g, "''")}', '${chapter.name.replace(/'/g, "''")}')`,
+  )
+  .join(",\n    ");
+
 const schemaSql = `
   CREATE TABLE IF NOT EXISTS chapters (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL
   );
 
-  INSERT INTO chapters (id, name) VALUES ('coppell', 'Coppell Paws')
+  INSERT INTO chapters (id, name) VALUES
+    ${chapterSeedSql}
   ON CONFLICT (id) DO NOTHING;
 
   CREATE TABLE IF NOT EXISTS users (

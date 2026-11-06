@@ -10,5 +10,5 @@ export const metadata: Metadata = {
 
 export default async function PortalPage() {
   const user = await requireRole("student", "/portal");
-  return <ChapterHub memberName={user.name} />;
+  return <ChapterHub memberName={user.name} chapterId={user.chapterId} />;
 }

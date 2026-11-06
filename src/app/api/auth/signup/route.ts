@@ -4,6 +4,7 @@ import { queryOne, toPublicUser, type UserRow } from "@/lib/auth/db";
 import { generateRecoveryCode, hashSecret } from "@/lib/auth/password";
 import { isSameOrigin } from "@/lib/auth/request";
 import { isRoleId, roleHome } from "@/lib/auth/roles";
+import { chapters } from "@/lib/platform-data";
 import { attachSessionCookie, createSession } from "@/lib/auth/session";
 import { EMAIL_PATTERN, normalizeEmail, normalizeRecoveryCode, passwordProblem } from "@/lib/auth/validation";
 
@@ -21,6 +22,7 @@ export async function POST(request: Request) {
   const email = typeof body.email === "string" ? normalizeEmail(body.email) : "";
   const password = typeof body.password === "string" ? body.password : "";
   const role = typeof body.role === "string" ? body.role : "";
+  const chapterId = typeof body.chapterId === "string" ? body.chapterId : "coppell";
 
   if (name.length < 2 || name.length > 80 || /[\u0000-\u001f]/.test(name)) {
     return NextResponse.json({ error: "Enter your full name (2–80 characters)." }, { status: 400 });
@@ -32,6 +34,9 @@ export async function POST(request: Request) {
   if (passwordIssue) return NextResponse.json({ error: passwordIssue }, { status: 400 });
   if (!isRoleId(role)) {
     return NextResponse.json({ error: "Choose the workspace you need." }, { status: 400 });
+  }
+  if (!chapters.some((chapter) => chapter.id === chapterId)) {
+    return NextResponse.json({ error: "Choose a chapter from the list." }, { status: 400 });
   }
 
   let exists: { id: string } | undefined;
@@ -61,13 +66,14 @@ export async function POST(request: Request) {
     row = await queryOne<UserRow>(
       `INSERT INTO users
         (id, email, name, role, chapter_id, password_hash, password_salt, recovery_hash, recovery_salt, created_at)
-       VALUES (?, ?, ?, ?, 'coppell', ?, ?, ?, ?, ?)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
        RETURNING *`,
       [
         id,
         email,
         name,
         role,
+        chapterId,
         passwordDigest.hash,
         passwordDigest.salt,
         recoveryDigest.hash,

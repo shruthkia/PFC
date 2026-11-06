@@ -93,8 +93,6 @@ const nav: { label: Tab; icon: typeof LayoutDashboard }[] = [
   { label: "Certificates", icon: BadgeCheck },
 ];
 
-const chapter = chapters.find((item) => item.id === "coppell") ?? chapters[0];
-
 function makeId(prefix: string) {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
     return `${prefix}${crypto.randomUUID().slice(0, 8)}`;
@@ -102,7 +100,14 @@ function makeId(prefix: string) {
   return `${prefix}${Date.now()}`;
 }
 
-export function ChapterHub({ memberName = "Student" }: { memberName?: string }) {
+export function ChapterHub({
+  memberName = "Student",
+  chapterId,
+}: {
+  memberName?: string;
+  chapterId: string;
+}) {
+  const chapter = chapters.find((item) => item.id === chapterId) ?? chapters[0];
   const [tab, setTab] = useState<Tab>("Overview");
   const [navOpen, setNavOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);

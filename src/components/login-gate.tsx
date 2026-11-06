@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { Panel, StatusPill } from "@/components/platform/ui";
 import { roles, roleHome, roleLabel, type RoleId } from "@/lib/auth/roles";
+import { chapters } from "@/lib/platform-data";
 
 type SessionUser = {
   id: string;
@@ -112,6 +113,7 @@ export function LoginGate({ initialUser }: { initialUser: SessionUser | null }) 
       email: String(form.get("email") ?? ""),
       password,
       role: String(form.get("role") ?? ""),
+      chapterId: String(form.get("chapterId") ?? ""),
     });
     if (!data?.user || !data.recoveryCode) return;
     setRecovery({ code: data.recoveryCode, user: data.user });
@@ -176,7 +178,8 @@ export function LoginGate({ initialUser }: { initialUser: SessionUser | null }) 
                   Hi, {initialUser.name.split(" ")[0]}.
                 </h1>
                 <p className="mt-2 text-sm font-semibold text-muted">
-                  {initialUser.email} · {roleLabel(initialUser.role)}
+                  {initialUser.email} · {roleLabel(initialUser.role)} ·{" "}
+                  {chapters.find((chapter) => chapter.id === initialUser.chapterId)?.name ?? "Chapter pending"}
                 </p>
               </div>
               <StatusPill tone="good">Account active</StatusPill>
@@ -221,7 +224,7 @@ export function LoginGate({ initialUser }: { initialUser: SessionUser | null }) 
                 : "Sign in"}
           </h1>
           <p className="mt-3 text-lg leading-8 text-muted">
-            One account opens the workspace for your role. Account details and workspace changes save to the PFC database. Email is not connected yet, so save the recovery code shown at sign-up.
+            One account opens the workspace for your role. Account details and workspace changes save to the PFC database. Email is not connected yet, so save the recovery code shown at sign-up. You only need that code if you forget your password.
           </p>
         </div>
 
@@ -262,7 +265,7 @@ export function LoginGate({ initialUser }: { initialUser: SessionUser | null }) 
               </ul>
               <p className="mt-5 rounded-xl border border-border bg-white/70 p-3 text-xs font-semibold leading-5 text-muted">
                 Email is not connected yet. At sign-up you receive a one-time recovery code. Keep it
-                somewhere safe, because it is the only way to reset the password.
+                somewhere safe, because it is the only way to reset the password. You do not need it to sign in.
               </p>
             </Panel>
 
@@ -311,8 +314,14 @@ export function LoginGate({ initialUser }: { initialUser: SessionUser | null }) 
                   </h2>
                 </div>
                 <p className="mt-3 text-sm font-semibold leading-6 text-muted">
-                  Save this recovery code now. It is shown once and cannot be looked up later. You will need
-                  it, together with your email, to set a new password.
+                  Save this password reset code now. It is shown once and cannot be looked up later. You do
+                  not need it to sign in, but you will need it, together with your email, to set a new
+                  password.
+                </p>
+                <p className="mt-2 text-sm font-semibold leading-6 text-cocoa">
+                  Workspace:{" "}
+                  {chapters.find((chapter) => chapter.id === recovery.user.chapterId)?.name ??
+                    "Chapter pending"}
                 </p>
                 <div className="mt-4 flex flex-wrap items-center gap-3 rounded-2xl border-2 border-cocoa bg-cream p-4">
                   <code className="font-display text-xl font-black tracking-wider text-cocoa">
@@ -401,6 +410,25 @@ export function LoginGate({ initialUser }: { initialUser: SessionUser | null }) 
                     ))}
                   </select>
                 </Field>
+                <Field
+                  label="Chapter"
+                  hint="Choose the chapter you are joining. Your workspace opens with this chapter."
+                >
+                  <select className="form-control" name="chapterId" defaultValue="coppell" required>
+                    {chapters.map((chapter) => (
+                      <option key={chapter.id} value={chapter.id}>
+                        {chapter.name} · {chapter.school}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
+                <p className="text-xs font-semibold leading-5 text-muted">
+                  New chapter?{" "}
+                  <Link href="/start" className="text-rose underline decoration-2 underline-offset-2">
+                    Apply to start one
+                  </Link>
+                  .
+                </p>
                 <Field label="Password" hint={passwordHint}>
                   <div className="relative">
                     <input

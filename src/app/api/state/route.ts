@@ -11,7 +11,7 @@ import {
 
 export const runtime = "nodejs";
 
-const CHAPTER_ID = "coppell";
+const DEFAULT_CHAPTER_ID = "coppell";
 const MAX_VALUE_BYTES = 250_000;
 
 const adminOnly = new Set<string>([stateKeys.announcements, stateKeys.cmsDraft, stateKeys.social]);
@@ -19,13 +19,14 @@ const adminOnly = new Set<string>([stateKeys.announcements, stateKeys.cmsDraft, 
 export async function GET() {
   const user = await getSessionUser();
   const keys = user ? serverStateKeys : publicStateKeys;
+  const chapterId = user?.chapterId ?? DEFAULT_CHAPTER_ID;
   const placeholders = keys.map(() => "?").join(", ");
   let rows: { key: string; value: string }[] = [];
   try {
     rows = await queryAll<{ key: string; value: string }>(
       `SELECT key, value FROM workspace_state
        WHERE chapter_id = ? AND key IN (${placeholders})`,
-      [CHAPTER_ID, ...keys],
+      [chapterId, ...keys],
     );
   } catch (error) {
     console.error("[state] Workspace database unavailable.", error);
@@ -55,6 +56,7 @@ export async function PUT(request: Request) {
   if (!user) {
     return NextResponse.json({ error: "Sign in to save workspace changes." }, { status: 401 });
   }
+  const chapterId = user.chapterId;
 
   const body = (await request.json().catch(() => null)) as { key?: unknown; value?: unknown } | null;
   if (!body || typeof body.key !== "string" || !isServerStateKey(body.key)) {
@@ -81,7 +83,7 @@ export async function PUT(request: Request) {
     `INSERT INTO workspace_state (chapter_id, key, value, updated_at)
      VALUES (?, ?, ?, ?)
      ON CONFLICT(chapter_id, key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at`,
-    [CHAPTER_ID, body.key, serialized, now],
+    [chapterId, body.key, serialized, now],
   );
 
   return NextResponse.json({ ok: true, updatedAt: now });
@@ -100,6 +102,6 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: "Only national organizers can reset shared data." }, { status: 403 });
   }
 
-  await execute("DELETE FROM workspace_state WHERE chapter_id = ?", [CHAPTER_ID]);
+  await execute("DELETE FROM workspace_state WHERE chapter_id = ?", [user.chapterId]);
   return NextResponse.json({ ok: true });
 }

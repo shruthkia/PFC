@@ -5,6 +5,7 @@ import { PageShell, Panel, StatusPill } from "@/components/platform/ui";
 import { SignOutButton } from "@/components/auth/sign-out-button";
 import { roleHome, roleLabel } from "@/lib/auth/roles";
 import { requireUser } from "@/lib/auth/session";
+import { chapters } from "@/lib/platform-data";
 
 export const metadata: Metadata = {
   title: "Your account",
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
 
 export default async function AccountPage() {
   const user = await requireUser("/account");
+  const chapterName = chapters.find((chapter) => chapter.id === user.chapterId)?.name ?? "Chapter pending";
 
   return (
     <PageShell
@@ -39,7 +41,7 @@ export default async function AccountPage() {
             </div>
             <div className="flex justify-between gap-4">
               <dt className="font-bold text-muted">Chapter</dt>
-              <dd className="font-black text-cocoa">Coppell Paws</dd>
+              <dd className="font-black text-cocoa">{chapterName}</dd>
             </div>
             <div className="flex justify-between gap-4">
               <dt className="font-bold text-muted">Session</dt>
@@ -73,7 +75,7 @@ export default async function AccountPage() {
           <Panel>
             <h2 className="font-display text-xl font-black text-cocoa">Email is not connected yet</h2>
             <p className="mt-2 text-sm font-semibold leading-6 text-muted">
-              Email is not connected yet, so verification and reset links are not sent. Your one-time recovery code is the reset path.
+              Email is not connected yet, so verification and reset links are not sent. Your one-time recovery code is the reset path, but you only need it if you forget your password.
             </p>
           </Panel>
         </div>
