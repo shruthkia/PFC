@@ -141,13 +141,33 @@ function buildRecord(
   };
 }
 
+let databaseFallbackLogged = false;
+
+function readPortalRows(): { stateRows: WorkspaceRow[]; memberRows: MemberRow[] } {
+  try {
+    const stateRows = db
+      .prepare("SELECT chapter_id, key, value, updated_at FROM workspace_state")
+      .all() as unknown as WorkspaceRow[];
+    const memberRows = db
+      .prepare("SELECT chapter_id, COUNT(*) AS count FROM users WHERE role = 'student' GROUP BY chapter_id")
+      .all() as unknown as MemberRow[];
+    return { stateRows, memberRows };
+  } catch (error) {
+    // Public impact must stay available when the portal database is unreachable,
+    // including on serverless hosts where the filesystem is read-only.
+    if (!databaseFallbackLogged) {
+      console.error(
+        "[public-record] Portal database unavailable; serving confirmed chapter work only.",
+        error,
+      );
+      databaseFallbackLogged = true;
+    }
+    return { stateRows: [], memberRows: [] };
+  }
+}
+
 export const getPublicNetwork = cache(async (): Promise<PublicNetwork> => {
-  const stateRows = db
-    .prepare("SELECT chapter_id, key, value, updated_at FROM workspace_state")
-    .all() as unknown as WorkspaceRow[];
-  const memberRows = db
-    .prepare("SELECT chapter_id, COUNT(*) AS count FROM users WHERE role = 'student' GROUP BY chapter_id")
-    .all() as unknown as MemberRow[];
+  const { stateRows, memberRows } = readPortalRows();
 
   const memberCounts = new Map(memberRows.map((row) => [row.chapter_id, Number(row.count)]));
   const stateByChapter = new Map<string, Map<string, string>>();
