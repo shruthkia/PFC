@@ -9,11 +9,13 @@ export function ImpactReport({
   audience,
   semester,
   scope = "All active chapters",
+  generatedAt,
 }: {
   network: PublicNetwork;
   audience: string;
   semester: string;
   scope?: string;
+  generatedAt: string;
 }) {
   const scoped = network.records.filter((record) => {
     if (scope === "DFW only") return record.region === "DFW";
@@ -22,7 +24,15 @@ export function ImpactReport({
   });
 
   const toys = scoped.reduce((total, record) => total + record.toysMade, 0);
+  const toyValue = scoped.reduce((total, record) => total + record.toyValue, 0);
   const funds = scoped.reduce((total, record) => total + record.fundsRaised, 0);
+  const confirmedNotes = Array.from(
+    new Set(
+      scoped
+        .map((record) => record.confirmedNote)
+        .filter((note): note is string => Boolean(note)),
+    ),
+  );
   const hours = scoped.reduce((total, record) => total + record.verifiedHours, 0);
   const projects = scoped.reduce((total, record) => total + record.projectsApproved, 0);
   const members = scoped.reduce((total, record) => total + record.members, 0);
@@ -50,17 +60,17 @@ export function ImpactReport({
             Prepared for: {audience} · {scope}
           </p>
           <p className="mt-1 text-xs font-semibold text-muted">
-            Generated {new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}{" "}
-            from chapter portal entries.
+            Generated {generatedAt} from confirmed chapter records and portal entries.
           </p>
         </header>
 
         <section className="mt-6">
           <h2 className="font-display text-2xl font-black text-cocoa">At a glance</h2>
-          <dl className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-5">
+          <dl className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
             {[
               [String(scoped.length), "chapters"],
               [String(toys), "toys donated"],
+              [`$${toyValue.toLocaleString()}`, "toy value"],
               [`$${funds}`, "funds raised"],
               [String(hours), "verified hours"],
               [String(members), "members"],
@@ -72,9 +82,13 @@ export function ImpactReport({
             ))}
           </dl>
           <p className="mt-3 text-xs font-semibold leading-5 text-muted">
-            Totals are built from what chapters entered in their portal: advisor-verified hours,
-            HQ-approved funds, and approved project records. Chapters with no entries show zero.
+            Totals combine confirmed completed work with what chapters entered in their portal:
+            advisor-verified hours, HQ-approved funds, and approved project records. Chapters with no
+            entries show zero.
           </p>
+          {confirmedNotes.length ? (
+            <p className="mt-2 text-xs font-bold text-cocoa">{confirmedNotes.join(" ")}</p>
+          ) : null}
         </section>
 
         <section className="mt-8">
@@ -124,6 +138,7 @@ export function ImpactReport({
           <div>
             <h2 className="font-display text-2xl font-black text-cocoa">What this report counts</h2>
             <ul className="mt-3 space-y-2 text-sm leading-6 text-muted">
+              <li>Confirmed completed work supplied by the chapter.</li>
               <li>Toys recorded on projects approved by HQ.</li>
               <li>Funds from approved claims tied to a named shelter or supply list.</li>
               <li>Hours signed off by a chapter advisor.</li>
@@ -133,7 +148,7 @@ export function ImpactReport({
           <div>
             <h2 className="font-display text-2xl font-black text-cocoa">How to read these numbers</h2>
             <ul className="mt-3 space-y-2 text-sm leading-6 text-muted">
-              <li>Every number starts as a chapter portal entry, not a site-wide estimate.</li>
+              <li>Every number is a confirmed chapter record or a portal entry, not a site-wide estimate.</li>
               <li>Only advisor-signed hours are reported.</li>
               <li>PFC can document participation. Schools and shelters decide whether hours are accepted.</li>
               <li>Pending or rejected entries are not counted in public totals.</li>

@@ -42,7 +42,7 @@ export function LeaderboardBoard({ records }: { records: PublicRecord[] }) {
               Inter-chapter leaderboards
             </h1>
             <p className="mt-3 max-w-2xl text-muted">
-              Rankings use approved toys, funds, and projects from each chapter&apos;s portal record.
+              Rankings use confirmed completed work and approved portal records from each chapter.
             </p>
           </div>
           <StatusPill tone="info">Chapter standings</StatusPill>

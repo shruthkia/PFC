@@ -111,6 +111,11 @@ export function StorybookHome({ network }: { network: PublicNetwork }) {
                   <span>network total</span>
                   <span>{toyPct}% of {networkMetrics.toyGoal}</span>
                 </div>
+                {network.totals.toyValue > 0 ? (
+                  <p className="mt-2 text-[.65rem] font-bold text-muted">
+                    About ${network.totals.toyValue.toLocaleString()} in materials
+                  </p>
+                ) : null}
               </div>
 
               <div className="mx-auto mt-4 grid h-24 w-24 place-items-center gap-0.5 rounded-full border-2 border-cocoa bg-[#a8385d] p-3 text-center font-display text-[.68rem] font-extrabold uppercase leading-tight tracking-[.08em] text-[#fffaf4] shadow-[4px_5px_0_rgba(92,67,56,0.22)] sm:h-28 sm:w-28 sm:text-xs">

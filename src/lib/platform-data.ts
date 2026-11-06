@@ -17,7 +17,7 @@ export const chapters = [
   { id: "coppell", name: "Coppell Paws", school: "Coppell HS", city: "Coppell", state: "TX", country: "USA", region: "DFW", lat: 32.95, lng: -97.0, status: "Active" },
   { id: "spanish-fort", name: "Spanish Fort Paws", school: "Spanish Fort HS", city: "Spanish Fort", state: "AL", country: "USA", lat: 30.67, lng: -87.92, status: "Active" },
   { id: "plano", name: "Plano Paws", school: "Plano area HS", city: "Plano", state: "TX", country: "USA", region: "DFW", lat: 33.02, lng: -96.7, status: "Active" },
-  { id: "frisco", name: "Frisco Paws", school: "Frisco area HS", city: "Frisco", state: "TX", country: "USA", region: "DFW", lat: 33.15, lng: -96.82, status: "Active" },
+  { id: "frisco", name: "Frisco Paws", school: "Lebanon Trail High School", city: "Frisco", state: "TX", country: "USA", region: "DFW", lat: 33.15, lng: -96.82, status: "Active" },
 ];
 
 export type ShelterTaskRecord = {
@@ -60,6 +60,8 @@ export type PublicRecord = {
   projectsDocumented: number;
   projectsApproved: number;
   toysMade: number;
+  toyValue: number;
+  confirmedNote: string | null;
   members: number;
   openTasks: number;
   tasks: ShelterTaskRecord[];
@@ -76,6 +78,7 @@ export type PublicNetwork = {
     fundsRaised: number;
     projectsApproved: number;
     toysMade: number;
+    toyValue: number;
     members: number;
     openTasks: number;
   };

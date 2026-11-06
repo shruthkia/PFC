@@ -1,10 +1,22 @@
 import { ImageResponse } from "next/og";
+import { getPublicNetwork } from "@/lib/public-record";
 
 export const alt = "PawsForCause: students showing up for animals";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+export const dynamic = "force-dynamic";
 
-export default function OpengraphImage() {
+export default async function OpengraphImage() {
+  const network = await getPublicNetwork();
+  const chips = [
+    `${network.totals.toysMade} toys donated`,
+    `$${network.totals.toyValue.toLocaleString()} toy value`,
+    `$${network.totals.fundsRaised} raised`,
+  ];
+  const tagline =
+    network.records.find((record) => record.confirmedNote)?.confirmedNote ??
+    "A student-run network for shelter support, scrap toys, and responsible adoption.";
+
   return new ImageResponse(
     (
       <div
@@ -47,10 +59,10 @@ export default function OpengraphImage() {
           chapters · scrap toys · shelter tasks
         </div>
         <div style={{ display: "flex", fontSize: 28, marginTop: 34, color: "#6f5a50", maxWidth: 900 }}>
-          A student-run network for shelter support, scrap toys, and responsible adoption.
+          {tagline}
         </div>
-        <div style={{ display: "flex", gap: 18, marginTop: 44 }}>
-          {["Student logged", "Advisor verified", "HQ approved"].map((label) => (
+        <div style={{ display: "flex", gap: 18, marginTop: 36 }}>
+          {chips.map((label) => (
             <div
               key={label}
               style={{

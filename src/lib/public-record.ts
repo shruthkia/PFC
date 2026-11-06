@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { db } from "@/lib/auth/db";
+import { confirmedChapterWork } from "@/lib/confirmed-work";
 import {
   chapters,
   type AnnouncementRecord,
@@ -65,6 +66,7 @@ function buildRecord(
   memberCount: number,
   updatedAt: string | null,
 ): PublicRecord {
+  const confirmed = confirmedChapterWork[chapter.id];
   const hours = parseArray<StoredHour>(state.get(stateKeys.hours));
   const loggedHours = hours.reduce((total, row) => total + Math.max(0, Number(row.hours) || 0), 0);
   const verifiedHours = hours
@@ -124,11 +126,13 @@ function buildRecord(
     loggedHours,
     verifiedHours,
     pendingHours: Math.max(0, loggedHours - verifiedHours),
-    fundsRaised,
+    fundsRaised: fundsRaised + (confirmed?.fundsRaised ?? 0),
     pendingFunds,
-    projectsDocumented: projects.length,
-    projectsApproved,
-    toysMade,
+    projectsDocumented: projects.length + (confirmed?.projectsApproved ?? 0),
+    projectsApproved: projectsApproved + (confirmed?.projectsApproved ?? 0),
+    toysMade: toysMade + (confirmed?.toysMade ?? 0),
+    toyValue: confirmed?.toyValue ?? 0,
+    confirmedNote: confirmed?.note ?? null,
     members: memberCount,
     openTasks: tasks.filter((task) => !task.claimedBy).length,
     tasks,
@@ -187,6 +191,7 @@ export const getPublicNetwork = cache(async (): Promise<PublicNetwork> => {
       fundsRaised: records.reduce((total, record) => total + record.fundsRaised, 0),
       projectsApproved: records.reduce((total, record) => total + record.projectsApproved, 0),
       toysMade: records.reduce((total, record) => total + record.toysMade, 0),
+      toyValue: records.reduce((total, record) => total + record.toyValue, 0),
       members: records.reduce((total, record) => total + record.members, 0),
       openTasks: records.reduce((total, record) => total + record.openTasks, 0),
     },

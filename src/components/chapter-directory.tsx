@@ -91,6 +91,7 @@ export function ChapterDirectory({ records }: { records: PublicRecord[] }) {
   const activeHasEntries = Boolean(
     activeRecord &&
       (activeRecord.toysMade ||
+        activeRecord.toyValue ||
         activeRecord.fundsRaised ||
         activeRecord.projectsApproved ||
         activeRecord.verifiedHours ||
@@ -335,13 +336,19 @@ export function ChapterDirectory({ records }: { records: PublicRecord[] }) {
                     {active.status}
                   </StatusPill>
                 </div>
-                <dl className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-5">
+                <dl className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
                   <MiniStat label="Toys" value={String(activeRecord?.toysMade ?? 0)} />
+                  <MiniStat label="Toy value" value={`$${(activeRecord?.toyValue ?? 0).toLocaleString()}`} />
                   <MiniStat label="Funds" value={`$${activeRecord?.fundsRaised ?? 0}`} />
                   <MiniStat label="Projects" value={String(activeRecord?.projectsApproved ?? 0)} />
                   <MiniStat label="Members" value={String(activeRecord?.members ?? 0)} />
                   <MiniStat label="Hours" value={String(activeRecord?.verifiedHours ?? 0)} />
                 </dl>
+                {activeRecord?.confirmedNote ? (
+                  <p className="mt-3 rounded-xl border border-dashed border-cocoa/30 bg-butter/50 px-3 py-2 text-xs font-semibold text-muted">
+                    {activeRecord.confirmedNote}
+                  </p>
+                ) : null}
                 {!activeHasEntries ? (
                   <p className="mt-3 rounded-xl border border-dashed border-cocoa/30 bg-cream px-3 py-2 text-xs font-semibold text-muted">
                     No portal entries yet. Totals start here when this chapter logs work.

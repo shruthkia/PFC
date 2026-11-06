@@ -46,6 +46,7 @@ npm run build
 - Design system lives in `src/app/globals.css` (cream paper, dusty rose, gingham, scallops, sticker cards). Display type is Bricolage Grotesque, accents are Shantell Sans, body copy is Figtree.
 - Brand and contact details come from `src/lib/config.ts`; set `NEXT_PUBLIC_SITE_URL` for canonical URLs and metadata.
 - Accounts use email and password with scrypt hashing, server-side sessions in an HttpOnly cookie, and a one-time recovery code for password resets. Workspace records are stored in a SQLite database at `.data/pawsforcause.db` and shared by students, advisors, and organizers; the browser keeps an offline copy under `pfc:` keys.
+- Confirmed chapter work completed before the portal is stored in `src/lib/confirmed-work.ts` and merged into public totals. Do not enter the same work again as a new portal record.
 - The database is git-ignored. Set `PFC_DATABASE_PATH` to move it. The app needs a Node server with a persistent disk; before a public launch, move the data layer to a hosted Postgres/Supabase and add verified email plus role approval.
 - Chapter applications are collected only through the approved Google Form. The native application form and its API were removed from the live path.
 - Real outputs work without external services: resource templates download as files, and the practice certificate and impact report print from the browser. Nothing is emailed or sent to a school, shelter, or national program.

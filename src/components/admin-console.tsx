@@ -421,7 +421,8 @@ export function AdminConsole({ network }: { network: PublicNetwork }) {
                 <div className="rounded-2xl border-2 border-dashed border-cocoa bg-white/70 p-6">
                   <p className="font-hand text-2xl font-bold text-rose">Fall 2026 snapshot</p>
                   <ul className="mt-4 space-y-2 text-sm font-bold text-cocoa">
-                    <li>{network.totals.toysMade} enrichment toys from approved projects</li>
+                    <li>{network.totals.toysMade} enrichment toys from approved projects and confirmed work</li>
+                    <li>${network.totals.toyValue.toLocaleString()} in confirmed toy materials</li>
                     <li>${network.totals.fundsRaised} raised across {network.totals.chapters} chapters</li>
                     <li>{network.totals.countries} countries: {countries}</li>
                     <li>{network.totals.verifiedHours} verified hours from advisor-signed logs</li>

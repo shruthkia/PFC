@@ -12,6 +12,13 @@ export function ImpactBoard({ network }: { network: PublicNetwork }) {
     100,
     Math.round((network.totals.fundsRaised / Math.max(1, networkMetrics.semesterFundGoal)) * 100),
   );
+  const confirmedNotes = Array.from(
+    new Set(
+      network.records
+        .map((record) => record.confirmedNote)
+        .filter((note): note is string => Boolean(note)),
+    ),
+  );
 
   return (
     <div className="paper-grid min-h-screen px-5 pb-24 pt-28 sm:px-10">
@@ -26,19 +33,30 @@ export function ImpactBoard({ network }: { network: PublicNetwork }) {
               Impact &amp; fundraising
             </h1>
             <p className="mt-3 max-w-2xl text-muted">
-              Totals come from records chapters enter in their portal. Hours count after advisor
-              verification; funds and projects count after HQ approval.
+              Totals combine confirmed completed work with records chapters enter in their portal.
+              Hours count after advisor verification; funds and projects count after HQ approval.
             </p>
+            {confirmedNotes.map((note) => (
+              <p key={note} className="mt-2 text-xs font-bold text-cocoa">
+                {note}
+              </p>
+            ))}
           </div>
           <StatusPill tone="good">{network.totals.chapters} branches</StatusPill>
         </div>
 
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
           <StatTile
             value={String(network.totals.toysMade)}
             label="Toys donated"
-            note="From approved projects"
+            note="Approved projects and confirmed work"
             tone="blush"
+          />
+          <StatTile
+            value={`$${network.totals.toyValue.toLocaleString()}`}
+            label="Toy value"
+            note="Confirmed materials"
+            tone="lilac"
           />
           <StatTile
             value={String(network.totals.verifiedHours)}
@@ -49,7 +67,7 @@ export function ImpactBoard({ network }: { network: PublicNetwork }) {
           <StatTile
             value={`$${network.totals.fundsRaised}`}
             label="Funds raised"
-            note="Approved claims only"
+            note="Approved claims and confirmed work"
             tone="mint"
           />
           <StatTile

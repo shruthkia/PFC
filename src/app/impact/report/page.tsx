@@ -22,6 +22,11 @@ export default async function ImpactReportPage({
 }) {
   const params = await searchParams;
   const network = await getPublicNetwork();
+  const generatedAt = new Date().toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
 
   return (
     <ImpactReport
@@ -29,6 +34,7 @@ export default async function ImpactReportPage({
       audience={first(params.audience, "School board")}
       semester={first(params.semester, "Fall 2026")}
       scope={first(params.scope, "All active chapters")}
+      generatedAt={generatedAt}
     />
   );
 }
