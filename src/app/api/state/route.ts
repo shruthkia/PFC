@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/auth/db";
+import { execute, queryAll } from "@/lib/auth/db";
 import { isSameOrigin } from "@/lib/auth/request";
 import { getSessionUser } from "@/lib/auth/session";
 import {
@@ -20,12 +20,16 @@ export async function GET() {
   const user = await getSessionUser();
   const keys = user ? serverStateKeys : publicStateKeys;
   const placeholders = keys.map(() => "?").join(", ");
-  const rows = db
-    .prepare(
+  let rows: { key: string; value: string }[] = [];
+  try {
+    rows = await queryAll<{ key: string; value: string }>(
       `SELECT key, value FROM workspace_state
        WHERE chapter_id = ? AND key IN (${placeholders})`,
-    )
-    .all(CHAPTER_ID, ...keys) as unknown as { key: string; value: string }[];
+      [CHAPTER_ID, ...keys],
+    );
+  } catch (error) {
+    console.error("[state] Workspace database unavailable.", error);
+  }
 
   const state: Record<string, unknown> = {};
   for (const row of rows) {
@@ -73,11 +77,12 @@ export async function PUT(request: Request) {
   }
 
   const now = new Date().toISOString();
-  db.prepare(
+  await execute(
     `INSERT INTO workspace_state (chapter_id, key, value, updated_at)
      VALUES (?, ?, ?, ?)
      ON CONFLICT(chapter_id, key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at`,
-  ).run(CHAPTER_ID, body.key, serialized, now);
+    [CHAPTER_ID, body.key, serialized, now],
+  );
 
   return NextResponse.json({ ok: true, updatedAt: now });
 }
@@ -95,6 +100,6 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: "Only national organizers can reset shared data." }, { status: 403 });
   }
 
-  db.prepare("DELETE FROM workspace_state WHERE chapter_id = ?").run(CHAPTER_ID);
+  await execute("DELETE FROM workspace_state WHERE chapter_id = ?", [CHAPTER_ID]);
   return NextResponse.json({ ok: true });
 }

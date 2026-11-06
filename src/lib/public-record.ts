@@ -1,5 +1,5 @@
 import { cache } from "react";
-import { db } from "@/lib/auth/db";
+import { queryAll } from "@/lib/auth/db";
 import { confirmedChapterWork } from "@/lib/confirmed-work";
 import {
   chapters,
@@ -143,14 +143,14 @@ function buildRecord(
 
 let databaseFallbackLogged = false;
 
-function readPortalRows(): { stateRows: WorkspaceRow[]; memberRows: MemberRow[] } {
+async function readPortalRows(): Promise<{ stateRows: WorkspaceRow[]; memberRows: MemberRow[] }> {
   try {
-    const stateRows = db
-      .prepare("SELECT chapter_id, key, value, updated_at FROM workspace_state")
-      .all() as unknown as WorkspaceRow[];
-    const memberRows = db
-      .prepare("SELECT chapter_id, COUNT(*) AS count FROM users WHERE role = 'student' GROUP BY chapter_id")
-      .all() as unknown as MemberRow[];
+    const stateRows = await queryAll<WorkspaceRow>(
+      "SELECT chapter_id, key, value, updated_at FROM workspace_state",
+    );
+    const memberRows = await queryAll<MemberRow>(
+      "SELECT chapter_id, COUNT(*) AS count FROM users WHERE role = 'student' GROUP BY chapter_id",
+    );
     return { stateRows, memberRows };
   } catch (error) {
     // Public impact must stay available when the portal database is unreachable,
@@ -167,7 +167,7 @@ function readPortalRows(): { stateRows: WorkspaceRow[]; memberRows: MemberRow[] 
 }
 
 export const getPublicNetwork = cache(async (): Promise<PublicNetwork> => {
-  const { stateRows, memberRows } = readPortalRows();
+  const { stateRows, memberRows } = await readPortalRows();
 
   const memberCounts = new Map(memberRows.map((row) => [row.chapter_id, Number(row.count)]));
   const stateByChapter = new Map<string, Map<string, string>>();

@@ -1,88 +1,159 @@
 import { mkdirSync } from "node:fs";
 import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
+import { Pool } from "pg";
 
 /**
  * Server-side account database.
  *
- * Accounts, sessions, and shared chapter state live in a SQLite file on the
- * machine running the app. The file is git-ignored, persists across restarts,
- * and is never sent to the browser. Moving to a hosted Postgres/Supabase
- * deployment means replacing this module and the queries that use it.
+ * Hosted deployments should set DATABASE_URL to a Postgres connection string.
+ * Local development falls back to a SQLite file at .data/pawsforcause.db.
+ * The database is never sent to the browser.
  */
+const databaseUrl = process.env.DATABASE_URL ?? process.env.POSTGRES_URL;
 const databasePath =
   process.env.PFC_DATABASE_PATH ?? path.join(process.cwd(), ".data", "pawsforcause.db");
 
-const globalForDb = globalThis as unknown as { __pfcDatabase?: DatabaseSync };
+type SqlValue = string | number | bigint | null | Uint8Array;
 
-function openDatabase(): DatabaseSync {
-  mkdirSync(path.dirname(databasePath), { recursive: true });
-  const database = new DatabaseSync(databasePath);
-  database.exec(`
-    PRAGMA busy_timeout = 5000;
-    PRAGMA journal_mode = WAL;
-    PRAGMA foreign_keys = ON;
+const globalForDb = globalThis as unknown as {
+  __pfcDatabase?: DatabaseSync;
+  __pfcPool?: Pool;
+  __pfcSchemaReady?: Promise<void>;
+};
 
-    CREATE TABLE IF NOT EXISTS chapters (
-      id TEXT PRIMARY KEY,
-      name TEXT NOT NULL
-    );
-
-    INSERT OR IGNORE INTO chapters (id, name) VALUES ('coppell', 'Coppell Paws');
-
-    CREATE TABLE IF NOT EXISTS users (
-      id TEXT PRIMARY KEY,
-      email TEXT NOT NULL UNIQUE,
-      name TEXT NOT NULL,
-      role TEXT NOT NULL CHECK (role IN ('student','advisor','admin','shelter','alumni')),
-      chapter_id TEXT NOT NULL DEFAULT 'coppell' REFERENCES chapters(id),
-      password_hash TEXT NOT NULL,
-      password_salt TEXT NOT NULL,
-      recovery_hash TEXT NOT NULL,
-      recovery_salt TEXT NOT NULL,
-      failed_attempts INTEGER NOT NULL DEFAULT 0,
-      locked_until TEXT,
-      created_at TEXT NOT NULL
-    );
-
-    CREATE TABLE IF NOT EXISTS sessions (
-      token_hash TEXT PRIMARY KEY,
-      user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-      created_at TEXT NOT NULL,
-      expires_at TEXT NOT NULL
-    );
-
-    CREATE INDEX IF NOT EXISTS sessions_user_idx ON sessions(user_id);
-
-    CREATE TABLE IF NOT EXISTS workspace_state (
-      chapter_id TEXT NOT NULL REFERENCES chapters(id),
-      key TEXT NOT NULL,
-      value TEXT NOT NULL,
-      updated_at TEXT NOT NULL,
-      PRIMARY KEY (chapter_id, key)
-    );
-  `);
-  return database;
+function isPostgres(): boolean {
+  return Boolean(databaseUrl);
 }
 
-function getDatabase(): DatabaseSync {
+function getPool(): Pool {
+  if (!databaseUrl) {
+    throw new Error("DATABASE_URL is not set.");
+  }
+
+  if (!globalForDb.__pfcPool) {
+    const pool = new Pool({
+      connectionString: databaseUrl,
+      max: 3,
+      connectionTimeoutMillis: 10_000,
+      idleTimeoutMillis: 30_000,
+      ssl:
+        process.env.PGSSLMODE === "disable"
+          ? false
+          : process.env.NODE_ENV === "production"
+            ? { rejectUnauthorized: false }
+            : undefined,
+    });
+    pool.on("error", (error) => {
+      console.error("[db] Postgres pool error", error);
+    });
+    globalForDb.__pfcPool = pool;
+  }
+
+  return globalForDb.__pfcPool;
+}
+
+function getSqlite(): DatabaseSync {
   if (!globalForDb.__pfcDatabase) {
-    globalForDb.__pfcDatabase = openDatabase();
+    mkdirSync(path.dirname(databasePath), { recursive: true });
+    const database = new DatabaseSync(databasePath);
+    database.exec(`
+      PRAGMA busy_timeout = 5000;
+      PRAGMA journal_mode = WAL;
+      PRAGMA foreign_keys = ON;
+    `);
+    globalForDb.__pfcDatabase = database;
   }
   return globalForDb.__pfcDatabase;
 }
 
-/**
- * Opens the database on first query, never at import time. This keeps
- * `next build` from touching the live database file while the dev server runs.
- */
-export const db = new Proxy({} as DatabaseSync, {
-  get(_target, property) {
-    const database = getDatabase();
-    const value = Reflect.get(database, property, database) as unknown;
-    return typeof value === "function" ? value.bind(database) : value;
-  },
-});
+const schemaSql = `
+  CREATE TABLE IF NOT EXISTS chapters (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL
+  );
+
+  INSERT INTO chapters (id, name) VALUES ('coppell', 'Coppell Paws')
+  ON CONFLICT (id) DO NOTHING;
+
+  CREATE TABLE IF NOT EXISTS users (
+    id TEXT PRIMARY KEY,
+    email TEXT NOT NULL UNIQUE,
+    name TEXT NOT NULL,
+    role TEXT NOT NULL CHECK (role IN ('student','advisor','admin','shelter','alumni')),
+    chapter_id TEXT NOT NULL DEFAULT 'coppell' REFERENCES chapters(id),
+    password_hash TEXT NOT NULL,
+    password_salt TEXT NOT NULL,
+    recovery_hash TEXT NOT NULL,
+    recovery_salt TEXT NOT NULL,
+    failed_attempts INTEGER NOT NULL DEFAULT 0,
+    locked_until TEXT,
+    created_at TEXT NOT NULL
+  );
+
+  CREATE TABLE IF NOT EXISTS sessions (
+    token_hash TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    created_at TEXT NOT NULL,
+    expires_at TEXT NOT NULL
+  );
+
+  CREATE INDEX IF NOT EXISTS sessions_user_idx ON sessions(user_id);
+
+  CREATE TABLE IF NOT EXISTS workspace_state (
+    chapter_id TEXT NOT NULL REFERENCES chapters(id),
+    key TEXT NOT NULL,
+    value TEXT NOT NULL,
+    updated_at TEXT NOT NULL,
+    PRIMARY KEY (chapter_id, key)
+  );
+`;
+
+async function createSchema(): Promise<void> {
+  if (isPostgres()) {
+    await getPool().query(schemaSql);
+    return;
+  }
+  getSqlite().exec(schemaSql);
+}
+
+async function ensureSchema(): Promise<void> {
+  if (!globalForDb.__pfcSchemaReady) {
+    globalForDb.__pfcSchemaReady = createSchema().catch((error) => {
+      globalForDb.__pfcSchemaReady = undefined;
+      throw error;
+    });
+  }
+  await globalForDb.__pfcSchemaReady;
+}
+
+function toPostgresSql(sql: string): string {
+  let index = 0;
+  return sql.replace(/\?/g, () => `$${++index}`);
+}
+
+export async function queryAll<T>(sql: string, params: SqlValue[] = []): Promise<T[]> {
+  await ensureSchema();
+  if (isPostgres()) {
+    const result = await getPool().query(toPostgresSql(sql), params);
+    return result.rows as T[];
+  }
+  return getSqlite().prepare(sql).all(...params) as unknown as T[];
+}
+
+export async function queryOne<T>(sql: string, params: SqlValue[] = []): Promise<T | undefined> {
+  const rows = await queryAll<T>(sql, params);
+  return rows[0];
+}
+
+export async function execute(sql: string, params: SqlValue[] = []): Promise<void> {
+  await ensureSchema();
+  if (isPostgres()) {
+    await getPool().query(toPostgresSql(sql), params);
+    return;
+  }
+  getSqlite().prepare(sql).run(...params);
+}
 
 export type UserRow = {
   id: string;

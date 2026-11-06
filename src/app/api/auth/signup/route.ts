@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
-import { db, toPublicUser, type UserRow } from "@/lib/auth/db";
+import { queryOne, toPublicUser, type UserRow } from "@/lib/auth/db";
 import { generateRecoveryCode, hashSecret } from "@/lib/auth/password";
 import { isSameOrigin } from "@/lib/auth/request";
 import { isRoleId, roleHome } from "@/lib/auth/roles";
@@ -34,7 +34,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Choose the workspace you need." }, { status: 400 });
   }
 
-  const exists = db.prepare("SELECT id FROM users WHERE email = ?").get(email);
+  let exists: { id: string } | undefined;
+  try {
+    exists = await queryOne<{ id: string }>("SELECT id FROM users WHERE email = ?", [email]);
+  } catch (error) {
+    console.error("[signup] Account database unavailable.", error);
+    return NextResponse.json(
+      { error: "Account creation is not available on this deployment yet. Try again later." },
+      { status: 503 },
+    );
+  }
   if (exists) {
     return NextResponse.json(
       { error: "An account with that email already exists. Sign in instead." },
@@ -47,21 +56,24 @@ export async function POST(request: Request) {
   const recoveryCode = generateRecoveryCode();
   const recoveryDigest = await hashSecret(normalizeRecoveryCode(recoveryCode));
 
+  let row: UserRow | undefined;
   try {
-    db.prepare(
+    row = await queryOne<UserRow>(
       `INSERT INTO users
         (id, email, name, role, chapter_id, password_hash, password_salt, recovery_hash, recovery_salt, created_at)
-       VALUES (?, ?, ?, ?, 'coppell', ?, ?, ?, ?, ?)`,
-    ).run(
-      id,
-      email,
-      name,
-      role,
-      passwordDigest.hash,
-      passwordDigest.salt,
-      recoveryDigest.hash,
-      recoveryDigest.salt,
-      new Date().toISOString(),
+       VALUES (?, ?, ?, ?, 'coppell', ?, ?, ?, ?, ?)
+       RETURNING *`,
+      [
+        id,
+        email,
+        name,
+        role,
+        passwordDigest.hash,
+        passwordDigest.salt,
+        recoveryDigest.hash,
+        recoveryDigest.salt,
+        new Date().toISOString(),
+      ],
     );
   } catch (error) {
     if (error instanceof Error && /UNIQUE/i.test(error.message)) {
@@ -70,17 +82,29 @@ export async function POST(request: Request) {
         { status: 409 },
       );
     }
+    console.error("[signup] Account insert failed.", error);
+    return NextResponse.json({ error: "The account could not be created." }, { status: 500 });
+  }
+  if (!row) {
     return NextResponse.json({ error: "The account could not be created." }, { status: 500 });
   }
 
-  const row = db.prepare("SELECT * FROM users WHERE id = ?").get(id) as unknown as UserRow;
   const user = toPublicUser(row);
-  const { token, expires } = createSession(user.id);
+  let session: { token: string; expires: Date };
+  try {
+    session = await createSession(user.id);
+  } catch (error) {
+    console.error("[signup] Session creation failed.", error);
+    return NextResponse.json(
+      { error: "Your account was created, but the session could not start. Sign in with your password." },
+      { status: 500 },
+    );
+  }
 
   const response = NextResponse.json(
     { user, home: roleHome(user.role), recoveryCode },
     { status: 201 },
   );
-  attachSessionCookie(response, token, expires);
+  attachSessionCookie(response, session.token, session.expires);
   return response;
 }
