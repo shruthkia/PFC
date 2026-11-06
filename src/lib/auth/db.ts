@@ -26,6 +26,19 @@ function isPostgres(): boolean {
   return Boolean(databaseUrl);
 }
 
+function connectionStringForPool(value: string): string {
+  try {
+    const url = new URL(value);
+    // Supabase appends sslmode=require, which overrides the explicit SSL
+    // settings below and rejects Supabase's certificate chain.
+    url.searchParams.delete("sslmode");
+    url.searchParams.delete("ssl");
+    return url.toString();
+  } catch {
+    return value;
+  }
+}
+
 function getPool(): Pool {
   if (!databaseUrl) {
     throw new Error("DATABASE_URL is not set.");
@@ -33,7 +46,7 @@ function getPool(): Pool {
 
   if (!globalForDb.__pfcPool) {
     const pool = new Pool({
-      connectionString: databaseUrl,
+      connectionString: connectionStringForPool(databaseUrl),
       max: 3,
       connectionTimeoutMillis: 10_000,
       idleTimeoutMillis: 30_000,
